@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Models\Tenant;
+use App\Models\User;
+
 enum Feature: string
 {
     // Scoped to Tenant
@@ -13,6 +16,7 @@ enum Feature: string
 
     // Scoped to User
     case AcademyContentManagement = 'academy-content-management';
+    case SuperAdmin = 'super-admin';
 
     /**
      * Returns all features that are scoped to a Tenant model.
@@ -33,7 +37,16 @@ enum Feature: string
     {
         return [
             self::AcademyContentManagement,
+            self::SuperAdmin,
         ];
+    }
+
+    public function for(): string
+    {
+        return match ($this) {
+            self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
+            self::AcademyContentManagement, self::SuperAdmin => User::class,
+        };
     }
 
     /**
@@ -42,10 +55,11 @@ enum Feature: string
     public function label(): string
     {
         return match ($this) {
-            self::ExpoPanel => 'Expo Module',
-            self::AcademyPanel => 'Sira Academy Module',
-            self::AcademyContentManagement => 'Academy Content Management',
             self::CampPanel => 'Camp organization',
+            self::AcademyPanel => 'Sira Academy Module',
+            self::ExpoPanel => 'Expo Module',
+            self::AcademyContentManagement => 'Academy Content Management',
+            self::SuperAdmin => 'Super Admin',
         };
     }
 
@@ -55,10 +69,11 @@ enum Feature: string
     public function description(): string
     {
         return match ($this) {
-            self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',
-            self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
-            self::AcademyContentManagement => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
             self::CampPanel => 'Grants this tenant access to the Camp organization panel including camps, hostels and volunteers.',
+            self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
+            self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',
+            self::AcademyContentManagement => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
+            self::SuperAdmin => 'Grants this specific user access to the global Super Admin Panel to manage tenants, users and roles.',
         };
     }
 }

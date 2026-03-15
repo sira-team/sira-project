@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $tenants = config('permission.tenants');
+        $tenants = config('permission.teams');
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
         $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';

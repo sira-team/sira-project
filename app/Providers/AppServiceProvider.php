@@ -44,5 +44,6 @@ final class AppServiceProvider extends ServiceProvider
 
         // User-scoped features — default false for all users
         PennantFeature::define(Feature::AcademyContentManagement->value, fn (User $user) => false);
+        PennantFeature::define(Feature::AcademyContentManagement->value, fn (User $user) => false);
     }
 }

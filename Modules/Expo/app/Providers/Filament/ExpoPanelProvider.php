@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
+use App\Enums\Feature;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -25,7 +26,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Pennant\Middleware\EnsureFeatureIsActive;
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
 final class ExpoPanelProvider extends PanelProvider
 {
@@ -63,7 +64,7 @@ final class ExpoPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                EnsureFeatureIsActive::class,
+                EnsureFeaturesAreActive::class.':'.Feature::ExpoPanel->value,
             ])
             ->authMiddleware([
                 Authenticate::class,
