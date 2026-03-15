@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\SuperAdmin\Resources\Tenants\Pages;
+namespace App\Filament\GlobalAdmin\Resources\Tenants\Pages;
 
-use App\Filament\SuperAdmin\Resources\Tenants\TenantResource;
+use App\Filament\GlobalAdmin\Resources\Tenants\TenantResource;
 use App\Mail\TenantInvitation;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;

@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Enums\FeatureFlag;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Laravel\Pennant\Feature;
 
-final class RequireSuperAdmin
+final class RequireGlobalAdmin
 {
     public function handle(Request $request, Closure $next): mixed
     {
-        $user = auth()->user();
+        $user = auth()->guard('web')->user();
 
         abort_unless(
-            $user && $this->isSuperAdmin($user),
+            $user && $this->isGlobalAdmin($user),
             403,
             'You do not have permission to access this panel.'
         );
@@ -22,11 +25,8 @@ final class RequireSuperAdmin
         return $next($request);
     }
 
-    private function isSuperAdmin($user): bool
+    private function isGlobalAdmin(User $user): bool
     {
-        // Check if user has super_admin role in any tenant context
-        return $user->roles()
-            ->where('name', 'super_admin')
-            ->exists();
+        return Feature::for($user)->active(FeatureFlag::GlobalAdmin->value);
     }
 }

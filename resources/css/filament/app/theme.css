@@ -1,0 +1,7 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/App/**/*';
+@source '../../../../resources/views/filament/app/**/*';
+@source "../../../../vendor/relaticle/flowforge/resources/views/**/*.blade.php";
+@source '../../../../vendor/guava/filament-icon-picker/resources/**/*';
+@source '../../../../vendor/bezhansalleh/filament-panel-switch/resources/views/**/*.blade.php';

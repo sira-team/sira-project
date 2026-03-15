@@ -4,13 +4,24 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\FeatureFlag;
 use App\Models\Tenant;
+use Feature;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
 final class TenantPolicy
 {
     use HandlesAuthorization;
+
+    public function before(AuthUser $authUser, string $ability): ?bool
+    {
+        if (Feature::for($authUser)->active(FeatureFlag::GlobalAdmin->value)) {
+            return true;
+        }
+
+        return null;
+    }
 
     public function viewAny(AuthUser $authUser): bool
     {
@@ -24,7 +35,7 @@ final class TenantPolicy
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Tenant');
+        return false;
     }
 
     public function update(AuthUser $authUser, Tenant $tenant): bool
@@ -34,36 +45,36 @@ final class TenantPolicy
 
     public function delete(AuthUser $authUser, Tenant $tenant): bool
     {
-        return $authUser->can('Delete:Tenant');
+        return false;
     }
 
     public function restore(AuthUser $authUser, Tenant $tenant): bool
     {
-        return $authUser->can('Restore:Tenant');
+        return false;
     }
 
     public function forceDelete(AuthUser $authUser, Tenant $tenant): bool
     {
-        return $authUser->can('ForceDelete:Tenant');
+        return false;
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Tenant');
+        return false;
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Tenant');
+        return false;
     }
 
     public function replicate(AuthUser $authUser, Tenant $tenant): bool
     {
-        return $authUser->can('Replicate:Tenant');
+        return false;
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Tenant');
+        return false;
     }
 }

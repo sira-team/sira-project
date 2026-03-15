@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -23,7 +23,7 @@ final class PennantToggle extends Command
         $userId = $this->option('user');
         $shouldGrant = $this->option('grant') ?? $this->selectAction();
 
-        $feature = Feature::tryFrom($featureValue);
+        $feature = FeatureFlag::tryFrom($featureValue);
 
         if (! $feature) {
             $this->error('Invalid feature: '.$featureValue);
@@ -87,7 +87,7 @@ final class PennantToggle extends Command
 
     private function selectFeature(): string
     {
-        $features = array_column(Feature::cases(), 'value');
+        $features = array_column(FeatureFlag::cases(), 'value');
 
         return $this->choice(
             'Select a feature flag:',

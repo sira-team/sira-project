@@ -7,7 +7,7 @@ namespace App\Enums;
 use App\Models\Tenant;
 use App\Models\User;
 
-enum Feature: string
+enum FeatureFlag: string
 {
     // Scoped to Tenant
     case CampPanel = 'camp-panel';
@@ -16,7 +16,7 @@ enum Feature: string
 
     // Scoped to User
     case AcademyContentManagement = 'academy-content-management';
-    case SuperAdmin = 'super-admin';
+    case GlobalAdmin = 'global-admin';
 
     /**
      * Returns all features that are scoped to a Tenant model.
@@ -37,7 +37,7 @@ enum Feature: string
     {
         return [
             self::AcademyContentManagement,
-            self::SuperAdmin,
+            self::GlobalAdmin,
         ];
     }
 
@@ -45,7 +45,7 @@ enum Feature: string
     {
         return match ($this) {
             self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
-            self::AcademyContentManagement, self::SuperAdmin => User::class,
+            self::AcademyContentManagement, self::GlobalAdmin => User::class,
         };
     }
 
@@ -59,7 +59,7 @@ enum Feature: string
             self::AcademyPanel => 'Sira Academy Module',
             self::ExpoPanel => 'Expo Module',
             self::AcademyContentManagement => 'Academy Content Management',
-            self::SuperAdmin => 'Super Admin',
+            self::GlobalAdmin => 'Global Admin',
         };
     }
 
@@ -73,7 +73,7 @@ enum Feature: string
             self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
             self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',
             self::AcademyContentManagement => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
-            self::SuperAdmin => 'Grants this specific user access to the global Super Admin Panel to manage tenants, users and roles.',
+            self::GlobalAdmin => 'Grants this specific user access to the global Admin Panel to manage tenants, users and roles.',
         };
     }
 }

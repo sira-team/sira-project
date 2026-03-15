@@ -8,7 +8,7 @@ use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DateTimePickerField;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -33,7 +33,7 @@ final class EnrollmentResource extends Resource
         return $schema->components([
             Select::make('user_id')->relationship('user', 'email')->required(),
             Select::make('academy_level_id')->relationship('level', 'title')->required(),
-            DateTimePickerField::make('started_at')->required(),
+            DatePicker::make('started_at')->required(),
         ]);
     }
 

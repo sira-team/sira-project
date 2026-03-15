@@ -25,6 +25,8 @@ final class AcademySessionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static bool $shouldRegisterNavigation = true;
+
     public static function form(Schema $schema): Schema
     {
         return AcademySessionForm::configure($schema);

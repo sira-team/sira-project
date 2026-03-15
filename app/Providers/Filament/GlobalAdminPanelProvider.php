@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\RequireSuperAdmin;
+use App\Http\Middleware\RequireGlobalAdmin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,23 +23,24 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-final class SuperAdminPanelProvider extends PanelProvider
+final class GlobalAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('super-admin')
-            ->path('/super-admin')
+            ->id('global-admin')
+            ->path('/global-admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->maxContentWidth(Width::Full)
-            ->discoverResources(in: app_path('Filament/SuperAdmin/Resources'), for: 'App\Filament\SuperAdmin\Resources')
-            ->discoverPages(in: app_path('Filament/SuperAdmin/Pages'), for: 'App\Filament\SuperAdmin\Pages')
+            ->viteTheme('resources/css/filament/app/theme.css')
+            ->discoverResources(in: app_path('Filament/GlobalAdmin/Resources'), for: 'App\\Filament\\GlobalAdmin\\Resources')
+            ->discoverPages(in: app_path('Filament/GlobalAdmin/Pages'), for: 'App\\Filament\\GlobalAdmin\\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/SuperAdmin/Widgets'), for: 'App\Filament\SuperAdmin\Widgets')
+            ->discoverWidgets(in: app_path('Filament/GlobalAdmin/Widgets'), for: 'App\\Filament\\GlobalAdmin\\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
@@ -57,7 +58,7 @@ final class SuperAdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                RequireSuperAdmin::class,
+                RequireGlobalAdmin::class,
             ]);
     }
 }

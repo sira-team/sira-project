@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\SuperAdmin\Resources\Tenants;
+namespace App\Filament\GlobalAdmin\Resources\Tenants;
 
 use App\Enums\Country;
 use App\Enums\Feature;
 use App\Models\Tenant;
+use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Laravel\Pennant\Feature as PennantFeature;
@@ -26,6 +28,8 @@ final class TenantResource extends Resource
     protected static ?string $modelLabel = 'Tenant';
 
     protected static ?string $navigationLabel = 'Tenants';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
     public static function form(Schema $schema): Schema
     {

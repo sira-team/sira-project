@@ -502,13 +502,13 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 
 The `super_admin` role bypasses all permission checks via gate interception. No policy methods are checked for this role.
 
-For role assignment forms in tenancy context, use `syncWithPivotValues` with `getPermissionsTenantId()`:
+For role assignment forms in tenancy context, use `syncWithPivotValues` with `getPermissionsTeamId()`:
 ```php
 Forms\Components\Select::make('roles')
     ->relationship('roles', 'name')
     ->saveRelationshipsUsing(function (Model $record, $state) {
         $record->roles()->syncWithPivotValues($state, [
-            config('permission.column_names.tenant_foreign_key') => getPermissionsTenantId()
+            config('permission.column_names.tenant_foreign_key') => getPermissionsTeamtId()
         ]);
     })
     ->multiple()

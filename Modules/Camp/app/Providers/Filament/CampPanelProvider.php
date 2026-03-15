@@ -39,6 +39,7 @@ final class CampPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->maxContentWidth(Width::Full)
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}CampCamp{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\CampCamp\Resources'))
             ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}CampCamp{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\CampCamp\Pages'))
             ->pages([

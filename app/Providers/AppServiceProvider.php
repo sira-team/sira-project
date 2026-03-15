@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Tenant;
@@ -38,12 +38,12 @@ final class AppServiceProvider extends ServiceProvider
     private function registerPennantFeatures(): void
     {
         // Tenant-scoped features — default false for all tenants
-        PennantFeature::define(Feature::CampPanel->value, fn (Tenant $tenant) => true);
-        PennantFeature::define(Feature::ExpoPanel->value, fn (Tenant $tenant) => false);
-        PennantFeature::define(Feature::AcademyPanel->value, fn (Tenant $tenant) => false);
+        PennantFeature::define(FeatureFlag::CampPanel->value, fn (Tenant $tenant) => true);
+        PennantFeature::define(FeatureFlag::ExpoPanel->value, fn (Tenant $tenant) => false);
+        PennantFeature::define(FeatureFlag::AcademyPanel->value, fn (Tenant $tenant) => false);
 
         // User-scoped features — default false for all users
-        PennantFeature::define(Feature::AcademyContentManagement->value, fn (User $user) => false);
-        PennantFeature::define(Feature::AcademyContentManagement->value, fn (User $user) => false);
+        PennantFeature::define(FeatureFlag::AcademyContentManagement->value, fn (User $user) => false);
+        PennantFeature::define(FeatureFlag::AcademyContentManagement->value, fn (User $user) => false);
     }
 }

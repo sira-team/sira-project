@@ -94,7 +94,6 @@ init:
 	./vendor/bin/sail artisan storage:link
 	./vendor/bin/sail artisan migrate:fresh
 	./vendor/bin/sail artisan app:setup
-	./vendor/bin/sail artisan shield:super-admin --panel=super-admin --user=1 --tenant=1 --no-interaction
 	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=admin
 	./vendor/bin/sail artisan db:seed
 	./vendor/bin/sail artisan optimize:clear

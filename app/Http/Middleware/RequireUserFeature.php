@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Pennant\Feature as PennantFeature;
@@ -13,7 +13,7 @@ final class RequireUserFeature
 {
     public function handle(Request $request, Closure $next, string $feature): mixed
     {
-        $featureEnum = Feature::from($feature);
+        $featureEnum = FeatureFlag::from($feature);
 
         abort_unless(
             PennantFeature::for($request->user())->active($featureEnum->value),

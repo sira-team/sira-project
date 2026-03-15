@@ -37,6 +37,7 @@ final class AcademyPanelProvider extends PanelProvider
             ->colors(['primary' => Color::Indigo])
             ->tenant(Tenant::class, slugAttribute: 'slug')
             ->maxContentWidth(Width::Full)
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(
                 in: module('Academy', true)->appPath("Filament{$separator}AcademyTenant{$separator}Resources"),
                 for: module('Academy', true)->appNamespace('Filament\AcademyTenant\Resources'),

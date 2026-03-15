@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 
 describe('Feature enum', function () {
     it('has correct raw values', function () {
-        expect(Feature::ExpoPanel->value)->toBe('expo-panel');
-        expect(Feature::AcademyPanel->value)->toBe('academy-panel');
-        expect(Feature::AcademyContentManagement->value)->toBe('academy-content-management');
+        expect(FeatureFlag::ExpoPanel->value)->toBe('expo-panel');
+        expect(FeatureFlag::AcademyPanel->value)->toBe('academy-panel');
+        expect(FeatureFlag::AcademyContentManagement->value)->toBe('academy-content-management');
     });
 
     it('tenantFeatures returns only tenant-scoped features', function () {
-        $features = Feature::tenantFeatures();
-        expect($features)->toContain(Feature::ExpoPanel);
-        expect($features)->toContain(Feature::AcademyPanel);
-        expect($features)->not->toContain(Feature::AcademyContentManagement);
+        $features = FeatureFlag::tenantFeatures();
+        expect($features)->toContain(FeatureFlag::ExpoPanel);
+        expect($features)->toContain(FeatureFlag::AcademyPanel);
+        expect($features)->not->toContain(FeatureFlag::AcademyContentManagement);
     });
 
     it('userFeatures returns only user-scoped features', function () {
-        $features = Feature::userFeatures();
-        expect($features)->toContain(Feature::AcademyContentManagement);
-        expect($features)->not->toContain(Feature::ExpoPanel);
+        $features = FeatureFlag::userFeatures();
+        expect($features)->toContain(FeatureFlag::AcademyContentManagement);
+        expect($features)->not->toContain(FeatureFlag::ExpoPanel);
     });
 
     it('all features have a label', function () {
-        foreach (Feature::cases() as $feature) {
+        foreach (FeatureFlag::cases() as $feature) {
             expect($feature->label())->toBeString()->not->toBeEmpty();
         }
     });

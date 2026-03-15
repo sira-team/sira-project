@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -43,6 +43,7 @@ final class ExpoPanelProvider extends PanelProvider
             ])
             ->tenant(Tenant::class)
             ->maxContentWidth(Width::Full)
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
             ->discoverPages(in: module('Expo', true)->appPath("Filament{$separator}Pages"), for: module('Expo', true)->appNamespace('Filament\Pages'))
             ->pages([
@@ -64,7 +65,7 @@ final class ExpoPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                EnsureFeaturesAreActive::class.':'.Feature::ExpoPanel->value,
+                EnsureFeaturesAreActive::class.':'.FeatureFlag::ExpoPanel->value,
             ])
             ->authMiddleware([
                 Authenticate::class,

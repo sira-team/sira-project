@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use App\Models\Tenant;
 use Closure;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ final class RequireTenantFeature
 {
     public function handle(Request $request, Closure $next, string $feature): mixed
     {
-        $featureEnum = Feature::from($feature);
+        $featureEnum = FeatureFlag::from($feature);
         $tenant = app(Tenant::class);
 
         abort_unless(

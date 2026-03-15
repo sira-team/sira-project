@@ -36,6 +36,7 @@ final class AcademyContentPanelProvider extends PanelProvider
                 'primary' => Color::Teal,
             ])
             ->maxContentWidth(Width::Full)
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(
                 in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Resources"),
                 for: module('Academy', true)->appNamespace('Filament\AcademyContent\Resources'),
