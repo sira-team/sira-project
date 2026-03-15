@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Academy\Models\AcademyEnrollment;
 use Modules\Academy\Models\AcademyLevel;
 
-class AcademyEnrollmentFactory extends Factory
+final class AcademyEnrollmentFactory extends Factory
 {
     protected $model = AcademyEnrollment::class;
 

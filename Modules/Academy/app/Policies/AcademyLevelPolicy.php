@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Academy\Models\AcademyLevel;
 
-class AcademyLevelPolicy
+final class AcademyLevelPolicy
 {
     use HandlesAuthorization;
 

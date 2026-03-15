@@ -7,7 +7,7 @@ namespace Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages;
 use Filament\Resources\Pages\CreateRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
 
-class CreateQuiz extends CreateRecord
+final class CreateQuiz extends CreateRecord
 {
     protected static string $resource = QuizResource::class;
 }

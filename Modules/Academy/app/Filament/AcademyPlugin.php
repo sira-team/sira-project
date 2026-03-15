@@ -8,7 +8,7 @@ use Coolsam\Modules\Concerns\ModuleFilamentPlugin;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class AcademyPlugin implements Plugin
+final class AcademyPlugin implements Plugin
 {
     use ModuleFilamentPlugin;
 

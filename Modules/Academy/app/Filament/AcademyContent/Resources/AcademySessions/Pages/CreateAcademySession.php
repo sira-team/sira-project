@@ -7,7 +7,7 @@ namespace Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\Page
 use Filament\Resources\Pages\CreateRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\AcademySessionResource;
 
-class CreateAcademySession extends CreateRecord
+final class CreateAcademySession extends CreateRecord
 {
     protected static string $resource = AcademySessionResource::class;
 }

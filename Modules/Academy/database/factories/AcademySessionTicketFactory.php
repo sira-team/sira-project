@@ -10,7 +10,7 @@ use Modules\Academy\Models\AcademyEnrollment;
 use Modules\Academy\Models\AcademySession;
 use Modules\Academy\Models\AcademySessionTicket;
 
-class AcademySessionTicketFactory extends Factory
+final class AcademySessionTicketFactory extends Factory
 {
     protected $model = AcademySessionTicket::class;
 

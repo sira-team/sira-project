@@ -8,7 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Academy\Filament\AcademyTenant\Resources\EnrollmentResource;
 
-class ListEnrollments extends ListRecords
+final class ListEnrollments extends ListRecords
 {
     protected static string $resource = EnrollmentResource::class;
 

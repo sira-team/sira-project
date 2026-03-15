@@ -10,7 +10,7 @@ use Modules\Academy\Models\QuizAttemptAnswer;
 use Modules\Academy\Models\QuizOption;
 use Modules\Academy\Models\QuizQuestion;
 
-class QuizAttemptAnswerFactory extends Factory
+final class QuizAttemptAnswerFactory extends Factory
 {
     protected $model = QuizAttemptAnswer::class;
 

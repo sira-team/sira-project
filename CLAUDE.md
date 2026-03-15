@@ -608,7 +608,7 @@ koeln.sira-app.de →  Tenant where slug = 'koeln'
 
 The resolved `Tenant` is bound to the container for the request lifecycle. Spatie tenant scope is set immediately after resolution:
 ```php
-setPermissionsTenantId($tenant->id);
+setPermissionsTeamId($tenant->id);
 ```
 
 ### BelongsToTenant Trait
@@ -658,8 +658,8 @@ Never mix these two. Do not use `users` for visitors. Do not use `visitors` for 
 'tenant_foreign_key' => 'tenant_id',
 ```
 
-Before any permission check in a tenant panel: `setPermissionsTenantId($currentTenant->id)`
-Before any permission check in a global panel: `setPermissionsTenantId(null)`
+Before any permission check in a tenant panel: `setPermissionsTeamId($currentTenant->id)`
+Before any permission check in a global panel: `setPermissionsTeamId(null)`
 
 Handled in middleware, not manually per request.
 

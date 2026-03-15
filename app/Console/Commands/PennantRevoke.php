@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class PennantRevoke extends Command
+final class PennantRevoke extends Command
 {
     protected $signature = 'pennant:revoke {--tenant=} {--user=} {--feature=}';
 

@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Modules\Expo\Mails\Concerns\HasTenantContext;
 use Modules\Expo\Models\ExpoRequest;
 
-class ExpoRequestConfirmationMail extends Mailable
+final class ExpoRequestConfirmationMail extends Mailable
 {
     use HasTenantContext, Queueable, SerializesModels;
 

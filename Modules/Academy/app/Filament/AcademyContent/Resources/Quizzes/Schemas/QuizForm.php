@@ -9,7 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Modules\Academy\Models\AcademySession;
 
-class QuizForm
+final class QuizForm
 {
     public static function configure(Schema $schema): Schema
     {

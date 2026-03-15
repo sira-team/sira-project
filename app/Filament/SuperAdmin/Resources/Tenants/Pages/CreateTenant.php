@@ -6,15 +6,17 @@ namespace App\Filament\SuperAdmin\Resources\Tenants\Pages;
 
 use App\Filament\SuperAdmin\Resources\Tenants\TenantResource;
 use App\Mail\TenantInvitation;
-use App\Models\Tenant;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use Spatie\Permission\Models\Role;
 
-class CreateTenant extends CreateRecord
+final class CreateTenant extends CreateRecord
 {
     protected static string $resource = TenantResource::class;
+
+    private ?string $ownerEmail = null;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
@@ -41,8 +43,15 @@ class CreateTenant extends CreateRecord
             );
 
             // Assign tenant_admin role to user
-            setPermissionsTenantId($this->record->id);
-            $user->assignRole('tenant_admin');
+            setPermissionsTeamId($this->record->id);
+            $role = Role::where('name', 'tenant_admin')
+                ->where('tenant_id', $this->record->id)
+                ->first();
+            if ($role) {
+                $user->roles()->syncWithPivotValues([$role->id], [
+                    'tenant_id' => $this->record->id,
+                ]);
+            }
 
             // Generate signed URL for account setup
             $signedUrl = URL::temporarySignedRoute(
@@ -55,6 +64,4 @@ class CreateTenant extends CreateRecord
             Mail::queue(new TenantInvitation($user, $this->record, $signedUrl));
         }
     }
-
-    private ?string $ownerEmail = null;
 }

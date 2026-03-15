@@ -12,7 +12,7 @@ use Modules\Expo\Models\Station;
 use Modules\Expo\Models\StationDigitalMaterial;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DigitalMaterialController extends Controller
+final class DigitalMaterialController extends Controller
 {
     public function download(Tenant $tenant, Station $station, StationDigitalMaterial $material): BinaryFileResponse
     {

@@ -15,7 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
 
-class QuizRelationManager extends RelationManager
+final class QuizRelationManager extends RelationManager
 {
     protected static string $relationship = 'quizzes';
 

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Modules\Expo\Enums\DigitalMaterialType;
 use Modules\Expo\Models\StationDigitalMaterial;
 
-class StationDigitalMaterialObserver
+final class StationDigitalMaterialObserver
 {
     public function creating(StationDigitalMaterial $material): void
     {

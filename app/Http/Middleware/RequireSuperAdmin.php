@@ -7,7 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class RequireSuperAdmin
+final class RequireSuperAdmin
 {
     public function handle(Request $request, Closure $next): mixed
     {

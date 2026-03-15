@@ -6,7 +6,7 @@ namespace Modules\Expo\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class ExpoDatabaseSeeder extends Seeder
+final class ExpoDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -7,11 +7,11 @@ namespace App\Observers;
 use App\Models\Tenant;
 use Spatie\Permission\Models\Role;
 
-class TenantObserver
+final class TenantObserver
 {
     public function created(Tenant $tenant): void
     {
-        setPermissionsTenantId($tenant->id);
+        setPermissionsTeamId($tenant->id);
 
         $roles = [
             'tenant_admin',
@@ -22,7 +22,7 @@ class TenantObserver
         ];
 
         foreach ($roles as $role) {
-            Role::create([
+            Role::query()->firstOrCreate([
                 'name' => $role,
                 'guard_name' => 'web',
                 'tenant_id' => $tenant->id,

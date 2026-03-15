@@ -10,7 +10,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class RequireTenantFeature
+final class RequireTenantFeature
 {
     public function handle(Request $request, Closure $next, string $feature): mixed
     {

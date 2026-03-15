@@ -13,7 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Modules\Expo\Enums\PhysicalMaterialType;
 
-class StationForm
+final class StationForm
 {
     public static function configure(Schema $schema): Schema
     {

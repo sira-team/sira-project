@@ -4,13 +4,43 @@ declare(strict_types=1);
 
 namespace Modules\Academy\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Modules\Academy\Database\Factories\QuizFactory;
 
-class Quiz extends Model
+/**
+ * @property int $id
+ * @property int $academy_session_id
+ * @property string $title
+ * @property int $max_attempts
+ * @property int $min_days_between_attempts
+ * @property int $passing_score_percent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, QuizQuestion> $questions
+ * @property-read int|null $questions_count
+ * @property-read AcademySession $session
+ *
+ * @method static \Modules\Academy\Database\Factories\QuizFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereAcademySessionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereMaxAttempts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereMinDaysBetweenAttempts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz wherePassingScorePercent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
+ */
+final class Quiz extends Model
 {
     use HasFactory;
 
@@ -21,11 +51,6 @@ class Quiz extends Model
         'min_days_between_attempts',
         'passing_score_percent',
     ];
-
-    protected static function newFactory(): QuizFactory
-    {
-        return QuizFactory::new();
-    }
 
     public function casts(): array
     {
@@ -44,5 +69,10 @@ class Quiz extends Model
     public function questions(): HasMany
     {
         return $this->hasMany(QuizQuestion::class)->orderBy('sort_order');
+    }
+
+    protected static function newFactory(): QuizFactory
+    {
+        return QuizFactory::new();
     }
 }

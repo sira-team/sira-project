@@ -18,7 +18,7 @@ use Modules\Expo\Filament\Resources\ExpoRequests\Schemas\ExpoRequestForm;
 use Modules\Expo\Filament\Resources\ExpoRequests\Tables\ExpoRequestsTable;
 use Modules\Expo\Models\ExpoRequest;
 
-class ExpoRequestResource extends Resource
+final class ExpoRequestResource extends Resource
 {
     protected static ?string $model = ExpoRequest::class;
 

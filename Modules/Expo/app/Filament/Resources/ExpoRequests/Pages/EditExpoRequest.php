@@ -14,7 +14,7 @@ use Modules\Expo\Enums\ExpoStatus;
 use Modules\Expo\Filament\Resources\ExpoRequests\ExpoRequestResource;
 use Modules\Expo\Models\Expo;
 
-class EditExpoRequest extends EditRecord
+final class EditExpoRequest extends EditRecord
 {
     protected static string $resource = ExpoRequestResource::class;
 

@@ -12,7 +12,7 @@ use Modules\Expo\Mails\ExpoRequestDeclinedMail;
 use Modules\Expo\Mails\ExpoRequestInternalNotificationMail;
 use Modules\Expo\Models\ExpoRequest;
 
-class ExpoRequestObserver
+final class ExpoRequestObserver
 {
     public function created(ExpoRequest $expoRequest): void
     {

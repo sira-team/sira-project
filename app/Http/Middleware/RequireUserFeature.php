@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class RequireUserFeature
+final class RequireUserFeature
 {
     public function handle(Request $request, Closure $next, string $feature): mixed
     {

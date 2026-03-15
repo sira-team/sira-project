@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
-class AccountSetupController extends Controller
+final class AccountSetupController extends Controller
 {
     public function show(Request $request, User $user)
     {

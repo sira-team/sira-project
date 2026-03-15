@@ -8,7 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Academy\Filament\AcademyTenant\Resources\EnrollmentResource;
 
-class EditEnrollment extends EditRecord
+final class EditEnrollment extends EditRecord
 {
     protected static string $resource = EnrollmentResource::class;
 

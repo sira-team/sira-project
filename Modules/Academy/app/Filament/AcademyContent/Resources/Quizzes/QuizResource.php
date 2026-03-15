@@ -15,7 +15,7 @@ use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Schemas\QuizForm;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Tables\QuizzesTable;
 use Modules\Academy\Models\Quiz;
 
-class QuizResource extends Resource
+final class QuizResource extends Resource
 {
     protected static ?string $model = Quiz::class;
 

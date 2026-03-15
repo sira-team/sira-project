@@ -17,7 +17,7 @@ use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\Schemas\Ac
 use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\Tables\AcademySessionsTable;
 use Modules\Academy\Models\AcademySession;
 
-class AcademySessionResource extends Resource
+final class AcademySessionResource extends Resource
 {
     protected static ?string $model = AcademySession::class;
 

@@ -8,7 +8,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
-class AcademyLevelForm
+final class AcademyLevelForm
 {
     public static function configure(Schema $schema): Schema
     {

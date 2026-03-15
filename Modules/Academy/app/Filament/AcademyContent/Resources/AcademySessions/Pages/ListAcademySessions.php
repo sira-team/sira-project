@@ -8,7 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\AcademySessionResource;
 
-class ListAcademySessions extends ListRecords
+final class ListAcademySessions extends ListRecords
 {
     protected static string $resource = AcademySessionResource::class;
 

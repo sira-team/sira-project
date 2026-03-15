@@ -8,7 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\AcademySessionResource;
 
-class EditAcademySession extends EditRecord
+final class EditAcademySession extends EditRecord
 {
     protected static string $resource = AcademySessionResource::class;
 

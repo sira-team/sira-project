@@ -20,7 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Academy\Enums\QuizQuestionType;
 
-class QuestionsRelationManager extends RelationManager
+final class QuestionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'questions';
 

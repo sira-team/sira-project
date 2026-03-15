@@ -17,7 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademySessions\AcademySessionResource;
 
-class SessionsRelationManager extends RelationManager
+final class SessionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'sessions';
 

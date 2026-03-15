@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Academy\Models\QuizOption;
 use Modules\Academy\Models\QuizQuestion;
 
-class QuizOptionFactory extends Factory
+final class QuizOptionFactory extends Factory
 {
     protected $model = QuizOption::class;
 

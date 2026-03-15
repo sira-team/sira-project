@@ -13,7 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature as PennantFeature;
 use Spatie\Permission\PermissionRegistrar;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

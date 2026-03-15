@@ -10,7 +10,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class EditTenant extends EditRecord
+final class EditTenant extends EditRecord
 {
     protected static string $resource = TenantResource::class;
 

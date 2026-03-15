@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Modules\Expo\Models\ExpoRequest;
 
-class ExpoRequestInternalNotificationMail extends Mailable
+final class ExpoRequestInternalNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 

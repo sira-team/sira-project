@@ -8,7 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
 
-class EditQuiz extends EditRecord
+final class EditQuiz extends EditRecord
 {
     protected static string $resource = QuizResource::class;
 

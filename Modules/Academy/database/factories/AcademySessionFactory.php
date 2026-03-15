@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Academy\Models\AcademyLevel;
 use Modules\Academy\Models\AcademySession;
 
-class AcademySessionFactory extends Factory
+final class AcademySessionFactory extends Factory
 {
     protected $model = AcademySession::class;
 

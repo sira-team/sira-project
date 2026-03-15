@@ -10,7 +10,7 @@ use Modules\Academy\Models\AcademySessionTicket;
 use Modules\Academy\Models\Quiz;
 use Modules\Academy\Models\QuizAttempt;
 
-class QuizAttemptFactory extends Factory
+final class QuizAttemptFactory extends Factory
 {
     protected $model = QuizAttempt::class;
 

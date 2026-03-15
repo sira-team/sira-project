@@ -19,7 +19,7 @@ use Modules\Expo\Filament\Resources\Expos\Schemas\ExpoForm;
 use Modules\Expo\Filament\Resources\Expos\Tables\ExposTable;
 use Modules\Expo\Models\Expo;
 
-class ExpoResource extends Resource
+final class ExpoResource extends Resource
 {
     protected static ?string $model = Expo::class;
 

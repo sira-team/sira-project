@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Expo\Models\Expo;
 
-class ExpoPolicy
+final class ExpoPolicy
 {
     use HandlesAuthorization;
 

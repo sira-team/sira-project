@@ -6,7 +6,7 @@ namespace Modules\Academy\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class AcademyDatabaseSeeder extends Seeder
+final class AcademyDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

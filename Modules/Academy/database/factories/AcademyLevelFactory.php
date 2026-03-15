@@ -7,7 +7,7 @@ namespace Modules\Academy\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Academy\Models\AcademyLevel;
 
-class AcademyLevelFactory extends Factory
+final class AcademyLevelFactory extends Factory
 {
     protected $model = AcademyLevel::class;
 

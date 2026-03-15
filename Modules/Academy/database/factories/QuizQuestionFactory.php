@@ -9,7 +9,7 @@ use Modules\Academy\Enums\QuizQuestionType;
 use Modules\Academy\Models\Quiz;
 use Modules\Academy\Models\QuizQuestion;
 
-class QuizQuestionFactory extends Factory
+final class QuizQuestionFactory extends Factory
 {
     protected $model = QuizQuestion::class;
 

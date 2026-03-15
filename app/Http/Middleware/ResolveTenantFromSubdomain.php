@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ResolveTenantFromSubdomain
+final class ResolveTenantFromSubdomain
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -27,7 +27,7 @@ class ResolveTenantFromSubdomain
         app()->instance(Tenant::class, $tenant);
         app()->instance('current_tenant', $tenant);
 
-        setPermissionsTenantId($tenant->id);
+        setPermissionsTeamId($tenant->id);
 
         return $next($request);
     }

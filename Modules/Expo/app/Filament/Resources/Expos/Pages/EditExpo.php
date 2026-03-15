@@ -10,7 +10,7 @@ use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Expo\Filament\Resources\Expos\ExpoResource;
 
-class EditExpo extends EditRecord
+final class EditExpo extends EditRecord
 {
     protected static string $resource = ExpoResource::class;
 

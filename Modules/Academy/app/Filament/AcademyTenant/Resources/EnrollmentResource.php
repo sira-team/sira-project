@@ -20,7 +20,7 @@ use Modules\Academy\Filament\AcademyTenant\Resources\Pages\EditEnrollment;
 use Modules\Academy\Filament\AcademyTenant\Resources\Pages\ListEnrollments;
 use Modules\Academy\Models\AcademyEnrollment;
 
-class EnrollmentResource extends Resource
+final class EnrollmentResource extends Resource
 {
     protected static ?string $model = AcademyEnrollment::class;
 

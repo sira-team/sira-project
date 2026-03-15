@@ -7,7 +7,7 @@ namespace Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Pages;
 use Filament\Resources\Pages\CreateRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\AcademyLevelResource;
 
-class CreateAcademyLevel extends CreateRecord
+final class CreateAcademyLevel extends CreateRecord
 {
     protected static string $resource = AcademyLevelResource::class;
 }

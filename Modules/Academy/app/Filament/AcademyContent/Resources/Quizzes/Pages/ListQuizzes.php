@@ -8,7 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
 
-class ListQuizzes extends ListRecords
+final class ListQuizzes extends ListRecords
 {
     protected static string $resource = QuizResource::class;
 

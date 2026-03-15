@@ -8,7 +8,7 @@ use App\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
-class RolePolicy
+final class RolePolicy
 {
     use HandlesAuthorization;
 

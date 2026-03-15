@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Laravel\Pennant\Feature;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAcademyContentManagement
+final class CheckAcademyContentManagement
 {
     public function handle(Request $request, Closure $next): Response
     {

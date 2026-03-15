@@ -9,7 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 
-class UserForm
+final class UserForm
 {
     public static function configure(Schema $schema): Schema
     {

@@ -7,9 +7,32 @@ namespace Modules\Academy\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Modules\Academy\Database\Factories\QuizOptionFactory;
 
-class QuizOption extends Model
+/**
+ * @property int $id
+ * @property int $quiz_question_id
+ * @property string $text
+ * @property bool $is_correct
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read QuizQuestion $question
+ *
+ * @method static \Modules\Academy\Database\Factories\QuizOptionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereIsCorrect($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereQuizQuestionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
+ */
+final class QuizOption extends Model
 {
     use HasFactory;
 
@@ -18,11 +41,6 @@ class QuizOption extends Model
         'text',
         'is_correct',
     ];
-
-    protected static function newFactory(): QuizOptionFactory
-    {
-        return QuizOptionFactory::new();
-    }
 
     public function casts(): array
     {
@@ -34,5 +52,10 @@ class QuizOption extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(QuizQuestion::class, 'quiz_question_id');
+    }
+
+    protected static function newFactory(): QuizOptionFactory
+    {
+        return QuizOptionFactory::new();
     }
 }

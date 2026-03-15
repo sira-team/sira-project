@@ -8,7 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\AcademyLevelResource;
 
-class EditAcademyLevel extends EditRecord
+final class EditAcademyLevel extends EditRecord
 {
     protected static string $resource = AcademyLevelResource::class;
 

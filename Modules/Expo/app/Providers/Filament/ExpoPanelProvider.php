@@ -26,7 +26,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Pennant\Middleware\EnsureFeatureIsActive;
 
-class ExpoPanelProvider extends PanelProvider
+final class ExpoPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {

@@ -12,7 +12,7 @@ use Illuminate\View\View;
 use Modules\Expo\Enums\ExpoRequestStatus;
 use Modules\Expo\Models\ExpoRequest;
 
-class ExpoRequestController extends Controller
+final class ExpoRequestController extends Controller
 {
     public function form(Tenant $tenant): View
     {

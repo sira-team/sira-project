@@ -11,7 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Modules\Expo\Enums\ExpoStatus;
 
-class ExpoForm
+final class ExpoForm
 {
     public static function configure(Schema $schema): Schema
     {

@@ -10,7 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Modules\Academy\Models\AcademyLevel;
 
-class AcademySessionForm
+final class AcademySessionForm
 {
     public static function configure(Schema $schema): Schema
     {

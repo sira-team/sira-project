@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Expo\Models\Station;
 
-class StationPolicy
+final class StationPolicy
 {
     use HandlesAuthorization;
 

@@ -8,7 +8,7 @@ use App\Models\Tenant;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
-class TenantPolicy
+final class TenantPolicy
 {
     use HandlesAuthorization;
 

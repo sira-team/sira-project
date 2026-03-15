@@ -8,7 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\AcademyLevelResource;
 
-class ListAcademyLevels extends ListRecords
+final class ListAcademyLevels extends ListRecords
 {
     protected static string $resource = AcademyLevelResource::class;
 

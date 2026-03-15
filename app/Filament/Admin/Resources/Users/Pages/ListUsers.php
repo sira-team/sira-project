@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-class ListUsers extends ListRecords
+final class ListUsers extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
@@ -46,7 +46,7 @@ class ListUsers extends ListRecords
                         'email_verified_at' => null,
                     ]);
 
-                    setPermissionsTenantId($tenant->id);
+                    setPermissionsTeamId($tenant->id);
                     $user->assignRole('member');
 
                     $setupUrl = URL::temporarySignedRoute(

@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class PennantGrant extends Command
+final class PennantGrant extends Command
 {
     protected $signature = 'pennant:grant {--tenant=} {--user=} {--feature=}';
 

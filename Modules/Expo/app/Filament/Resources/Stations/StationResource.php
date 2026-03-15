@@ -18,7 +18,7 @@ use Modules\Expo\Filament\Resources\Stations\Schemas\StationForm;
 use Modules\Expo\Filament\Resources\Stations\Tables\StationsTable;
 use Modules\Expo\Models\Station;
 
-class StationResource extends Resource
+final class StationResource extends Resource
 {
     protected static ?string $model = Station::class;
 

@@ -6,7 +6,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Participant extends Model
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Participant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Participant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Participant query()
+ *
+ * @mixin \Eloquent
+ */
+final class Participant extends Model
 {
     //
 }

@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Academy\Models\AcademyEnrollment;
 
-class AcademyEnrollmentPolicy
+final class AcademyEnrollmentPolicy
 {
     use HandlesAuthorization;
 

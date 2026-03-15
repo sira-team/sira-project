@@ -8,7 +8,7 @@ use Coolsam\Modules\Concerns\ModuleFilamentPlugin;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class CampPlugin implements Plugin
+final class CampPlugin implements Plugin
 {
     use ModuleFilamentPlugin;
 

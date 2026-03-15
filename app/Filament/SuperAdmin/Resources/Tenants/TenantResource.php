@@ -6,7 +6,6 @@ namespace App\Filament\SuperAdmin\Resources\Tenants;
 
 use App\Enums\Feature;
 use App\Models\Tenant;
-use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -19,7 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class TenantResource extends Resource
+final class TenantResource extends Resource
 {
     protected static ?string $model = Tenant::class;
 
@@ -63,7 +62,7 @@ class TenantResource extends Resource
                             ->map(fn (Feature $feature) => Toggle::make($feature->value)
                                 ->label($feature->label())
                                 ->helperText($feature->description())
-                                ->afterStateHydrated(function (Toggle $component, Tenant $record) use ($feature) {
+                                ->afterStateHydrated(function (Toggle $component, ?Tenant $record) use ($feature) {
                                     $component->state(
                                         PennantFeature::for($record)->active($feature->value)
                                     );
@@ -99,12 +98,9 @@ class TenantResource extends Resource
                     ->dateTime()
                     ->sortable(),
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
-            ])
-            ->headerActions([
-                CreateAction::make(),
             ]);
     }
 

@@ -22,7 +22,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Modules\Academy\Http\Middleware\CheckAcademyContentManagement;
 
-class AcademyContentPanelProvider extends PanelProvider
+final class AcademyContentPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {

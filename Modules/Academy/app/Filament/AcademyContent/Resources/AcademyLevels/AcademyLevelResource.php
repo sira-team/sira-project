@@ -17,7 +17,7 @@ use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Schemas\Acad
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Tables\AcademyLevelsTable;
 use Modules\Academy\Models\AcademyLevel;
 
-class AcademyLevelResource extends Resource
+final class AcademyLevelResource extends Resource
 {
     protected static ?string $model = AcademyLevel::class;
 
