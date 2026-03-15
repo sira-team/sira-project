@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-use Spatie\Permission\DefaultTenantResolver;
+use Spatie\Permission\DefaultTeamResolver;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -94,8 +94,8 @@ return [
         'model_morph_key' => 'model_id',
 
         /*
-         * Change this if you want to use the tenants feature and your related model's
-         * foreign key is other than `tenant_id`.
+         * Change this if you want to use the teams feature and your related model's
+         * foreign key is other than `team_id`.
          */
 
         'tenant_foreign_key' => 'tenant_id',
@@ -128,21 +128,21 @@ return [
     'events_enabled' => false,
 
     /*
-     * Tenants Feature.
-     * When set to true the package implements tenants using the 'tenant_foreign_key'.
-     * If you want the migrations to register the 'tenant_foreign_key', you must
+     * Teams Feature.
+     * When set to true the package implements teams using the 'team_foreign_key'.
+     * If you want the migrations to register the 'team_foreign_key', you must
      * set this to true before doing the migration.
      * If you already did the migration then you must make a new migration to also
-     * add 'tenant_foreign_key' to 'roles', 'model_has_roles', and 'model_has_permissions'
+     * add 'team_foreign_key' to 'roles', 'model_has_roles', and 'model_has_permissions'
      * (view the latest version of this package's migration file)
      */
 
-    'tenants' => true,
+    'teams' => true,
 
     /*
-     * The class to use to resolve the permissions tenant id
+     * The class to use to resolve the permissions team id
      */
-    'tenant_resolver' => DefaultTenantResolver::class,
+    'team_resolver' => DefaultTeamResolver::class,
 
     /*
      * Passport Client Credentials Grant

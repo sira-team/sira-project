@@ -38,6 +38,7 @@ final class AppServiceProvider extends ServiceProvider
     private function registerPennantFeatures(): void
     {
         // Tenant-scoped features — default false for all tenants
+        PennantFeature::define(Feature::CampPanel->value, fn (Tenant $tenant) => true);
         PennantFeature::define(Feature::ExpoPanel->value, fn (Tenant $tenant) => false);
         PennantFeature::define(Feature::AcademyPanel->value, fn (Tenant $tenant) => false);
 

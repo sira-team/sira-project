@@ -13,6 +13,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -30,12 +31,14 @@ final class CampPanelProvider extends PanelProvider
         $separator = DIRECTORY_SEPARATOR;
 
         return $panel
-            ->id('camp-camp')
-            ->path('camp/camp')
+            ->id('camp')
+            ->path('camp')
+            ->default()
             ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->maxContentWidth(Width::Full)
             ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}CampCamp{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\CampCamp\Resources'))
             ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}CampCamp{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\CampCamp\Pages'))
             ->pages([

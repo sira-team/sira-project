@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Jobs\Setup;
 
 use App\Models\Tenant;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-final class CreateAdminUser
+final class CreateDefaultTenant
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -24,16 +23,16 @@ final class CreateAdminUser
      */
     public function handle(): void
     {
-        /** @var array<string, mixed> $admin */
-        $admin = config('setup.super_admin');
+        /** @var array<string, mixed> $tenant */
+        $tenant = config('setup.tenant');
 
-        User::firstOrCreate([
-            'email' => $admin['email'],
+        Tenant::firstOrCreate([
+            'slug' => $tenant['slug'],
         ], [
-            'name' => $admin['name'],
-            'password' => bcrypt($admin['password']),
-            'email_verified_at' => now(),
-            'tenant_id' => Tenant::firstWhere('slug', config('setup.tenant.slug'))->id,
+            'name' => $tenant['name'],
+            'city' => $tenant['city'],
+            'country' => $tenant['country'],
+            'email' => $tenant['email'],
         ]);
     }
 }

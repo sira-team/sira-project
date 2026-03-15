@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Jobs\Setup\CreateAdminUser;
+use App\Jobs\Setup\CreateDefaultTenant;
 use Illuminate\Console\Command;
 
 final class SetupCommand extends Command
@@ -28,6 +29,9 @@ final class SetupCommand extends Command
      */
     public function handle(): void
     {
+        dispatch_sync(new CreateDefaultTenant);
+        $this->info('Created Default Tenant');
+
         dispatch_sync(new CreateAdminUser);
         $this->info('Created Admin Users');
     }

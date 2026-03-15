@@ -12,6 +12,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -34,6 +35,7 @@ final class AcademyContentPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Teal,
             ])
+            ->maxContentWidth(Width::Full)
             ->discoverResources(
                 in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Resources"),
                 for: module('Academy', true)->appNamespace('Filament\AcademyContent\Resources'),

@@ -83,6 +83,7 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         'email',
         'password',
         'tenant_id',
+        'email_verified_at',
     ];
 
     /**

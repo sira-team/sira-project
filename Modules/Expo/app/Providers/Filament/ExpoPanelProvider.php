@@ -15,6 +15,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -40,6 +41,7 @@ final class ExpoPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->tenant(Tenant::class)
+            ->maxContentWidth(Width::Full)
             ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
             ->discoverPages(in: module('Expo', true)->appPath("Filament{$separator}Pages"), for: module('Expo', true)->appNamespace('Filament\Pages'))
             ->pages([

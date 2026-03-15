@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\SuperAdmin\Resources\Tenants;
 
+use App\Enums\Country;
 use App\Enums\Feature;
 use App\Models\Tenant;
 use Filament\Actions\DeleteAction;
@@ -40,12 +41,8 @@ final class TenantResource extends Resource
                 TextInput::make('city')
                     ->maxLength(255),
                 Select::make('country')
-                    ->options([
-                        'DE' => 'Germany',
-                        'AT' => 'Austria',
-                        'CH' => 'Switzerland',
-                    ])
-                    ->default('DE'),
+                    ->options(Country::cases())
+                    ->default(Country::Germany),
                 TextInput::make('email')
                     ->email()
                     ->maxLength(255),

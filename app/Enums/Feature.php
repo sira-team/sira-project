@@ -7,6 +7,7 @@ namespace App\Enums;
 enum Feature: string
 {
     // Scoped to Tenant
+    case CampPanel = 'camp-panel';
     case ExpoPanel = 'expo-panel';
     case AcademyPanel = 'academy-panel';
 
@@ -21,6 +22,7 @@ enum Feature: string
         return [
             self::ExpoPanel,
             self::AcademyPanel,
+            self::CampPanel,
         ];
     }
 
@@ -43,6 +45,7 @@ enum Feature: string
             self::ExpoPanel => 'Expo Module',
             self::AcademyPanel => 'Sira Academy Module',
             self::AcademyContentManagement => 'Academy Content Management',
+            self::CampPanel => 'Camp organization',
         };
     }
 
@@ -55,6 +58,7 @@ enum Feature: string
             self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',
             self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
             self::AcademyContentManagement => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
+            self::CampPanel => 'Grants this tenant access to the Camp organization panel including camps, hostels and volunteers.',
         };
     }
 }

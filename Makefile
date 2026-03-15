@@ -93,7 +93,8 @@ init:
 	@echo "Running additional artisan commands..."
 	./vendor/bin/sail artisan storage:link
 	./vendor/bin/sail artisan migrate:fresh --seed
-	./vendor/bin/sail artisan shield:super-admin --panel=admin --no-interaction
+	./vendor/bin/sail artisan app:setup
+	./vendor/bin/sail artisan shield:super-admin --panel=super-admin --user=1 --tenant=1 --no-interaction
 	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=admin
 	./vendor/bin/sail artisan optimize:clear
 	./vendor/bin/sail artisan config:cache
