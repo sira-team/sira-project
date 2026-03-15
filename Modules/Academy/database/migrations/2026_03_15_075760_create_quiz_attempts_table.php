@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('academy_enrollment_id')->constrained()->cascadeOnDelete();
             $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academy_session_ticket_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('attempted_at');
+            $table->dateTime('started_at')->useCurrent();
             $table->dateTime('completed_at')->nullable();
             $table->unsignedTinyInteger('score_percent')->nullable();
             $table->boolean('passed')->default(false);

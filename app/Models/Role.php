@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role as SpatieRole;
 
@@ -32,9 +33,14 @@ use Spatie\Permission\Models\Role as SpatieRole;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role withoutPermission($permissions)
  *
+ * @property-read Tenant|null $tenant
+ *
  * @mixin \Eloquent
  */
 final class Role extends SpatieRole
 {
-    //
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 }

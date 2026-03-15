@@ -17,7 +17,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @property int $academy_enrollment_id
  * @property int $quiz_id
  * @property int $academy_session_ticket_id
- * @property Carbon $attempted_at
+ * @property Carbon $started_at
  * @property Carbon|null $completed_at
  * @property int|null $score_percent
  * @property bool $passed
@@ -35,7 +35,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereAcademyEnrollmentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereAcademySessionTicketId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereAttemptedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereStartedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCompletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereId($value)
@@ -50,7 +50,7 @@ final class QuizAttempt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['academy_enrollment_id', 'quiz_id', 'academy_session_ticket_id', 'attempted_at', 'completed_at', 'score_percent', 'passed'];
+    protected $fillable = ['academy_enrollment_id', 'quiz_id', 'academy_session_ticket_id', 'started_at', 'completed_at', 'score_percent', 'passed'];
 
     public function enrollment(): BelongsTo
     {
@@ -79,6 +79,6 @@ final class QuizAttempt extends Model
 
     protected function casts(): array
     {
-        return ['attempted_at' => 'datetime', 'completed_at' => 'datetime', 'score_percent' => 'integer', 'passed' => 'boolean'];
+        return ['started_at' => 'datetime', 'completed_at' => 'datetime', 'score_percent' => 'integer', 'passed' => 'boolean'];
     }
 }

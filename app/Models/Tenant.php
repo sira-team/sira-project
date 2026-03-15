@@ -23,8 +23,6 @@ use Illuminate\Support\Str;
  * @property string $email
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection<int, User> $members
- * @property-read int|null $members_count
  * @property-read Collection<int, Role> $roles
  * @property-read int|null $roles_count
  * @property-read Collection<int, User> $users
@@ -59,9 +57,11 @@ final class Tenant extends Model
         'email',
     ];
 
-    public function setSlugAttribute(string $value): void
+    public function setSlugAttribute(?string $value): void
     {
-        $this->attributes['slug'] = Str::lower($value);
+        if ($value !== null) {
+            $this->attributes['slug'] = Str::lower($value);
+        }
     }
 
     /**
@@ -70,14 +70,6 @@ final class Tenant extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
-    }
-
-    /**
-     * All members including temporary ones — used for permission checks across the app.
-     */
-    public function members(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'tenant_user')->withPivot('role')->withTimestamps();
     }
 
     public function roles(): BelongsToMany

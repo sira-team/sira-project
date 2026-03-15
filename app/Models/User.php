@@ -7,11 +7,12 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -67,7 +68,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-final class User extends Authenticatable implements FilamentUser
+final class User extends Authenticatable implements FilamentUser, HasTenants
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasFeatures, HasRoles, Notifiable;
@@ -116,17 +117,19 @@ final class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Tenant::class);
     }
 
-    /**
-     * All tenants this user belongs to, including temporary memberships.
-     */
-    public function tenants(): BelongsToMany
-    {
-        return $this->belongsToMany(Tenant::class, 'tenant_user')->withPivot('role')->withTimestamps();
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $tenant instanceof Tenant && $this->tenant_id === $tenant->id;
+    }
+
+    public function getTenants(Panel $panel): array|\Illuminate\Support\Collection
+    {
+        return [$this->tenant];
     }
 
     /**

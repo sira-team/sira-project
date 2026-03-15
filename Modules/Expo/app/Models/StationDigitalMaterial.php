@@ -45,6 +45,10 @@ use Modules\Expo\Enums\DigitalMaterialType;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StationDigitalMaterial whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StationDigitalMaterial whereUploadedBy($value)
  *
+ * @property int $file_size_kb
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StationDigitalMaterial whereFileSizeKb($value)
+ *
  * @mixin \Eloquent
  */
 final class StationDigitalMaterial extends Model

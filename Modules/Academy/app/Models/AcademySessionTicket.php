@@ -14,12 +14,14 @@ use Modules\Academy\Database\Factories\AcademySessionTicketFactory;
  * @property int $id
  * @property int $academy_enrollment_id
  * @property int $academy_session_id
+ * @property int $issued_by
  * @property string $code
  * @property Carbon $issued_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read AcademyEnrollment|null $enrollment
  * @property-read AcademySession $session
+ * @property-read \App\Models\User|null $issuer
  *
  * @method static \Modules\Academy\Database\Factories\AcademySessionTicketFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademySessionTicket newModelQuery()
@@ -32,6 +34,7 @@ use Modules\Academy\Database\Factories\AcademySessionTicketFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademySessionTicket whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademySessionTicket whereIssuedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademySessionTicket whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademySessionTicket whereIssuedBy($value)
  *
  * @mixin \Eloquent
  */
@@ -39,7 +42,7 @@ final class AcademySessionTicket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['academy_enrollment_id', 'academy_session_id', 'code', 'issued_at'];
+    protected $fillable = ['academy_enrollment_id', 'academy_session_id', 'issued_by', 'code', 'issued_at'];
 
     public function enrollment(): BelongsTo
     {
@@ -49,6 +52,11 @@ final class AcademySessionTicket extends Model
     public function session(): BelongsTo
     {
         return $this->belongsTo(AcademySession::class, 'academy_session_id');
+    }
+
+    public function issuer(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class, 'issued_by');
     }
 
     protected static function newFactory(): AcademySessionTicketFactory

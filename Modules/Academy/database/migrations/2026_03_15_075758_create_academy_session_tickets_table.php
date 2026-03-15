@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('academy_session_id')->constrained()->cascadeOnDelete();
             $table->string('code')->unique();
             $table->dateTime('issued_at');
+            $table->foreignId('issued_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['academy_enrollment_id', 'academy_session_id'], 'enr_session_unique');

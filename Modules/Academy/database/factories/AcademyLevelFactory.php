@@ -7,17 +7,25 @@ namespace Modules\Academy\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Academy\Models\AcademyLevel;
 
+/**
+ * @extends Factory<AcademyLevel>
+ */
 final class AcademyLevelFactory extends Factory
 {
     protected $model = AcademyLevel::class;
 
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'title' => 'Level '.$this->faker->unique()->numberBetween(1, 10),
-            'description' => $this->faker->optional()->paragraph(),
-            'duration_months' => $this->faker->numberBetween(6, 24),
-            'sort_order' => $this->faker->numberBetween(0, 100),
+            'title' => 'Level '.fake()->numberBetween(1, 10),
+            'description' => fake()->sentence(),
+            'sort_order' => fake()->numberBetween(1, 20),
+            'duration_months' => fake()->numberBetween(3, 24),
         ];
     }
 }

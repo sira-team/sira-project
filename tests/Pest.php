@@ -15,8 +15,8 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->in('Feature', 'Unit', 'Modules');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +44,5 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
-    // ..
-}
+// Load test helper functions
+require_once __DIR__.'/Helpers/TenantHelper.php';

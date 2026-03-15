@@ -17,10 +17,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('file_path');
             $table->string('file_type'); // pdf, pptx, docx
-            $table->integer('file_size');
+            $table->integer('file_size_kb');
             $table->foreignId('uploaded_by')->constrained('users')->cascadeOnDelete();
             $table->string('language')->default('de');
-            $table->integer('sort_order')->default(0);
             $table->timestamps();
 
             $table->index('station_id');
