@@ -1,0 +1,11 @@
+{
+    "name": "Expo",
+    "alias": "expo",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Expo\\Providers\\ExpoServiceProvider"
+    ],
+    "files": []
+}

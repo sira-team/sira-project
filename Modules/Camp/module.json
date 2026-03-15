@@ -1,0 +1,11 @@
+{
+    "name": "Camp",
+    "alias": "camp",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Camp\\Providers\\CampServiceProvider"
+    ],
+    "files": []
+}
