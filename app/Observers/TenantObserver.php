@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Models\Tenant;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 final class TenantObserver
@@ -22,11 +23,15 @@ final class TenantObserver
         ];
 
         foreach ($roles as $role) {
-            Role::query()->firstOrCreate([
+            $role = Role::query()->firstOrCreate([
                 'name' => $role,
                 'guard_name' => 'web',
                 'tenant_id' => $tenant->id,
             ]);
+
+            if ($role->name === 'tenant_admin') {
+                $role->permissions()->sync(DB::table('permissions')->pluck('id'));
+            }
         }
     }
 }

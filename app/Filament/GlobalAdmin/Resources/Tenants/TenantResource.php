@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\GlobalAdmin\Resources\Tenants;
 
 use App\Enums\Country;
-use App\Enums\Feature;
+use App\Enums\FeatureFlag;
 use App\Models\Tenant;
 use BackedEnum;
+use Feature;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -45,8 +46,8 @@ final class TenantResource extends Resource
                 TextInput::make('city')
                     ->maxLength(255),
                 Select::make('country')
-                    ->options(Country::cases())
-                    ->default(Country::Germany),
+                    ->options(Country::class)
+                    ->default(Country::Germany->value),
                 TextInput::make('email')
                     ->email()
                     ->maxLength(255),
@@ -59,8 +60,8 @@ final class TenantResource extends Resource
                     ->description('Enable or disable modules for this tenant.')
                     ->visible(fn (string $operation) => $operation === 'edit')
                     ->components(
-                        collect(Feature::tenantFeatures())
-                            ->map(fn (Feature $feature) => Toggle::make($feature->value)
+                        collect(FeatureFlag::tenantFeatures())
+                            ->map(fn (FeatureFlag $feature) => Toggle::make($feature->value)
                                 ->label($feature->label())
                                 ->helperText($feature->description())
                                 ->afterStateHydrated(function (Toggle $component, ?Tenant $record) use ($feature) {

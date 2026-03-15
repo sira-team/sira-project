@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Filament\GlobalAdmin\Resources\Users;
 
+use App\Enums\FeatureFlag;
 use App\Filament\GlobalAdmin\Resources\Users\Pages\ManageUsers;
 use App\Models\User;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+use Laravel\Pennant\Feature;
 
 final class UserResource extends Resource
 {
@@ -64,19 +63,16 @@ final class UserResource extends Resource
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                TextColumn::make('tenant.name')
-                    ->searchable(),
                 TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('tenant.name')
+                    ->label('Tenant')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('two_factor_confirmed_at')
-                    ->dateTime()
-                    ->sortable(),
+                self::featureToggle(FeatureFlag::AcademyContentManagement),
+                self::featureToggle(FeatureFlag::GlobalAdmin),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -85,25 +81,17 @@ final class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery();
+        return parent::getEloquentQuery()->whereExists(
+            DB::table('features')
+                ->whereRaw('SUBSTRING_INDEX(scope, "|", -1) = users.id')
+                ->where('value', 'true')
+                ->whereIn('name', ['global-admin', 'academy-content-management'])
+        );
     }
 
     public static function getPages(): array
@@ -111,5 +99,15 @@ final class UserResource extends Resource
         return [
             'index' => ManageUsers::route('/'),
         ];
+    }
+
+    private static function featureToggle(FeatureFlag $flag): ToggleColumn
+    {
+        return ToggleColumn::make($flag->value)
+            ->label($flag->label())
+            ->getStateUsing(fn (User $record): bool => Feature::for($record)->active($flag->value))
+            ->updateStateUsing(function (User $record, bool $state) use ($flag): void {
+                Feature::for($record)->activate($flag->value, $state);
+            });
     }
 }
