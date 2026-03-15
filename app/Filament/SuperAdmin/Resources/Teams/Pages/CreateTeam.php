@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\SuperAdmin\Resources\Teams\Pages;
+namespace App\Filament\SuperAdmin\Resources\Tenants\Pages;
 
-use App\Filament\SuperAdmin\Resources\Teams\TeamResource;
+use App\Filament\SuperAdmin\Resources\Tenants\TenantResource;
 use App\Mail\TenantInvitation;
-use App\Models\Team;
+use App\Models\Tenant;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
-class CreateTeam extends CreateRecord
+class CreateTenant extends CreateRecord
 {
-    protected static string $resource = TeamResource::class;
+    protected static string $resource = TenantResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Extract owner_email before saving to Team model
+        // Extract owner_email before saving to Tenant model
         $this->ownerEmail = $data['owner_email'] ?? null;
 
         unset($data['owner_email']);
@@ -35,13 +35,13 @@ class CreateTeam extends CreateRecord
                 ['email' => $ownerEmail],
                 [
                     'name' => explode('@', $ownerEmail)[0],
-                    'team_id' => $this->record->id,
+                    'tenant_id' => $this->record->id,
                     'password' => bcrypt(str()->random(16)),
                 ]
             );
 
             // Assign tenant_admin role to user
-            setPermissionsTeamId($this->record->id);
+            setPermissionsTenantId($this->record->id);
             $user->assignRole('tenant_admin');
 
             // Generate signed URL for account setup

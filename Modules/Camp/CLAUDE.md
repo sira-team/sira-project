@@ -17,7 +17,7 @@ This module registers its own Filament panel.
 **ID:** `camp`
 **Path:** `/camp`
 **Guard:** `web`
-**Tenant model:** `Team`
+**Tenant model:** `Tenant`
 **Access:** `camp_manager`, `tenant_admin`
 **Pennant:** none — always available to all tenants
 **Location:** `Modules/Camp/app/Providers/Filament/CampPanelProvider.php`
@@ -294,7 +294,7 @@ All emails queued. All include tenant name in header. All logged to `camp_notifi
 
 ## Models
 
-- `Jugendherberge` — global, no team_id, soft deletes
+- `Jugendherberge` — global, no tenant_id, soft deletes
 - `JugendherbergeRoom` — belongs to Jugendherberge, global
 - `JugendherbergeContract` — tenant-scoped via camp_id, belongs to Jugendherberge and Camp
 - `Camp` — tenant-scoped, soft deletes, belongs to JugendherbergeContract (nullable)

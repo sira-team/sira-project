@@ -23,22 +23,22 @@ The app is multi-tenant. Each tenant is a city-based Verein. Not every tenant ho
 
 The Expo panel is NOT available to all tenants.
 
-Feature flag: `expo-panel`, scoped to `Team` model.
+Feature flag: `expo-panel`, scoped to `Tenant` model.
 
 ```php
-Feature::for($team)->active('expo-panel');
+Feature::for($tenant)->active('expo-panel');
 ```
 
 Check this flag in the Filament panel provider's `boot` method to conditionally register the Expo plugin. If the flag is inactive for the current tenant, the Expo navigation items are hidden entirely and routes return 403.
 
 Enable per tenant via artisan command:
 ```bash
-php artisan pennant:grant-team {teamId} expo-panel
+php artisan pennant:grant-tenant {tenantId} expo-panel
 ```
 
 ---
 
-## Roles (Spatie, scoped to team_id)
+## Roles (Spatie, scoped to tenant_id)
 
 Roles that have access in Filament:
 - `tenant_admin` — full access
@@ -66,9 +66,9 @@ Plain Blade view. No login required. Tenant branding shown at top.
 ### On Submission
 
 1. Resolve tenant from subdomain
-2. Create `ExpoRequest` record with `status = new` and `team_id`
+2. Create `ExpoRequest` record with `status = new` and `tenant_id`
 3. Send confirmation email to the contact
-4. Send internal notification email to the tenant's primary contact email (`teams.email`)
+4. Send internal notification email to the tenant's primary contact email (`tenants.email`)
 
 ### Confirmation Email to Contact
 

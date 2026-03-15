@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,14 +19,14 @@ class UserInvitation extends Mailable implements ShouldQueue
 
     public function __construct(
         public readonly User $user,
-        public readonly Team $team,
+        public readonly Tenant $tenant,
         public readonly string $setupUrl,
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Einladung zu {$this->team->name}",
+            subject: "Einladung zu {$this->tenant->name}",
         );
     }
 

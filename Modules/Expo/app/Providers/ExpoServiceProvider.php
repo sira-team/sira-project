@@ -6,6 +6,10 @@ namespace Modules\Expo\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Expo\Models\ExpoRequest;
+use Modules\Expo\Models\StationDigitalMaterial;
+use Modules\Expo\Observers\ExpoRequestObserver;
+use Modules\Expo\Observers\StationDigitalMaterialObserver;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -23,6 +27,7 @@ class ExpoServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerObservers();
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
@@ -38,6 +43,15 @@ class ExpoServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * Register observers.
+     */
+    protected function registerObservers(): void
+    {
+        ExpoRequest::observe(ExpoRequestObserver::class);
+        StationDigitalMaterial::observe(StationDigitalMaterialObserver::class);
     }
 
     /**

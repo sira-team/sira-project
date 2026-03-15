@@ -44,12 +44,12 @@ class AccountSetupController extends Controller
         event(new PasswordReset($user));
 
         // Redirect to tenant admin panel
-        $team = $user->team;
+        $tenant = $user->tenant;
         $host = $request->getHost();
         $parts = explode('.', $host);
 
         if (count($parts) >= 3) {
-            $parts[0] = $team->slug;
+            $parts[0] = $tenant->slug;
             $newHost = implode('.', $parts);
             $scheme = $request->getScheme();
 

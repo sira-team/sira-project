@@ -17,7 +17,7 @@ class AcademyEnrollmentFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'team_id' => 1,
+            'tenant_id' => 1,
             'academy_level_id' => AcademyLevel::factory(),
             'started_at' => now(),
         ];

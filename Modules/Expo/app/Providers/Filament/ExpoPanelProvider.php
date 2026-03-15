@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
+use App\Models\Tenant;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -22,6 +24,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Pennant\Middleware\EnsureFeatureIsActive;
 
 class ExpoPanelProvider extends PanelProvider
 {
@@ -30,23 +33,24 @@ class ExpoPanelProvider extends PanelProvider
         $separator = DIRECTORY_SEPARATOR;
 
         return $panel
-            ->id('expo-expo')
-            ->path('expo/expo')
+            ->id('expo')
+            ->path('expo')
             ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}ExpoExpo{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\ExpoExpo\Resources'))
-            ->discoverPages(in: module('Expo', true)->appPath("Filament{$separator}ExpoExpo{$separator}Pages"), for: module('Expo', true)->appNamespace('Filament\ExpoExpo\Pages'))
+            ->tenant(Tenant::class)
+            ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
+            ->discoverPages(in: module('Expo', true)->appPath("Filament{$separator}Pages"), for: module('Expo', true)->appNamespace('Filament\Pages'))
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: module('Expo', true)->appPath("Filament{$separator}ExpoExpo{$separator}Widgets"), for: module('Expo', true)->appNamespace('Filament\ExpoExpo\Widgets'))
+            ->discoverWidgets(in: module('Expo', true)->appPath("Filament{$separator}Widgets"), for: module('Expo', true)->appNamespace('Filament\Widgets'))
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->discoverClusters(in: module('Expo', true)->appPath("Filament{$separator}ExpoExpo{$separator}Clusters"), for: module('Expo', true)->appNamespace('Filament\ExpoExpo\Clusters'))
+            ->plugin(FilamentShieldPlugin::make()->scopeToTenant(true))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -57,6 +61,7 @@ class ExpoPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                EnsureFeatureIsActive::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
@@ -36,7 +36,7 @@ class TenantAdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->tenant(Team::class, slugAttribute: 'slug')
+            ->tenant(Tenant::class, slugAttribute: 'slug')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')

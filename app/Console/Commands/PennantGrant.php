@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\Feature;
-use App\Models\Team;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Laravel\Pennant\Feature as PennantFeature;
 
 class PennantGrant extends Command
 {
-    protected $signature = 'pennant:grant {--team=} {--user=} {--feature=}';
+    protected $signature = 'pennant:grant {--tenant=} {--user=} {--feature=}';
 
-    protected $description = 'Grant a Pennant feature flag to a team or user';
+    protected $description = 'Grant a Pennant feature flag to a tenant or user';
 
     public function handle(): int
     {
         $featureValue = $this->option('feature');
-        $teamId = $this->option('team');
+        $tenantId = $this->option('tenant');
         $userId = $this->option('user');
 
         if (! $featureValue) {
@@ -36,17 +36,17 @@ class PennantGrant extends Command
             return self::FAILURE;
         }
 
-        if ($teamId) {
-            // Ensure the feature is a team feature
-            if (! in_array($feature, Feature::teamFeatures())) {
-                $this->error("Feature [{$feature->value}] is not a team feature.");
+        if ($tenantId) {
+            // Ensure the feature is a tenant feature
+            if (! in_array($feature, Feature::tenantFeatures())) {
+                $this->error("Feature [{$feature->value}] is not a tenant feature.");
 
                 return self::FAILURE;
             }
 
-            $team = Team::findOrFail($teamId);
-            PennantFeature::for($team)->activate($feature->value);
-            $this->info("Feature [{$feature->value}] granted to team [{$teamId}].");
+            $tenant = Tenant::findOrFail($tenantId);
+            PennantFeature::for($tenant)->activate($feature->value);
+            $this->info("Feature [{$feature->value}] granted to tenant [{$tenantId}].");
 
             return self::SUCCESS;
         }
@@ -66,7 +66,7 @@ class PennantGrant extends Command
             return self::SUCCESS;
         }
 
-        $this->error('Either --team or --user is required.');
+        $this->error('Either --tenant or --user is required.');
 
         return self::FAILURE;
     }

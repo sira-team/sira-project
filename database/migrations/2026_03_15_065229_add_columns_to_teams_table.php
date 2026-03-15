@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('teams', function (Blueprint $table) {
+        Schema::table('tenants', function (Blueprint $table) {
             $table->string('name')->after('id');
             $table->string('slug')->unique()->after('name');
             $table->string('city')->after('slug');
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('teams', function (Blueprint $table) {
+        Schema::table('tenants', function (Blueprint $table) {
             $table->dropUnique(['slug']);
             $table->dropColumn(['name', 'slug', 'city', 'country', 'email']);
         });

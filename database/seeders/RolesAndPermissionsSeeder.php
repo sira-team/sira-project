@@ -14,7 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        setPermissionsTeamId(null);
+        setPermissionsTenantId(null);
 
         Role::firstOrCreate([
             'name' => 'super_admin',

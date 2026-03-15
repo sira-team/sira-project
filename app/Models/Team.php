@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Observers\TeamObserver;
-use Database\Factories\TeamFactory;
+use App\Observers\TenantObserver;
+use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-class Team extends Model
+class Tenant extends Model
 {
-    /** @use HasFactory<TeamFactory> */
+    /** @use HasFactory<TenantFactory> */
     use HasFactory;
 
     /** @var list<string> */
@@ -30,11 +30,11 @@ class Team extends Model
     {
         parent::boot();
 
-        static::observe(TeamObserver::class);
+        static::observe(TenantObserver::class);
 
-        static::creating(function (Team $team) {
-            if (empty($team->slug)) {
-                $team->slug = Str::slug($team->name);
+        static::creating(function (Tenant $tenant) {
+            if (empty($tenant->slug)) {
+                $tenant->slug = Str::slug($tenant->name);
             }
         });
     }
@@ -45,7 +45,7 @@ class Team extends Model
     }
 
     /**
-     * Primary members — users who belong to this team via users.team_id.
+     * Primary members — users who belong to this tenant via users.tenant_id.
      */
     public function users(): HasMany
     {
@@ -57,6 +57,6 @@ class Team extends Model
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'team_user')->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(User::class, 'tenant_user')->withPivot('role')->withTimestamps();
     }
 }

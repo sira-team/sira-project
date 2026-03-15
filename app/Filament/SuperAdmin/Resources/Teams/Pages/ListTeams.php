@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\SuperAdmin\Resources\Teams\Pages;
+namespace App\Filament\SuperAdmin\Resources\Tenants\Pages;
 
-use App\Filament\SuperAdmin\Resources\Teams\TeamResource;
+use App\Filament\SuperAdmin\Resources\Tenants\TenantResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListTeams extends ListRecords
+class ListTenants extends ListRecords
 {
-    protected static string $resource = TeamResource::class;
+    protected static string $resource = TenantResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use Spatie\Permission\Models\Role;
 
-class TeamObserver
+class TenantObserver
 {
-    public function created(Team $team): void
+    public function created(Tenant $tenant): void
     {
-        setPermissionsTeamId($team->id);
+        setPermissionsTenantId($tenant->id);
 
         $roles = [
             'tenant_admin',
@@ -25,7 +25,7 @@ class TeamObserver
             Role::create([
                 'name' => $role,
                 'guard_name' => 'web',
-                'team_id' => $team->id,
+                'tenant_id' => $tenant->id,
             ]);
         }
     }

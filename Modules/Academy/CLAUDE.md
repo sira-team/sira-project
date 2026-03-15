@@ -138,7 +138,7 @@ All of the above is global. No tenant can see or edit this panel.
 
 ## Models
 
-- `AcademyLevel` — global, no team_id
+- `AcademyLevel` — global, no tenant_id
 - `AcademySession` — belongs to AcademyLevel
 - `Quiz` — belongs to AcademySession (one-to-one)
 - `QuizQuestion` — belongs to Quiz
@@ -184,22 +184,22 @@ The curriculum content (levels, sessions, quizzes) is global and read-only from 
 
 The Academy section within the tenant panel is NOT available to all tenants.
 
-Feature flag: `academy-panel`, scoped to `Team` model.
+Feature flag: `academy-panel`, scoped to `Tenant` model.
 
 ```php
-Feature::for($team)->active('academy-panel');
+Feature::for($tenant)->active('academy-panel');
 ```
 
 Check this flag in the Filament panel provider's boot method. If inactive for the current tenant, all Academy navigation items are hidden and routes return 403.
 
 Enable per tenant via artisan command:
 ```bash
-php artisan pennant:grant-team {teamId} academy-panel
+php artisan pennant:grant-tenant {tenantId} academy-panel
 ```
 
 ---
 
-## Roles (Spatie, scoped to team_id)
+## Roles (Spatie, scoped to tenant_id)
 
 - `tenant_admin` — full access to Academy tenant resources
 - `academy_manager` — can enroll members, issue tickets, view progress. Cannot edit global curriculum content
@@ -333,7 +333,7 @@ If not enough time has passed, show: "Your next attempt will be available on [da
 
 ## Models (Tenant-Scoped)
 
-- `AcademyEnrollment` — belongs to User and AcademyLevel, scoped to team_id
+- `AcademyEnrollment` — belongs to User and AcademyLevel, scoped to tenant_id
 - `AcademySessionTicket` — belongs to AcademyEnrollment and AcademySession
 - `QuizAttempt` — belongs to AcademyEnrollment, Quiz, and AcademySessionTicket
 - `QuizAttemptAnswer` — belongs to QuizAttempt, QuizQuestion, and QuizOption

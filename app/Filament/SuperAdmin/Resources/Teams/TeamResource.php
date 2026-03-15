@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\SuperAdmin\Resources\Teams;
+namespace App\Filament\SuperAdmin\Resources\Tenants;
 
 use App\Enums\Feature;
-use App\Models\Team;
+use App\Models\Tenant;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -19,9 +19,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Laravel\Pennant\Feature as PennantFeature;
 
-class TeamResource extends Resource
+class TenantResource extends Resource
 {
-    protected static ?string $model = Team::class;
+    protected static ?string $model = Tenant::class;
 
     protected static ?string $modelLabel = 'Tenant';
 
@@ -36,7 +36,7 @@ class TeamResource extends Resource
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->required()
-                    ->unique(Team::class, 'slug', ignoreRecord: true)
+                    ->unique(Tenant::class, 'slug', ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('city')
                     ->maxLength(255),
@@ -59,11 +59,11 @@ class TeamResource extends Resource
                     ->description('Enable or disable modules for this tenant.')
                     ->visible(fn (string $operation) => $operation === 'edit')
                     ->components(
-                        collect(Feature::teamFeatures())
+                        collect(Feature::tenantFeatures())
                             ->map(fn (Feature $feature) => Toggle::make($feature->value)
                                 ->label($feature->label())
                                 ->helperText($feature->description())
-                                ->afterStateHydrated(function (Toggle $component, Team $record) use ($feature) {
+                                ->afterStateHydrated(function (Toggle $component, Tenant $record) use ($feature) {
                                     $component->state(
                                         PennantFeature::for($record)->active($feature->value)
                                     );
@@ -116,9 +116,9 @@ class TeamResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTeams::route('/'),
-            'create' => Pages\CreateTeam::route('/create'),
-            'edit' => Pages\EditTeam::route('/{record}/edit'),
+            'index' => Pages\ListTenants::route('/'),
+            'create' => Pages\CreateTenant::route('/create'),
+            'edit' => Pages\EditTenant::route('/{record}/edit'),
         ];
     }
 }

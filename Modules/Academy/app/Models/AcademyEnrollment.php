@@ -16,7 +16,7 @@ class AcademyEnrollment extends Model
 {
     use BelongsToTenant, HasFactory;
 
-    protected $fillable = ['user_id', 'team_id', 'academy_level_id', 'started_at', 'completed_at'];
+    protected $fillable = ['user_id', 'tenant_id', 'academy_level_id', 'started_at', 'completed_at'];
 
     protected function casts(): array
     {

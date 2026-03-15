@@ -19,8 +19,8 @@ class ViewUser extends ViewRecord
             ->components([
                 TextEntry::make('name'),
                 TextEntry::make('email'),
-                TextEntry::make('team.name')
-                    ->label('Team'),
+                TextEntry::make('tenant.name')
+                    ->label('Tenant'),
                 TextEntry::make('created_at')
                     ->dateTime(),
             ]);

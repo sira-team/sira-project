@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -18,14 +18,14 @@ class TenantInvitation extends Mailable
 
     public function __construct(
         public User $user,
-        public Team $team,
+        public Tenant $tenant,
         public string $signedUrl,
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "You've been invited to manage {$this->team->name} on Sira App",
+            subject: "You've been invited to manage {$this->tenant->name} on Sira App",
         );
     }
 

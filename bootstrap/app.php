@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Middleware\RequireTeamFeature;
+use App\Http\Middleware\RequireTenantFeature;
 use App\Http\Middleware\RequireUserFeature;
 use App\Http\Middleware\ResolveTenantFromSubdomain;
 use Illuminate\Foundation\Application;
@@ -19,7 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prepend(ResolveTenantFromSubdomain::class);
 
         $middleware->alias([
-            'team.feature' => RequireTeamFeature::class,
+            'tenant.feature' => RequireTenantFeature::class,
             'user.feature' => RequireUserFeature::class,
         ]);
     })

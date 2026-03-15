@@ -36,13 +36,13 @@ return [
     | Multi-Tenancy
     |--------------------------------------------------------------------------
     |
-    | When your application supports teams, Shield will automatically detect
+    | When your application supports tenants, Shield will automatically detect
     | and configure the tenant model during setup. This enables tenant-scoped
     | roles and permissions throughout your application.
     |
     */
 
-    'tenant_model' => 'App\Models\Team',
+    'tenant_model' => 'App\Models\Tenant',
 
     /*
     |--------------------------------------------------------------------------

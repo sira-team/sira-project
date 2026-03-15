@@ -29,7 +29,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
-- `pennant-development` — Use when working with Laravel Pennant the official Laravel feature flag package. Trigger whenever the query mentions Pennant by name or involves feature flags or feature toggles in a Laravel project. Tasks include defining feature flags checking whether features are active creating class based features in `app/Features` using Blade `@feature` directives scoping flags to users or teams building custom Pennant storage drivers protecting routes with feature flags testing feature flags with Pest or PHPUnit and implementing A B testing or gradual rollouts with feature flags. Do not trigger for generic Laravel configuration authorization policies authentication or non Pennant feature management systems.
+- `pennant-development` — Use when working with Laravel Pennant the official Laravel feature flag package. Trigger whenever the query mentions Pennant by name or involves feature flags or feature toggles in a Laravel project. Tasks include defining feature flags checking whether features are active creating class based features in `app/Features` using Blade `@feature` directives scoping flags to users or tenants building custom Pennant storage drivers protecting routes with feature flags testing feature flags with Pest or PHPUnit and implementing A B testing or gradual rollouts with feature flags. Do not trigger for generic Laravel configuration authorization policies authentication or non Pennant feature management systems.
 - `pest-testing` — Tests applications using the Pest 4 PHP framework. Activates when writing tests, creating unit or feature tests, adding assertions, testing Livewire components, browser testing, debugging test failures, working with datasets or mocking; or when the user mentions test, spec, TDD, expects, assertion, coverage, or needs to verify functionality works.
 - `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
 
@@ -437,7 +437,7 @@ A multi-tenant Laravel application for a network of Islamic educational Vereins 
 - **Filament 4.x** — all admin UI
 - **coolsam/modules** (`savannabits/filament-modules`) — Filament-optimised module scaffolding built on top of nwidart/laravel-modules. Installs nwidart automatically. Each module gets its own Filament panel via `module:filament:panel`.
 - **bezhansalleh/filament-shield** — access management via spatie/laravel-permission. Auto-generates policies per resource. Handles super_admin via gate interception.
-- **spatie/laravel-permission** — roles and permissions, team mode enabled. Installed automatically as a dependency of filament-shield.
+- **spatie/laravel-permission** — roles and permissions, tenant mode enabled. Installed automatically as a dependency of filament-shield.
 - **laravel/pennant** — feature flags for panel and module access
 - **Laravel Mail** — all notifications, always queued
 - **Laravel Storage** — private disk for expo digital materials
@@ -498,17 +498,17 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 ->plugin(FilamentShieldPlugin::make()->scopeToTenant(true))
 ```
 
-`scopeToTenant(true)` is required for all tenant-scoped panels to ensure roles and permissions are correctly scoped to the current team.
+`scopeToTenant(true)` is required for all tenant-scoped panels to ensure roles and permissions are correctly scoped to the current tenant.
 
 The `super_admin` role bypasses all permission checks via gate interception. No policy methods are checked for this role.
 
-For role assignment forms in tenancy context, use `syncWithPivotValues` with `getPermissionsTeamId()`:
+For role assignment forms in tenancy context, use `syncWithPivotValues` with `getPermissionsTenantId()`:
 ```php
 Forms\Components\Select::make('roles')
     ->relationship('roles', 'name')
     ->saveRelationshipsUsing(function (Model $record, $state) {
         $record->roles()->syncWithPivotValues($state, [
-            config('permission.column_names.team_foreign_key') => getPermissionsTeamId()
+            config('permission.column_names.tenant_foreign_key') => getPermissionsTenantId()
         ]);
     })
     ->multiple()
@@ -529,7 +529,7 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **Guard:** `web`
 - **No tenant context**
 - **Access:** `super_admin` role only (gate interception via Shield)
-- **Purpose:** Create tenants, assign tenant owner, grant/revoke Pennant flags per Team, global user overview
+- **Purpose:** Create tenants, assign tenant owner, grant/revoke Pennant flags per Tenant, global user overview
 - **Location:** `app/Providers/Filament/SuperAdminPanelProvider.php`
 
 ### 2. Tenant Admin Panel
@@ -537,9 +537,9 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **ID:** `admin`
 - **Path:** `/admin`
 - **Guard:** `web`
-- **Tenant model:** `Team`, slug field: `slug`
+- **Tenant model:** `Tenant`, slug field: `slug`
 - **Access:** `tenant_admin` role
-- **Purpose:** Invite users to the tenant, assign roles, manage team members
+- **Purpose:** Invite users to the tenant, assign roles, manage tenant members
 - **Location:** `app/Providers/Filament/AdminPanelProvider.php`
 - **Registers:** `FilamentShieldPlugin::make()->scopeToTenant(true)`
 
@@ -548,7 +548,7 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **ID:** `camp`
 - **Path:** `/camp`
 - **Guard:** `web`
-- **Tenant model:** `Team`
+- **Tenant model:** `Tenant`
 - **Access:** `camp_manager`, `tenant_admin`
 - **Pennant:** none — always available to all tenants
 - **Purpose:** All camp management resources
@@ -559,9 +559,9 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **ID:** `expo`
 - **Path:** `/expo`
 - **Guard:** `web`
-- **Tenant model:** `Team`
+- **Tenant model:** `Tenant`
 - **Access:** `expo_manager`, `tenant_admin`
-- **Pennant:** `expo-panel` scoped to `Team` — check in panel middleware
+- **Pennant:** `expo-panel` scoped to `Tenant` — check in panel middleware
 - **Purpose:** Expo requests, planning, station inventory
 - **Location:** `Modules/Expo/app/Providers/Filament/ExpoPanelProvider.php`
 
@@ -570,8 +570,8 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **ID:** `academy`
 - **Path:** `/academy`
 - **Guard:** `web`
-- **Tenant model:** `Team`
-- **Pennant:** `academy-panel` scoped to `Team` — check in panel middleware
+- **Tenant model:** `Tenant`
+- **Pennant:** `academy-panel` scoped to `Tenant` — check in panel middleware
 - **Access:** all authenticated tenant users — but resources shown differ by role (see Academy CLAUDE.md)
 - **Purpose:** Member dashboard, achievements, enrollments, ticket issuance
 - **Location:** `Modules/Academy/app/Providers/Filament/AcademyPanelProvider.php`
@@ -602,26 +602,26 @@ Tenancy is implemented manually using Filament's built-in multi-tenancy support.
 Resolved from subdomain via middleware registered in `bootstrap/app.php`.
 
 ```
-bonn.sira-app.de  →  Team where slug = 'bonn'
-koeln.sira-app.de →  Team where slug = 'koeln'
+bonn.sira-app.de  →  Tenant where slug = 'bonn'
+koeln.sira-app.de →  Tenant where slug = 'koeln'
 ```
 
-The resolved `Team` is bound to the container for the request lifecycle. Spatie team scope is set immediately after resolution:
+The resolved `Tenant` is bound to the container for the request lifecycle. Spatie tenant scope is set immediately after resolution:
 ```php
-setPermissionsTeamId($team->id);
+setPermissionsTenantId($tenant->id);
 ```
 
 ### BelongsToTenant Trait
 
 All tenant-scoped models use this trait. It:
-- Automatically sets `team_id` on creation from the resolved tenant
-- Applies a global scope filtering by the current tenant's `team_id`
+- Automatically sets `tenant_id` on creation from the resolved tenant
+- Applies a global scope filtering by the current tenant's `tenant_id`
 
 Never query tenant-scoped models without a resolved tenant. In commands or jobs, set the tenant explicitly before querying.
 
 ### Global Models
 
-Models without `team_id` are shared across all tenants. Read-only from the tenant perspective:
+Models without `tenant_id` are shared across all tenants. Read-only from the tenant perspective:
 - `AcademyLevel`, `AcademySession`
 - `Quiz`, `QuizQuestion`, `QuizOption`
 
@@ -650,22 +650,22 @@ Never mix these two. Do not use `users` for visitors. Do not use `visitors` for 
 
 ## Roles and Permissions
 
-### Spatie Team Mode
+### Spatie Tenant Mode
 
 `config/permission.php`:
 ```php
-'teams' => true,
-'team_foreign_key' => 'team_id',
+'tenants' => true,
+'tenant_foreign_key' => 'tenant_id',
 ```
 
-Before any permission check in a tenant panel: `setPermissionsTeamId($currentTeam->id)`
-Before any permission check in a global panel: `setPermissionsTeamId(null)`
+Before any permission check in a tenant panel: `setPermissionsTenantId($currentTenant->id)`
+Before any permission check in a global panel: `setPermissionsTenantId(null)`
 
 Handled in middleware, not manually per request.
 
 ### Seeded Roles Per Tenant
 
-Seeded automatically via `TeamObserver` when a new `Team` is created:
+Seeded automatically via `TenantObserver` when a new `Tenant` is created:
 
 | Role | Access |
 |---|---|
@@ -675,7 +675,7 @@ Seeded automatically via `TeamObserver` when a new `Team` is created:
 | `expo_manager` | Expos, stations, inventory, requests |
 | `member` | Own Academy dashboard only |
 
-Global role (seeded once, no team scope):
+Global role (seeded once, no tenant scope):
 
 | Role | Access |
 |---|---|
@@ -691,7 +691,7 @@ A `tenant_admin` can:
 - Assign roles to their members
 - Rename or delete custom roles — not the seeded defaults
 
-Custom roles are always team-scoped via Spatie team mode. Bonn's roles are invisible to Köln automatically.
+Custom roles are always tenant-scoped via Spatie tenant mode. Bonn's roles are invisible to Köln automatically.
 
 Permissions are auto-generated by Shield per resource via `shield:generate`. Tenants assign existing permissions to their custom roles — they do not create new permissions.
 
@@ -705,7 +705,7 @@ A user can hold multiple roles. `tenant_admin` bypasses all permission checks.
 
 All flags stored in the `features` table. Never in config or env.
 
-### Scoped to `Team`
+### Scoped to `Tenant`
 
 | Flag | Controls |
 |---|---|
@@ -723,8 +723,8 @@ Camp panel is always available — no flag.
 ### Artisan Commands
 
 ```bash
-php artisan pennant:grant --team={id} --feature={flag}
-php artisan pennant:revoke --team={id} --feature={flag}
+php artisan pennant:grant --tenant={id} --feature={flag}
+php artisan pennant:revoke --tenant={id} --feature={flag}
 php artisan pennant:grant --user={id} --feature={flag}
 php artisan pennant:revoke --user={id} --feature={flag}
 ```
@@ -733,10 +733,10 @@ No UI for flag management. CLI only. Developer only.
 
 ---
 
-## Observer: TeamObserver
+## Observer: TenantObserver
 
-Fires on `Team::created`. Must:
-1. Seed all tenant roles scoped to the new `team_id`
+Fires on `Tenant::created`. Must:
+1. Seed all tenant roles scoped to the new `tenant_id`
 2. If a tenant owner user ID is provided (from Super Admin Panel creation flow): assign `tenant_admin` role and send invitation email
 
 ---
@@ -744,8 +744,8 @@ Fires on `Team::created`. Must:
 ## Coding Conventions
 
 - **Enums** — all status and type columns use PHP-backed string enums in `App\Enums\` or the module's `Enums\` directory
-- **Observers** — side effects live in observers (email on status change, role seeding on team creation)
-- **Traits** — `BelongsToTenant` handles `team_id` scoping on all tenant models
+- **Observers** — side effects live in observers (email on status change, role seeding on tenant creation)
+- **Traits** — `BelongsToTenant` handles `tenant_id` scoping on all tenant models
 - **Soft deletes** — all major tenant models use `SoftDeletes`
 - **Mail** — all mailable classes are queued, all emails log to the relevant notification log table, tenant name rendered in every email header
 - **Files** — never served via public URL, always through authenticated download routes using private storage disk

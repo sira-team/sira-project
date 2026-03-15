@@ -36,17 +36,17 @@ class ListUsers extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data): void {
-                    $team = Filament::getTenant();
+                    $tenant = Filament::getTenant();
 
                     $user = User::create([
                         'name' => $data['name'],
                         'email' => $data['email'],
                         'password' => Str::password(32),
-                        'team_id' => $team->id,
+                        'tenant_id' => $tenant->id,
                         'email_verified_at' => null,
                     ]);
 
-                    setPermissionsTeamId($team->id);
+                    setPermissionsTenantId($tenant->id);
                     $user->assignRole('member');
 
                     $setupUrl = URL::temporarySignedRoute(
@@ -56,7 +56,7 @@ class ListUsers extends ListRecords
                     );
 
                     Mail::to($user->email)->send(
-                        new UserInvitation($user, $team, $setupUrl)
+                        new UserInvitation($user, $tenant, $setupUrl)
                     );
 
                     Notification::make()

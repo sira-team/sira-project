@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Academy\Providers\Filament;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
@@ -34,7 +34,7 @@ class AcademyPanelProvider extends PanelProvider
             ->id('academy')
             ->path('academy')
             ->colors(['primary' => Color::Indigo])
-            ->tenant(Team::class, slugAttribute: 'slug')
+            ->tenant(Tenant::class, slugAttribute: 'slug')
             ->discoverResources(
                 in: module('Academy', true)->appPath("Filament{$separator}AcademyTenant{$separator}Resources"),
                 for: module('Academy', true)->appNamespace('Filament\AcademyTenant\Resources'),

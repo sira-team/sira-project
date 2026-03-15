@@ -7,7 +7,7 @@ namespace App\Providers;
 use App\Enums\Feature;
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\Team;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature as PennantFeature;
@@ -37,9 +37,9 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerPennantFeatures(): void
     {
-        // Team-scoped features — default false for all tenants
-        PennantFeature::define(Feature::ExpoPanel->value, fn (Team $team) => false);
-        PennantFeature::define(Feature::AcademyPanel->value, fn (Team $team) => false);
+        // Tenant-scoped features — default false for all tenants
+        PennantFeature::define(Feature::ExpoPanel->value, fn (Tenant $tenant) => false);
+        PennantFeature::define(Feature::AcademyPanel->value, fn (Tenant $tenant) => false);
 
         // User-scoped features — default false for all users
         PennantFeature::define(Feature::AcademyContentManagement->value, fn (User $user) => false);

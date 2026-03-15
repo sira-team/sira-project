@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -13,23 +13,23 @@ trait BelongsToTenant
     public static function bootBelongsToTenant(): void
     {
         static::creating(function ($model) {
-            if (! $model->team_id && app()->bound(Team::class)) {
-                $model->team_id = app(Team::class)->id;
+            if (! $model->tenant_id && app()->bound(Tenant::class)) {
+                $model->tenant_id = app(Tenant::class)->id;
             }
         });
 
-        static::addGlobalScope('team', function (Builder $builder) {
-            if (app()->bound(Team::class)) {
+        static::addGlobalScope('tenant', function (Builder $builder) {
+            if (app()->bound(Tenant::class)) {
                 $builder->where(
-                    $builder->getModel()->getTable().'.team_id',
-                    app(Team::class)->id
+                    $builder->getModel()->getTable().'.tenant_id',
+                    app(Tenant::class)->id
                 );
             }
         });
     }
 
-    public function team(): BelongsTo
+    public function tenant(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Tenant::class);
     }
 }

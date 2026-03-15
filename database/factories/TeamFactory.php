@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends Factory<Team>
+ * @extends Factory<Tenant>
  */
-class TeamFactory extends Factory
+class TenantFactory extends Factory
 {
-    protected $model = Team::class;
+    protected $model = Tenant::class;
 
     /**
      * Define the model's default state.

@@ -25,7 +25,7 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->saveRelationshipsUsing(function (Model $record, mixed $state) {
                         $record->roles()->syncWithPivotValues($state, [
-                            config('permission.column_names.team_foreign_key') => getPermissionsTeamId(),
+                            config('permission.column_names.tenant_foreign_key') => getPermissionsTenantId(),
                         ]);
                     })
                     ->multiple()

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\Team;
+use App\Models\Tenant;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +22,12 @@ class ResolveTenantFromSubdomain
 
         $slug = $parts[0];
 
-        $team = Team::where('slug', $slug)->firstOrFail();
+        $tenant = Tenant::where('slug', $slug)->firstOrFail();
 
-        app()->instance(Team::class, $team);
-        app()->instance('current_team', $team);
+        app()->instance(Tenant::class, $tenant);
+        app()->instance('current_tenant', $tenant);
 
-        setPermissionsTeamId($team->id);
+        setPermissionsTenantId($tenant->id);
 
         return $next($request);
     }

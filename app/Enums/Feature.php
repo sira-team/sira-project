@@ -6,7 +6,7 @@ namespace App\Enums;
 
 enum Feature: string
 {
-    // Scoped to Team
+    // Scoped to Tenant
     case ExpoPanel = 'expo-panel';
     case AcademyPanel = 'academy-panel';
 
@@ -14,9 +14,9 @@ enum Feature: string
     case AcademyContentManagement = 'academy-content-management';
 
     /**
-     * Returns all features that are scoped to a Team model.
+     * Returns all features that are scoped to a Tenant model.
      */
-    public static function teamFeatures(): array
+    public static function tenantFeatures(): array
     {
         return [
             self::ExpoPanel,

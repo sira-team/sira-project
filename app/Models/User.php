@@ -31,7 +31,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
-        'team_id',
+        'tenant_id',
     ];
 
     /**
@@ -74,17 +74,17 @@ class User extends Authenticatable implements FilamentUser
     /**
      * The user's primary tenant.
      */
-    public function team(): BelongsTo
+    public function tenant(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Tenant::class);
     }
 
     /**
      * All tenants this user belongs to, including temporary memberships.
      */
-    public function teams(): BelongsToMany
+    public function tenants(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'team_user')->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(Tenant::class, 'tenant_user')->withPivot('role')->withTimestamps();
     }
 
     public function canAccessPanel(Panel $panel): bool

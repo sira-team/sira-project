@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('academy_enrollments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->foreignId('academy_level_id')->constrained()->cascadeOnDelete();
             $table->dateTime('started_at');
             $table->dateTime('completed_at')->nullable();
