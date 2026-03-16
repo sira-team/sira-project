@@ -13,6 +13,9 @@ final class CampDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            HostelSeeder::class,
+            CampSeeder::class,
+        ]);
     }
 }

@@ -93,8 +93,13 @@ init:
 	@echo "Running additional artisan commands..."
 	./vendor/bin/sail artisan storage:link
 	./vendor/bin/sail artisan migrate:fresh
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=global-admin --no-interaction
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=admin --no-interaction
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=camp --no-interaction
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=expo --no-interaction
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=academy --no-interaction
+	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=academy-content --no-interaction
 	./vendor/bin/sail artisan app:setup
-	./vendor/bin/sail artisan shield:generate --all --option=permissions --panel=admin
 	./vendor/bin/sail artisan db:seed
 	./vendor/bin/sail artisan optimize:clear
 	./vendor/bin/sail artisan config:cache

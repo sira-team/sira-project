@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Jobs\Setup\AssignRolePermissions;
 use App\Models\Tenant;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 final class TenantObserver
 {
     public function created(Tenant $tenant): void
     {
+        $teamKey = config('permission.column_names.tenant_foreign_key');
+
         setPermissionsTeamId($tenant->id);
 
-        $roles = [
-            'tenant_admin',
-            'academy_manager',
-            'camp_manager',
-            'expo_manager',
-            'member',
-        ];
-
-        foreach ($roles as $role) {
-            $role = Role::query()->firstOrCreate([
-                'name' => $role,
+        foreach (array_keys(AssignRolePermissions::roleResourceMap()) as $roleName) {
+            Role::query()->firstOrCreate([
+                'name' => $roleName,
                 'guard_name' => 'web',
-                'tenant_id' => $tenant->id,
+                $teamKey => $tenant->id,
             ]);
-
-            if ($role->name === 'tenant_admin') {
-                $role->permissions()->sync(DB::table('permissions')->pluck('id'));
-            }
         }
+
+        dispatch_sync(new AssignRolePermissions($tenant));
     }
 }

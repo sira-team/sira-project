@@ -56,6 +56,11 @@ final class Tenant extends Model
         'email',
     ];
 
+    public static function default(): static
+    {
+        return self::firstWhere('slug', config('setup.tenant.slug'));
+    }
+
     public function setSlugAttribute(?string $value): void
     {
         if ($value !== null) {

@@ -23,7 +23,7 @@ final class SetupCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Set up the initial tenant, admin user, and feature flags';
 
     /**
      * Execute the console command.

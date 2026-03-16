@@ -13,6 +13,9 @@ final class AcademyDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            AcademyContentSeeder::class,
+            AcademyEnrollmentSeeder::class,
+        ]);
     }
 }

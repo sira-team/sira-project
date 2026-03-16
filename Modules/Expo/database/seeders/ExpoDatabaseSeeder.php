@@ -13,6 +13,10 @@ final class ExpoDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            StationSeeder::class,
+            ExpoRequestSeeder::class,
+            ExpoSeeder::class,
+        ]);
     }
 }

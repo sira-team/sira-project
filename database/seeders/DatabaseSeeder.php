@@ -6,6 +6,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Academy\Database\Seeders\AcademyDatabaseSeeder;
+use Modules\Camp\Database\Seeders\CampDatabaseSeeder;
+use Modules\Expo\Database\Seeders\ExpoDatabaseSeeder;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -14,6 +17,12 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(RolesAndPermissionsSeeder::class);
+        $this->call([
+            RolesAndPermissionsSeeder::class,
+            UserSeeder::class,
+            CampDatabaseSeeder::class,
+            ExpoDatabaseSeeder::class,
+            AcademyDatabaseSeeder::class,
+        ]);
     }
 }

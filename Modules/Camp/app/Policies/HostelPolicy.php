@@ -39,7 +39,7 @@ final class HostelPolicy
 
     public function delete(AuthUser $authUser, Hostel $hostel): bool
     {
-        return $authUser->can('Delete:Hostel');
+        return $authUser->can('Delete:Hostel') && ! $hostel->contracts()->exists();
     }
 
     public function restore(AuthUser $authUser, Hostel $hostel): bool
