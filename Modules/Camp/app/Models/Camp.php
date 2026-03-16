@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Enums\CampGenderPolicy;
+use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Enums\CampTargetGroup;
 
 /**
@@ -43,11 +44,13 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Tenant|null $tenant
- * @property-read HostelContract|null $contract
+ * @property-read HostelContract|null $hostelContract
  * @property-read Collection<int, CampRegistration> $registrations
  * @property-read int|null $registrations_count
  * @property-read Collection<int, CampExpense> $expenses
  * @property-read int|null $expenses_count
+ * @property-read int $nights
+ * @property-read int $confirmedRegistrationsCount
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
@@ -111,7 +114,7 @@ final class Camp extends Model
         'notes',
     ];
 
-    public function contract(): BelongsTo
+    public function hostelContract(): BelongsTo
     {
         return $this->belongsTo(HostelContract::class, 'hostel_contract_id');
     }
@@ -124,6 +127,18 @@ final class Camp extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(CampExpense::class);
+    }
+
+    public function getNightsAttribute(): int
+    {
+        return $this->starts_at->diffInDays($this->ends_at);
+    }
+
+    public function getConfirmedRegistrationsCountAttribute(): int
+    {
+        return $this->registrations()
+            ->where('status', CampRegistrationStatus::Confirmed)
+            ->count();
     }
 
     protected function casts(): array
