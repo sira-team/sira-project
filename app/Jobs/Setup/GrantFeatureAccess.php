@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Laravel\Pennant\Feature;
+use Spatie\Permission\PermissionRegistrar;
 
 final class GrantFeatureAccess
 {
@@ -31,11 +32,13 @@ final class GrantFeatureAccess
         $user = User::firstWhere('email', $admin['email']);
         $tenant = $user->tenant;
 
-        $roleIds = $tenant->roles()->pluck('id')->toArray();
-        $user->roles()->syncWithPivotValues($roleIds, ['tenant_id' => $tenant->id]);
+        setPermissionsTeamId($tenant->id);
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
+        $user->syncRoles($tenant->roles);
 
         Feature::for($user)->activate(FeatureFlag::GlobalAdmin->value);
-        Feature::for($user)->activate(FeatureFlag::AcademyContentManagement->value);
+        Feature::for($user)->activate(FeatureFlag::AcademyManager->value);
         Feature::for($tenant)->activate(FeatureFlag::TenantAdmin->value);
         Feature::for($tenant)->activate(FeatureFlag::AcademyPanel->value);
         Feature::for($tenant)->activate(FeatureFlag::CampPanel->value);

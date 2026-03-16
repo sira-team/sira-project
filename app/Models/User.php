@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\FeatureFlag;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
@@ -20,6 +21,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Concerns\HasFeatures;
+use Laravel\Pennant\Feature;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -120,7 +122,18 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->canAccessFeature($panel->getId());
+    }
+
+    public function canAccessFeature(string $panel): bool
+    {
+        $featureFlag = FeatureFlag::fromPanelId($panel);
+        $scope = match ($featureFlag->for()) {
+            Tenant::class => $this->tenant,
+            self::class => $this,
+        };
+
+        return $scope && Feature::for($scope)->active($featureFlag->value);
     }
 
     public function canAccessTenant(Model $tenant): bool

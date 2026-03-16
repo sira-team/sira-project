@@ -9,8 +9,8 @@ use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Enums\CampGenderPolicy;
@@ -20,7 +20,6 @@ use Modules\Camp\Enums\CampTargetGroup;
 /**
  * @property int $id
  * @property int $tenant_id
- * @property int|null $hostel_contract_id
  * @property string $name
  * @property Carbon $starts_at
  * @property Carbon $ends_at
@@ -45,6 +44,7 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property Carbon|null $updated_at
  * @property-read Tenant|null $tenant
  * @property-read HostelContract|null $hostelContract
+ * @property-read int|null $hostelContract_count
  * @property-read Collection<int, CampRegistration> $registrations
  * @property-read int|null $registrations_count
  * @property-read Collection<int, CampExpense> $expenses
@@ -65,7 +65,6 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereFoodProvided($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereGenderPolicy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereHostelContractId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereIban($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereName($value)
@@ -92,7 +91,6 @@ final class Camp extends Model
 
     protected $fillable = [
         'tenant_id',
-        'hostel_contract_id',
         'name',
         'starts_at',
         'ends_at',
@@ -114,9 +112,9 @@ final class Camp extends Model
         'notes',
     ];
 
-    public function hostelContract(): BelongsTo
+    public function hostelContract(): HasOne
     {
-        return $this->belongsTo(HostelContract::class, 'hostel_contract_id');
+        return $this->hasOne(HostelContract::class);
     }
 
     public function registrations(): HasMany
@@ -131,7 +129,7 @@ final class Camp extends Model
 
     public function getNightsAttribute(): int
     {
-        return $this->starts_at->diffInDays($this->ends_at);
+        return (int) $this->starts_at->diffInDays($this->ends_at);
     }
 
     public function getConfirmedRegistrationsCountAttribute(): int

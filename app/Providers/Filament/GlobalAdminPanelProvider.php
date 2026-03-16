@@ -25,14 +25,17 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class GlobalAdminPanelProvider extends PanelProvider
 {
+    public const ID = 'global-admin';
+
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('global-admin')
+            ->id(self::ID)
             ->path('/global-admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->login()
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: app_path('Filament/GlobalAdmin/Resources'), for: 'App\\Filament\\GlobalAdmin\\Resources')

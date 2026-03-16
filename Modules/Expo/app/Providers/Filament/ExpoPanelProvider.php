@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
-use App\Enums\FeatureFlag;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -26,22 +25,23 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
 final class ExpoPanelProvider extends PanelProvider
 {
+    public const ID = 'expo';
+
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
 
         return $panel
-            ->id('expo')
+            ->id(self::ID)
             ->path('expo')
             ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->tenant(Tenant::class)
+            ->tenant(Tenant::class, 'slug')
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
@@ -65,7 +65,6 @@ final class ExpoPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                EnsureFeaturesAreActive::class.':'.FeatureFlag::ExpoPanel->value,
             ])
             ->authMiddleware([
                 Authenticate::class,

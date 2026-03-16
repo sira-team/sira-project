@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Gender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -71,6 +72,7 @@ final class Participant extends Model
     {
         return [
             'date_of_birth' => 'date',
+            'gender' => Gender::class,
             'is_self' => 'boolean',
         ];
     }

@@ -71,7 +71,7 @@ final class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                self::featureToggle(FeatureFlag::AcademyContentManagement),
+                self::featureToggle(FeatureFlag::AcademyManager),
                 self::featureToggle(FeatureFlag::GlobalAdmin),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -90,7 +90,7 @@ final class UserResource extends Resource
             DB::table('features')
                 ->whereRaw('SUBSTRING_INDEX(scope, "|", -1) = users.id')
                 ->where('value', 'true')
-                ->whereIn('name', ['global-admin', 'academy-content-management'])
+                ->whereIn('name', [FeatureFlag::GlobalAdmin->value, FeatureFlag::AcademyManager->value])
         );
     }
 

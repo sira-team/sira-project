@@ -14,7 +14,7 @@ final class CheckAcademyContentManagement
 {
     public function handle(Request $request, Closure $next): Response
     {
-        abort_unless(Feature::for($request->user())->active(FeatureFlag::AcademyContentManagement->value), 403);
+        abort_unless(Feature::for($request->user())->active(FeatureFlag::AcademyManager->value), 403);
 
         return $next($request);
     }

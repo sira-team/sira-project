@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\Setup\CreateAdminUser;
 use App\Jobs\Setup\CreateDefaultTenant;
+use App\Jobs\Setup\GrantFeatureAccess;
 use Illuminate\Console\Command;
 
 final class SetupCommand extends Command
@@ -34,5 +35,8 @@ final class SetupCommand extends Command
 
         dispatch_sync(new CreateAdminUser);
         $this->info('Created Admin Users');
+
+        dispatch_sync(new GrantFeatureAccess);
+        $this->info('Granted Feature Access');
     }
 }

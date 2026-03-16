@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Camp\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Camp\Enums\RoomGender;
 use Modules\Camp\Models\Hostel;
 use Modules\Camp\Models\HostelRoom;
 
@@ -27,7 +26,7 @@ final class HostelRoomFactory extends Factory
             'hostel_id' => Hostel::factory(),
             'name' => 'Zimmer '.fake()->numberBetween(1, 50),
             'capacity' => fake()->numberBetween(2, 10),
-            'gender' => fake()->randomElement(RoomGender::cases()),
+            'floor' => fake()->randomElement(['EG', 'OG 1', 'OG 2']),
         ];
     }
 }

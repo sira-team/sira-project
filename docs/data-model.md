@@ -126,8 +126,8 @@ Fixed rooms at the JH. These change rarely (new building construction).
 | id | bigint | |
 | jugendherberge_id | FK jugendherbergen | |
 | name | string | e.g. "Zimmer 3", "Blaues Zimmer" |
+| floor | string | e.g. "EG", "OG 1" |
 | capacity | integer | number of beds |
-| gender | enum | male, female, mixed |
 
 Only super_admin can manage these. Tenants read them when assigning beds.
 
@@ -158,7 +158,6 @@ Created per tenant by a Camp Manager or Tenant Admin.
 |---|---|---|
 | id | bigint | |
 | tenant_id | FK tenants | |
-| jugendherberge_contract_id | FK jugendherberge_contracts | nullable — set after contract is created |
 | name | string | e.g. "Sommer Camp 2025" |
 | starts_at | date | |
 | ends_at | date | |

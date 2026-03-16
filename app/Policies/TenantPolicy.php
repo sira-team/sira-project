@@ -4,24 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\FeatureFlag;
 use App\Models\Tenant;
-use Feature;
+use App\Traits\CheckGlobalAdminFeature;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
 final class TenantPolicy
 {
-    use HandlesAuthorization;
-
-    public function before(AuthUser $authUser, string $ability): ?bool
-    {
-        if (Feature::for($authUser)->active(FeatureFlag::GlobalAdmin->value)) {
-            return true;
-        }
-
-        return null;
-    }
+    use CheckGlobalAdminFeature, HandlesAuthorization;
 
     public function viewAny(AuthUser $authUser): bool
     {
@@ -35,7 +25,7 @@ final class TenantPolicy
 
     public function create(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('Create:Tenant');
     }
 
     public function update(AuthUser $authUser, Tenant $tenant): bool
@@ -45,36 +35,36 @@ final class TenantPolicy
 
     public function delete(AuthUser $authUser, Tenant $tenant): bool
     {
-        return false;
+        return $authUser->can('Delete:Tenant');
     }
 
     public function restore(AuthUser $authUser, Tenant $tenant): bool
     {
-        return false;
+        return $authUser->can('Restore:Tenant');
     }
 
     public function forceDelete(AuthUser $authUser, Tenant $tenant): bool
     {
-        return false;
+        return $authUser->can('ForceDelete:Tenant');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('ForceDeleteAny:Tenant');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('RestoreAny:Tenant');
     }
 
     public function replicate(AuthUser $authUser, Tenant $tenant): bool
     {
-        return false;
+        return $authUser->can('Replicate:Tenant');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('Reorder:Tenant');
     }
 }

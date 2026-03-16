@@ -7,6 +7,7 @@ namespace Modules\Camp\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Hostel|null $hostel
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CampRoomAssignment> $campRoomAssignments
+ * @property-read int|null $campRoomAssignments_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newQuery()
@@ -46,5 +49,15 @@ final class HostelRoom extends Model
     public function hostel(): BelongsTo
     {
         return $this->belongsTo(Hostel::class);
+    }
+
+    public function campRoomAssignments(): HasMany
+    {
+        return $this->hasMany(CampRoomAssignment::class);
+    }
+
+    protected function casts(): array
+    {
+        return [];
     }
 }

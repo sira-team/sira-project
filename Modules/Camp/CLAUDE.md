@@ -52,8 +52,9 @@ Filament resource lives in the Super Admin Panel, not the Camp Panel.
 - Name, address, city, phone, email, website, notes
 
 **JugendherbergeRoom relation manager (within Jugendherberge):**
-- Name, capacity, gender (male / female / mixed)
+- Name, floor, capacity
 - Rooms are fixed per venue. Changes are rare (new building construction).
+- No gender field — gender-based bed assignment is handled via camp gender policy, not per-room.
 
 ---
 
@@ -89,21 +90,26 @@ Filament resource lives in the Super Admin Panel, not the Camp Panel.
 
 ---
 
-### JugendherbergeContract Resource
+### HostelContract — Infolist Section on Camp View
 
-Created by the Camp Manager after price negotiation with the JH. Links a global Jugendherberge to the camp.
+Created by the Camp Manager after price negotiation with the JH. One contract per camp (`HasOne` from Camp).
 
-Managed as a relation manager within the Camp resource (one contract per camp).
+**Not a RelationManager.** Shown as a Section inside the Camp infolist (ViewCamp). The section header has three conditional actions:
+- **Add Contract** — visible when no contract exists, opens a create modal
+- **Edit** — visible when contract exists, pre-fills the modal with current values
+- **Delete** — visible when contract exists, requires confirmation
 
 **Form fields:**
-- Jugendherberge (searchable select from global `jugendherbergen` table)
+- Hostel (searchable select from global `hostels` table)
 - Price per person per night (decimal, EUR)
 - Contracted participants (integer — JH's agreed max)
 - Contracted supporters (integer)
 - Contract date (date, optional)
 - Notes (cancellation terms, special conditions)
 
-A camp without a contract can still be created — the contract is nullable. But the cost calculator will be incomplete without it.
+A camp without a contract can still be created. The cost calculator will be incomplete without it.
+
+The FK is on `hostel_contracts.camp_id` (not on `camps`). `Camp::hostelContract()` is a `HasOne`.
 
 ---
 
@@ -270,7 +276,7 @@ Promotion is NOT automatic confirmation. Camp Manager still manually confirms an
 The Camp Manager assigns beds in Filament after registration is confirmed.
 
 - Rooms come from `jugendherberge_rooms` linked via the JH contract
-- Filter rooms by gender policy of the camp and gender of the participant
+- Filter rooms by gender policy of the camp
 - Show bed count per room: X of Y assigned
 - Assignment stored in `camp_room_assignments`
 

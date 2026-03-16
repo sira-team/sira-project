@@ -30,7 +30,7 @@ final class ManageUsers extends ManageRecords
                             ->label('Feature')
                             ->options([
                                 FeatureFlag::GlobalAdmin->value => FeatureFlag::GlobalAdmin->label(),
-                                FeatureFlag::AcademyContentManagement->value => FeatureFlag::AcademyContentManagement->label(),
+                                FeatureFlag::AcademyManager->value => FeatureFlag::AcademyManager->label(),
                             ]),
                     ]);
                 })

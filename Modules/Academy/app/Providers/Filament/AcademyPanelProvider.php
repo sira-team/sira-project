@@ -27,12 +27,14 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class AcademyPanelProvider extends PanelProvider
 {
+    public const ID = 'academy';
+
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
 
         return $panel
-            ->id('academy')
+            ->id(self::ID)
             ->path('academy')
             ->colors(['primary' => Color::Indigo])
             ->tenant(Tenant::class, slugAttribute: 'slug')

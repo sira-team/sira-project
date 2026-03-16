@@ -4,23 +4,13 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\FeatureFlag;
-use Feature;
+use App\Traits\CheckGlobalAdminFeature;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
 final class UserPolicy
 {
-    use HandlesAuthorization;
-
-    public function before(AuthUser $authUser, string $ability): ?bool
-    {
-        if (Feature::for($authUser)->active(FeatureFlag::GlobalAdmin->value)) {
-            return true;
-        }
-
-        return null;
-    }
+    use CheckGlobalAdminFeature, HandlesAuthorization;
 
     public function viewAny(AuthUser $authUser): bool
     {

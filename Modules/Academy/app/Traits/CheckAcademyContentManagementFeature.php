@@ -12,7 +12,7 @@ trait CheckAcademyContentManagementFeature
 {
     public function before(AuthUser $authUser, string $ability): ?bool
     {
-        if (Feature::for($authUser)->active(FeatureFlag::AcademyContentManagement->value)) {
+        if (Feature::for($authUser)->active(FeatureFlag::AcademyManager->value)) {
             return true;
         }
 

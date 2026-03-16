@@ -27,11 +27,13 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class TenantAdminPanelProvider extends PanelProvider
 {
+    public const ID = 'admin';
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('admin')
+            ->id(self::ID)
             ->path('admin')
             ->login()
             ->colors([

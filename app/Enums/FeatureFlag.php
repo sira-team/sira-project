@@ -6,17 +6,25 @@ namespace App\Enums;
 
 use App\Models\Tenant;
 use App\Models\User;
+use App\Providers\Filament\GlobalAdminPanelProvider;
+use App\Providers\Filament\TenantAdminPanelProvider;
+use InvalidArgumentException;
+use Modules\Academy\Providers\Filament\AcademyContentPanelProvider;
+use Modules\Academy\Providers\Filament\AcademyPanelProvider;
+use Modules\Camp\Providers\Filament\CampPanelProvider;
+use Modules\Expo\Providers\Filament\ExpoPanelProvider;
 
 enum FeatureFlag: string
 {
     // Scoped to Tenant
-    case CampPanel = 'camp-panel';
-    case ExpoPanel = 'expo-panel';
-    case AcademyPanel = 'academy-panel';
+    case TenantAdmin = TenantAdminPanelProvider::ID;
+    case CampPanel = CampPanelProvider::ID;
+    case ExpoPanel = ExpoPanelProvider::ID;
+    case AcademyPanel = AcademyPanelProvider::ID;
 
     // Scoped to User
-    case AcademyContentManagement = 'academy-content-management';
-    case GlobalAdmin = 'global-admin';
+    case AcademyManager = AcademyContentPanelProvider::ID;
+    case GlobalAdmin = GlobalAdminPanelProvider::ID;
 
     /**
      * Returns all features that are scoped to a Tenant model.
@@ -24,6 +32,7 @@ enum FeatureFlag: string
     public static function tenantFeatures(): array
     {
         return [
+            self::TenantAdmin,
             self::ExpoPanel,
             self::AcademyPanel,
             self::CampPanel,
@@ -36,16 +45,29 @@ enum FeatureFlag: string
     public static function userFeatures(): array
     {
         return [
-            self::AcademyContentManagement,
+            self::AcademyManager,
             self::GlobalAdmin,
         ];
+    }
+
+    public static function fromPanelId(string $panel): FeatureFlag
+    {
+        return match ($panel) {
+            CampPanelProvider::ID => self::CampPanel,
+            AcademyPanelProvider::ID => self::AcademyPanel,
+            ExpoPanelProvider::ID => self::ExpoPanel,
+            GlobalAdminPanelProvider::ID => self::GlobalAdmin,
+            AcademyContentPanelProvider::ID => self::AcademyManager,
+            TenantAdminPanelProvider::ID => self::TenantAdmin,
+            default => throw new InvalidArgumentException("No feature flag associated with panel ID: {$panel}"),
+        };
     }
 
     public function for(): string
     {
         return match ($this) {
-            self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
-            self::AcademyContentManagement, self::GlobalAdmin => User::class,
+            self::TenantAdmin, self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
+            self::AcademyManager, self::GlobalAdmin => User::class,
         };
     }
 
@@ -58,8 +80,9 @@ enum FeatureFlag: string
             self::CampPanel => 'Camp organization',
             self::AcademyPanel => 'Sira Academy Module',
             self::ExpoPanel => 'Expo Module',
-            self::AcademyContentManagement => 'Academy Content Management',
+            self::AcademyManager => 'Academy Content Management',
             self::GlobalAdmin => 'Global Admin',
+            self::TenantAdmin => 'Tenant Admin',
         };
     }
 
@@ -69,10 +92,11 @@ enum FeatureFlag: string
     public function description(): string
     {
         return match ($this) {
+            self::TenantAdmin => 'Grants this tenant access to the Tenant Admin panel for managing members and roles.',
             self::CampPanel => 'Grants this tenant access to the Camp organization panel including camps, hostels and volunteers.',
             self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
             self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',
-            self::AcademyContentManagement => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
+            self::AcademyManager => 'Grants this specific user access to the global Academy Content Panel to manage levels, sessions and quizzes.',
             self::GlobalAdmin => 'Grants this specific user access to the global Admin Panel to manage tenants, users and roles.',
         };
     }

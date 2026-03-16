@@ -524,8 +524,8 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 
 ### 1. Super Admin Panel
 
-- **ID:** `super-admin`
-- **Path:** `/super-admin`
+- **ID:** `global-admin`
+- **Path:** `/global-admin`
 - **Guard:** `web`
 - **No tenant context**
 - **Access:** `super_admin` role only (gate interception via Shield)

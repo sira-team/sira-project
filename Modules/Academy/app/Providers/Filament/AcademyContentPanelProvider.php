@@ -25,12 +25,14 @@ use Modules\Academy\Http\Middleware\CheckAcademyContentManagement;
 
 final class AcademyContentPanelProvider extends PanelProvider
 {
+    public const ID = 'academy-content';
+
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
 
         return $panel
-            ->id('academy-content')
+            ->id(self::ID)
             ->path('academy-content')
             ->colors([
                 'primary' => Color::Teal,
