@@ -45,6 +45,7 @@ final class QuizResource extends Resource
     public static function getPages(): array
     {
         return [
+            'index' => Pages\ListQuizzes::route('/'),
             'edit' => EditQuiz::route('/{record}/edit'),
         ];
     }

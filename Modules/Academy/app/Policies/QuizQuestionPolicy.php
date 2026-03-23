@@ -7,12 +7,11 @@ namespace Modules\Academy\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Academy\Models\QuizQuestion;
-use Modules\Academy\Traits\CheckAcademyContentManagementFeature;
+use Modules\Academy\Traits\CheckAcademyContentManager;
 
 final class QuizQuestionPolicy
 {
-    use CheckAcademyContentManagementFeature;
-    use HandlesAuthorization;
+    use CheckAcademyContentManager, HandlesAuthorization;
 
     public function viewAny(AuthUser $authUser): bool
     {

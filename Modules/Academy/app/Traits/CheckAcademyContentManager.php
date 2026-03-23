@@ -8,7 +8,7 @@ use App\Enums\FeatureFlag;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Laravel\Pennant\Feature;
 
-trait CheckAcademyContentManagementFeature
+trait CheckAcademyContentManager
 {
     public function before(AuthUser $authUser, string $ability): ?bool
     {

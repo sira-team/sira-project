@@ -7,10 +7,11 @@ namespace Modules\Academy\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Modules\Academy\Models\AcademyLevel;
+use Modules\Academy\Traits\CheckAcademyContentManager;
 
 final class AcademyLevelPolicy
 {
-    use HandlesAuthorization;
+    use CheckAcademyContentManager, HandlesAuthorization;
 
     public function viewAny(AuthUser $authUser): bool
     {
