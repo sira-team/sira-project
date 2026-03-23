@@ -12,11 +12,6 @@ final class CampPolicy
 {
     use HandlesAuthorization;
 
-    public function before(AuthUser $authUser): bool
-    {
-        return true;
-    }
-
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Camp');

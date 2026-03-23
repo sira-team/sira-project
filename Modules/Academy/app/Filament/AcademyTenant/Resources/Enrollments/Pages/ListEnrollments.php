@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Modules\Academy\Filament\AcademyTenant\Resources\Pages;
+namespace Modules\Academy\Filament\AcademyTenant\Resources\Enrollments\Pages;
 
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Modules\Academy\Filament\AcademyTenant\Resources\EnrollmentResource;
+use Modules\Academy\Filament\AcademyTenant\Resources\Enrollments\EnrollmentResource;
 
 final class ListEnrollments extends ListRecords
 {

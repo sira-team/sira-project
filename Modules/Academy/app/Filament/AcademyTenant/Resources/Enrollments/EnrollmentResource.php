@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Academy\Filament\AcademyTenant\Resources;
+namespace Modules\Academy\Filament\AcademyTenant\Resources\Enrollments;
 
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -15,9 +15,9 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\Academy\Filament\AcademyTenant\Resources\Pages\CreateEnrollment;
-use Modules\Academy\Filament\AcademyTenant\Resources\Pages\EditEnrollment;
-use Modules\Academy\Filament\AcademyTenant\Resources\Pages\ListEnrollments;
+use Modules\Academy\Filament\AcademyTenant\Resources\Enrollments\Pages\CreateEnrollment;
+use Modules\Academy\Filament\AcademyTenant\Resources\Enrollments\Pages\EditEnrollment;
+use Modules\Academy\Filament\AcademyTenant\Resources\Enrollments\Pages\ListEnrollments;
 use Modules\Academy\Models\AcademyEnrollment;
 
 final class EnrollmentResource extends Resource

@@ -14,7 +14,11 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
+use Modules\Academy\Models\AcademySession;
 
+/**
+ * @property AcademySession $ownerRecord
+ */
 final class QuizRelationManager extends RelationManager
 {
     protected static string $relationship = 'quizzes';
@@ -23,7 +27,7 @@ final class QuizRelationManager extends RelationManager
 
     public function canCreate(): bool
     {
-        return ! $this->getOwnerRecord()->quiz()->exists();
+        return ! $this->ownerRecord->quiz()->exists();
     }
 
     public function form(Schema $schema): Schema

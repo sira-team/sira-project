@@ -58,7 +58,6 @@ final class StationSeeder extends Seeder
                 'sort_order' => 2,
                 'materials' => [
                     ['type' => PhysicalMaterialType::Poster, 'name' => 'Zeitstrahl Sira', 'notes' => 'Beidseitig bedruckt'],
-                    ['type' => PhysicalMaterialType::VideoScreen, 'name' => 'Monitor 32"', 'notes' => 'Mit Standfuß'],
                 ],
             ],
             [
@@ -86,7 +85,6 @@ final class StationSeeder extends Seeder
                 'sort_order' => 5,
                 'materials' => [
                     ['type' => PhysicalMaterialType::Poster, 'name' => 'Gelehrte der islamischen Welt', 'notes' => null],
-                    ['type' => PhysicalMaterialType::VideoScreen, 'name' => 'Tablet mit Slideshows', 'notes' => 'iPad + Ständer'],
                 ],
             ],
             [

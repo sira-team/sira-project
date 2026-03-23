@@ -42,6 +42,7 @@ final class StationPhysicalMaterial extends Model
         'name',
         'notes',
         'sort_order',
+        'image',
     ];
 
     public function station(): BelongsTo

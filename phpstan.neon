@@ -1,0 +1,12 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - Modules/Academy/app
+        - Modules/Camp/app
+        - Modules/Expo/app
+    level: 5
+

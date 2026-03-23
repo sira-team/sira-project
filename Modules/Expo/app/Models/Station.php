@@ -65,7 +65,7 @@ final class Station extends Model
 
     public function digitalMaterials(): HasMany
     {
-        return $this->hasMany(StationDigitalMaterial::class)->orderBy('sort_order');
+        return $this->hasMany(StationDigitalMaterial::class);
     }
 
     public function expos(): BelongsToMany

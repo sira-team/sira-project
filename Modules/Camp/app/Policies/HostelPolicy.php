@@ -12,11 +12,6 @@ final class HostelPolicy
 {
     use HandlesAuthorization;
 
-    public function before(AuthUser $authUser): bool
-    {
-        return true;
-    }
-
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Hostel');
@@ -39,7 +34,7 @@ final class HostelPolicy
 
     public function delete(AuthUser $authUser, Hostel $hostel): bool
     {
-        return $authUser->can('Delete:Hostel') && ! $hostel->contracts()->exists();
+        return $authUser->can('Delete:Hostel');
     }
 
     public function restore(AuthUser $authUser, Hostel $hostel): bool

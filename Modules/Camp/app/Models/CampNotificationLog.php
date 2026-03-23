@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -35,13 +34,12 @@ use Modules\Camp\Enums\CampNotificationType;
  */
 final class CampNotificationLog extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'camp_registration_id',
         'type',
         'sent_at',
         'recipient_email',
+        'notification_type',
     ];
 
     public function registration(): BelongsTo

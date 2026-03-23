@@ -76,6 +76,7 @@ final class AcademyContentPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 CheckAcademyContentManagement::class,
+                'user.feature:'.self::ID,
             ], isPersistent: true);
     }
 }

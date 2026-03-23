@@ -6,7 +6,6 @@ namespace Modules\Camp\Providers\Filament;
 
 use App\Models\Tenant;
 use App\Providers\Filament\TenantAdminPanelProvider;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -56,7 +55,6 @@ final class CampPanelProvider extends PanelProvider
                 FilamentInfoWidget::class,
             ])
             ->discoverClusters(in: module('Camp', true)->appPath("Filament{$separator}Clusters"), for: module('Camp', true)->appNamespace('Filament\Clusters'))
-            ->plugin(FilamentShieldPlugin::make()->scopeToTenant(true))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -70,7 +68,11 @@ final class CampPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->navigationItems([
+            ])
+            ->tenantMiddleware([
+                'tenant.feature:'.self::ID,
+            ])
+            ->navigationItems([
                 // Add a backlink to the tenant admin panel
                 NavigationItem::make()
                     ->label(__('Back'))

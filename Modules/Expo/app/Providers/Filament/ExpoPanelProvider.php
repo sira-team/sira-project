@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
+use App\Http\Middleware\ResolveTenantFromSubdomain;
 use App\Models\Tenant;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
-use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -54,7 +52,6 @@ final class ExpoPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->plugin(FilamentShieldPlugin::make()->scopeToTenant(true))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -68,13 +65,10 @@ final class ExpoPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->navigationItems([
-                // Add a backlink to the default panel
-                NavigationItem::make()
-                    ->label(__('Back Home'))
-                    ->sort(-1000)
-                    ->icon(Heroicon::OutlinedHomeModern)
-                    ->url(filament()->getDefaultPanel()->getUrl()),
+            ])
+            ->tenantMiddleware([
+                ResolveTenantFromSubdomain::class,
+                'tenant.feature:'.self::ID,
             ]);
     }
 

@@ -10,7 +10,6 @@ use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -31,10 +30,6 @@ final class StationsRelationManager extends RelationManager
                     ->nullable()
                     ->searchable()
                     ->preload(),
-                TextInput::make('sort_order')
-                    ->label('Sort Order')
-                    ->numeric()
-                    ->default(0),
             ]);
     }
 

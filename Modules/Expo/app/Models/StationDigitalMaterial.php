@@ -22,7 +22,6 @@ use Modules\Expo\Enums\DigitalMaterialType;
  * @property int $file_size
  * @property int $uploaded_by
  * @property string $language
- * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Station $station
@@ -64,7 +63,6 @@ final class StationDigitalMaterial extends Model
         'file_size',
         'uploaded_by',
         'language',
-        'sort_order',
     ];
 
     public function station(): BelongsTo

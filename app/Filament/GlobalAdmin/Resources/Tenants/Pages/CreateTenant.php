@@ -6,12 +6,16 @@ namespace App\Filament\GlobalAdmin\Resources\Tenants\Pages;
 
 use App\Filament\GlobalAdmin\Resources\Tenants\TenantResource;
 use App\Mail\TenantInvitation;
+use App\Models\Tenant;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Spatie\Permission\Models\Role;
 
+/**
+ * @property Tenant|null $record
+ */
 final class CreateTenant extends CreateRecord
 {
     protected static string $resource = TenantResource::class;

@@ -10,11 +10,11 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Storage;
 use Modules\Expo\Models\Station;
 use Modules\Expo\Models\StationDigitalMaterial;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class DigitalMaterialController extends Controller
 {
-    public function download(Tenant $tenant, Station $station, StationDigitalMaterial $material): BinaryFileResponse
+    public function download(Tenant $tenant, Station $station, StationDigitalMaterial $material): StreamedResponse
     {
         // Verify user belongs to the tenant
         if (auth()->user()?->tenants->where('id', $tenant->id)->isEmpty() ?? true) {
@@ -30,7 +30,7 @@ final class DigitalMaterialController extends Controller
             abort(404);
         }
 
-        return Storage::disk('private')->download(
+        return Storage::download(
             $material->file_path,
             $material->title.'.'.$material->file_type->value
         );

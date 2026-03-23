@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Modules\Academy\Providers\Filament;
 
 use App\Models\Tenant;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -65,8 +63,9 @@ final class AcademyPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugins([FilamentShieldPlugin::make()->scopeToTenant(true)])
-            ->tenantMiddleware([SyncShieldTenant::class], isPersistent: true)
+            ->tenantMiddleware([
+                'tenant.feature:'.self::ID,
+            ], isPersistent: true)
             ->authMiddleware([Authenticate::class]);
     }
 }

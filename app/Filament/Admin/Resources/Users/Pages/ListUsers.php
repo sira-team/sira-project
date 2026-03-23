@@ -6,6 +6,7 @@ namespace App\Filament\Admin\Resources\Users\Pages;
 
 use App\Filament\Admin\Resources\Users\UserResource;
 use App\Mail\UserInvitation;
+use App\Models\Tenant;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
@@ -36,6 +37,7 @@ final class ListUsers extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data): void {
+                    /** @var Tenant $tenant */
                     $tenant = Filament::getTenant();
 
                     $user = User::create([

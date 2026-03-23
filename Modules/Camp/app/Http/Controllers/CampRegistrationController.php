@@ -15,8 +15,8 @@ use Illuminate\View\View;
 use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
-use Modules\Camp\Mail\CampRegistrationReceivedMail;
-use Modules\Camp\Mail\CampWaitlistedMail;
+use Modules\Camp\Mails\CampRegistrationReceivedMail;
+use Modules\Camp\Mails\CampWaitlistedMail;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampNotificationLog;
 use Modules\Camp\Models\CampRegistration;
@@ -99,7 +99,7 @@ final class CampRegistrationController
                     'visitor_id' => $visitor->id,
                     'participant_id' => $participant->id,
                     'status' => $status,
-                    'payment_status' => CampPaymentStatus::Unpaid,
+                    'payment_status' => CampPaymentStatus::Pending,
                     'waitlist_position' => $waitlistPosition,
                     'registered_at' => now(),
                 ]);

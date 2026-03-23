@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-use Spatie\Permission\DefaultTeamResolver;
+use App\Support\Permissions\TeamResolver;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -142,7 +142,7 @@ return [
     /*
      * The class to use to resolve the permissions team id
      */
-    'team_resolver' => DefaultTeamResolver::class,
+    'team_resolver' => TeamResolver::class,
 
     /*
      * Passport Client Credentials Grant

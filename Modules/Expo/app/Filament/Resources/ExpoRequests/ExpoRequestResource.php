@@ -22,7 +22,7 @@ final class ExpoRequestResource extends Resource
 {
     protected static ?string $model = ExpoRequest::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
     public static function form(Schema $schema): Schema
     {

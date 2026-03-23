@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'tenant_model' => 'App\Models\Tenant',
+    'tenant_model' => 'App\\Models\\Tenant',
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ return [
     */
 
     'super_admin' => [
-        'enabled' => true,
+        'enabled' => false,
         'name' => 'super_admin',
         'define_via_gate' => false,
         'intercept_gate' => 'before',
@@ -87,7 +87,7 @@ return [
     */
 
     'panel_user' => [
-        'enabled' => true,
+        'enabled' => false,
         'name' => 'panel_user',
     ],
 

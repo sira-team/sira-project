@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Contracts\Support\Htmlable;
 
 enum Country: string implements HasLabel
 {
@@ -13,7 +12,7 @@ enum Country: string implements HasLabel
     case Austria = 'AT';
     case Switzerland = 'CH';
 
-    public function getLabel(): string|Htmlable|null
+    public function getLabel(): string
     {
         return trans('countries.'.$this->value);
     }

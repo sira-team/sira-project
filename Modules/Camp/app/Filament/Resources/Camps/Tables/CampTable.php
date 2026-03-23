@@ -8,7 +8,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\Camp\Enums\CampRegistrationStatus;
 
 final class CampTable
 {
@@ -31,9 +30,7 @@ final class CampTable
                     ->sortable(),
                 TextColumn::make('confirmedRegistrationsCount')
                     ->label('Confirmed')
-                    ->counts('registrations', function ($query) {
-                        return $query->where('status', CampRegistrationStatus::Confirmed);
-                    }),
+                    ->counts('registrations'),
                 TextColumn::make('registration_open')
                     ->label('Open')
                     ->formatStateUsing(fn (bool $state) => $state ? 'Yes' : 'No'),

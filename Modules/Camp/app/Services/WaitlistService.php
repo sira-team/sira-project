@@ -6,21 +6,19 @@ namespace Modules\Camp\Services;
 
 use Illuminate\Support\Facades\Mail;
 use Modules\Camp\Enums\CampRegistrationStatus;
-use Modules\Camp\Mail\CampWaitlistPromotedMail;
+use Modules\Camp\Mails\CampWaitlistPromotedMail;
 use Modules\Camp\Models\Camp;
+use Modules\Camp\Models\CampRegistration;
 
 final class WaitlistService
 {
     public function promote(Camp $camp): void
     {
+        /** @var CampRegistration $registration */
         $registration = $camp->registrations()
             ->where('status', CampRegistrationStatus::Waitlisted)
             ->orderBy('waitlist_position')
-            ->first();
-
-        if (! $registration) {
-            return;
-        }
+            ->firstOrFail();
 
         $registration->update([
             'status' => CampRegistrationStatus::Pending,

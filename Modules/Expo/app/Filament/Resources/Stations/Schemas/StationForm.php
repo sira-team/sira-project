@@ -6,10 +6,10 @@ namespace Modules\Expo\Filament\Resources\Stations\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Modules\Expo\Enums\PhysicalMaterialType;
 
@@ -26,10 +26,6 @@ final class StationForm
                 Textarea::make('description')
                     ->label('Description')
                     ->rows(3),
-                TextInput::make('sort_order')
-                    ->label('Sort Order')
-                    ->numeric()
-                    ->default(0),
                 Section::make('Physical Materials')
                     ->collapsible()
                     ->schema([
@@ -37,6 +33,11 @@ final class StationForm
                             ->label('Materials')
                             ->relationship('physicalMaterials')
                             ->schema([
+                                FileUpload::make('image')
+                                    ->image()
+                                    ->label('Image')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                                    ->maxSize(5 * 1024), // 5MB
                                 Select::make('type')
                                     ->options(PhysicalMaterialType::class)
                                     ->required(),
@@ -44,9 +45,6 @@ final class StationForm
                                     ->required(),
                                 Textarea::make('notes')
                                     ->rows(2),
-                                TextInput::make('sort_order')
-                                    ->numeric()
-                                    ->default(0),
                             ])
                             ->columnSpan('full'),
                     ]),
@@ -73,9 +71,6 @@ final class StationForm
                                     ])
                                     ->default('de')
                                     ->required(),
-                                TextInput::make('sort_order')
-                                    ->numeric()
-                                    ->default(0),
                             ])
                             ->columnSpan('full'),
                     ]),

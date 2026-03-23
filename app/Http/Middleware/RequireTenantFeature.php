@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Enums\FeatureFlag;
-use App\Models\Tenant;
 use Closure;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Laravel\Pennant\Feature as PennantFeature;
 
@@ -15,10 +15,10 @@ final class RequireTenantFeature
     public function handle(Request $request, Closure $next, string $feature): mixed
     {
         $featureEnum = FeatureFlag::from($feature);
-        $tenant = app(Tenant::class);
+        $tenant = Filament::getTenant();
 
         abort_unless(
-            PennantFeature::for($tenant)->active($featureEnum->value),
+            $tenant && PennantFeature::for($tenant)->active($featureEnum->value),
             403,
             'Your tenant does not have access to this module.'
         );

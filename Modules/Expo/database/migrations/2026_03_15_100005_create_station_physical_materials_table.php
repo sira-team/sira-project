@@ -13,9 +13,10 @@ return new class extends Migration
         Schema::create('station_physical_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('station_id')->constrained()->cascadeOnDelete();
-            $table->string('type'); // miniature, poster, video_screen, other
+            $table->string('type');
             $table->string('name');
             $table->text('notes')->nullable();
+            $table->string('image')->nullable();
             $table->integer('sort_order')->default(0);
             $table->timestamps();
 

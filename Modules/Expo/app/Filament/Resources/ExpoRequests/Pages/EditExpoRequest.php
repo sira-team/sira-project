@@ -8,12 +8,17 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Expo\Enums\ExpoRequestStatus;
 use Modules\Expo\Enums\ExpoStatus;
 use Modules\Expo\Filament\Resources\ExpoRequests\ExpoRequestResource;
 use Modules\Expo\Models\Expo;
+use Modules\Expo\Models\ExpoRequest;
 
+/**
+ * @property-read ExpoRequest $record
+ */
 final class EditExpoRequest extends EditRecord
 {
     protected static string $resource = ExpoRequestResource::class;
@@ -58,7 +63,7 @@ final class EditExpoRequest extends EditRecord
                     'status' => ExpoStatus::Planned,
                 ]);
 
-                $this->notification()
+                Notification::make()
                     ->success()
                     ->title('Expo Created')
                     ->body('Expo has been created successfully.')

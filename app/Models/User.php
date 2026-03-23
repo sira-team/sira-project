@@ -131,6 +131,7 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         $scope = match ($featureFlag->for()) {
             Tenant::class => $this->tenant,
             self::class => $this,
+            default => null,
         };
 
         return $scope && Feature::for($scope)->active($featureFlag->value);
@@ -141,7 +142,7 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         return $tenant instanceof Tenant && $this->tenant_id === $tenant->id;
     }
 
-    public function getTenants(Panel $panel): array|\Illuminate\Support\Collection
+    public function getTenants(Panel $panel): array
     {
         return [$this->tenant];
     }
