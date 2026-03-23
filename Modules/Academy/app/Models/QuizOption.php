@@ -15,6 +15,7 @@ use Modules\Academy\Database\Factories\QuizOptionFactory;
  * @property int $quiz_question_id
  * @property string $text
  * @property bool $is_correct
+ * @property float $points
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read QuizQuestion $question
@@ -40,12 +41,14 @@ final class QuizOption extends Model
         'quiz_question_id',
         'text',
         'is_correct',
+        'points',
     ];
 
     public function casts(): array
     {
         return [
             'is_correct' => 'boolean',
+            'points' => 'float',
         ];
     }
 

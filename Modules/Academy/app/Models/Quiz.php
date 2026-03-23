@@ -14,22 +14,22 @@ use Modules\Academy\Database\Factories\QuizFactory;
 
 /**
  * @property int $id
- * @property int $academy_session_id
+ * @property int $academy_level_id
  * @property string $title
  * @property int $max_attempts
  * @property int $min_days_between_attempts
  * @property int $passing_score_percent
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read AcademyLevel $level
  * @property-read Collection<int, QuizQuestion> $questions
  * @property-read int|null $questions_count
- * @property-read AcademySession $session
  *
  * @method static \Modules\Academy\Database\Factories\QuizFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereAcademySessionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereAcademyLevelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereMaxAttempts($value)
@@ -45,7 +45,7 @@ final class Quiz extends Model
     use HasFactory;
 
     protected $fillable = [
-        'academy_session_id',
+        'academy_level_id',
         'title',
         'max_attempts',
         'min_days_between_attempts',
@@ -61,9 +61,9 @@ final class Quiz extends Model
         ];
     }
 
-    public function session(): BelongsTo
+    public function level(): BelongsTo
     {
-        return $this->belongsTo(AcademySession::class, 'academy_session_id');
+        return $this->belongsTo(AcademyLevel::class, 'academy_level_id');
     }
 
     public function questions(): HasMany

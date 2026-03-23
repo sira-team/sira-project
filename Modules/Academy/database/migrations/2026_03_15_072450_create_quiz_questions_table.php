@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
             $table->text('question_text');
-            $table->enum('type', ['multiple_choice', 'true_or_false']);
+            $table->enum('type', ['single_choice', 'multiple_choice', 'true_or_false']);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
         });

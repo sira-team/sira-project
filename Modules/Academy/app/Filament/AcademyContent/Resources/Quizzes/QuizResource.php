@@ -9,8 +9,9 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages\CreateQuiz;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages\EditQuiz;
-use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\RelationManagers\QuestionsRelationManager;
+use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages\ListQuizzes;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Schemas\QuizForm;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Tables\QuizzesTable;
 use Modules\Academy\Models\Quiz;
@@ -22,8 +23,6 @@ final class QuizResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static ?string $recordTitleAttribute = 'title';
-
-    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Schema $schema): Schema
     {
@@ -37,15 +36,14 @@ final class QuizResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            QuestionsRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQuizzes::route('/'),
+            'index' => ListQuizzes::route('/'),
+            'create' => CreateQuiz::route('/create'),
             'edit' => EditQuiz::route('/{record}/edit'),
         ];
     }

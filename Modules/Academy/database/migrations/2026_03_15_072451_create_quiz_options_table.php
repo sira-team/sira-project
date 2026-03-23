@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('quiz_question_id')->constrained()->cascadeOnDelete();
             $table->string('text');
             $table->boolean('is_correct')->default(false);
+            $table->float('points')->default(1.0);
             $table->timestamps();
         });
     }

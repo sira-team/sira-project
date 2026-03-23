@@ -12,7 +12,6 @@ use Filament\Tables\Table;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Pages\CreateAcademyLevel;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Pages\EditAcademyLevel;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Pages\ListAcademyLevels;
-use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\RelationManagers\SessionsRelationManager;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Schemas\AcademyLevelForm;
 use Modules\Academy\Filament\AcademyContent\Resources\AcademyLevels\Tables\AcademyLevelsTable;
 use Modules\Academy\Models\AcademyLevel;
@@ -37,9 +36,7 @@ final class AcademyLevelResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            SessionsRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array

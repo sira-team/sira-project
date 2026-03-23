@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Modules\Academy\Models\AcademySession;
+use Modules\Academy\Models\AcademyLevel;
 use Modules\Academy\Models\Quiz;
 
 describe('Quiz model', function () {
-    it('belongs to a session', function () {
-        $session = AcademySession::factory()->create();
-        $quiz = Quiz::factory()->create(['academy_session_id' => $session->id]);
-        expect($quiz->session->id)->toBe($session->id);
+    it('belongs to a level', function () {
+        $level = AcademyLevel::factory()->create();
+        $quiz = Quiz::factory()->create(['academy_level_id' => $level->id]);
+        expect($quiz->level->id)->toBe($level->id);
     });
 
     it('has default values', function () {

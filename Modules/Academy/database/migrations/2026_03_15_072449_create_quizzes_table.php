@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('academy_session_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('academy_level_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->integer('max_attempts')->default(3);
             $table->integer('min_days_between_attempts')->default(7);
