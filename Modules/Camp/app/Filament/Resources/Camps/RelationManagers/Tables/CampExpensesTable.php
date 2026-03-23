@@ -44,7 +44,7 @@ final class CampExpensesTable
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([
+            ->headerActions([
                 CreateAction::make(),
             ]);
     }

@@ -9,7 +9,6 @@ use App\Models\Tenant;
 use App\Models\Visitor;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -35,8 +34,9 @@ final class CampRegistrationController
         return view('camp::register', compact('camp', 'tenant'));
     }
 
-    public function store(Request $tenant, Camp $camp, WaitlistService $waitlistService): RedirectResponse
+    public function store(Tenant $tenant, Camp $camp, WaitlistService $waitlistService): RedirectResponse
     {
+        abort_unless($camp->tenant_id === $tenant->id, 404);
         abort_unless($camp->registration_open, 403);
 
         $validated = $this->validate(request(), [
@@ -56,7 +56,7 @@ final class CampRegistrationController
             'terms_accepted' => 'required|accepted',
         ]);
 
-        return DB::transaction(function () use ($camp, $validated, $waitlistService) {
+        return DB::transaction(function () use ($tenant, $camp, $validated, $waitlistService) {
             $visitor = Visitor::firstOrCreate(
                 ['email' => $validated['visitor']['email']],
                 [
@@ -121,7 +121,7 @@ final class CampRegistrationController
                 $confirmedCount++;
             }
 
-            return redirect()->route('camp.register.success', $camp)->with('success', 'Registration submitted successfully!');
+            return redirect()->route('camp.register.show', [$tenant->slug, $camp])->with('success', 'Registration submitted successfully!');
         });
     }
 }

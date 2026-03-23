@@ -7,7 +7,6 @@ namespace Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Modules\Camp\Enums\CampExpenseCategory;
 
@@ -16,22 +15,18 @@ final class CampExpenseForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make()
-                ->schema([
-                    Select::make('category')
-                        ->options(CampExpenseCategory::class)
-                        ->required(),
-                    TextInput::make('title')
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('amount')
-                        ->decimal(2)
-                        ->required()
-                        ->label('Amount (EUR)'),
-                    Textarea::make('description')
-                        ->rows(3)
-                        ->helperText('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"'),
-                ]),
+            Select::make('category')
+                ->options(CampExpenseCategory::class)
+                ->required(),
+            TextInput::make('title')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('amount')
+                ->required()
+                ->label('Amount (EUR)'),
+            Textarea::make('description')
+                ->rows(3)
+                ->helperText('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"'),
         ]);
     }
 }

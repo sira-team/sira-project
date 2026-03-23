@@ -561,7 +561,7 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **Guard:** `web`
 - **Tenant model:** `Tenant`
 - **Access:** `expo_manager`, `tenant_admin`
-- **Pennant:** `expo-panel` scoped to `Tenant` — check in panel middleware
+- **Pennant:** `expo` scoped to `Tenant` — check in panel middleware
 - **Purpose:** Expo requests, planning, station inventory
 - **Location:** `Modules/Expo/app/Providers/Filament/ExpoPanelProvider.php`
 
@@ -571,7 +571,7 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **Path:** `/academy`
 - **Guard:** `web`
 - **Tenant model:** `Tenant`
-- **Pennant:** `academy-panel` scoped to `Tenant` — check in panel middleware
+- **Pennant:** `academy` scoped to `Tenant` — check in panel middleware
 - **Access:** all authenticated tenant users — but resources shown differ by role (see Academy CLAUDE.md)
 - **Purpose:** Member dashboard, achievements, enrollments, ticket issuance
 - **Location:** `Modules/Academy/app/Providers/Filament/AcademyPanelProvider.php`
@@ -582,13 +582,13 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **Path:** `/academy-content`
 - **Guard:** `web` (same users table)
 - **No tenant context** — operates globally
-- **Pennant:** `academy-content-management` scoped to `User`
+- **Pennant:** `academy-content` scoped to `User`
 - **Purpose:** Manage global curriculum — levels, sessions, quizzes, questions
 - **Location:** `Modules/Academy/app/Providers/Filament/AcademyContentPanelProvider.php`
 
 Panel middleware must check:
 ```php
-abort_unless(Feature::for($request->user())->active('academy-content-management'), 403);
+abort_unless(Feature::for($request->user())->active('academy-content'), 403);
 ```
 
 ---
@@ -709,8 +709,8 @@ All flags stored in the `features` table. Never in config or env.
 
 | Flag | Controls |
 |---|---|
-| `expo-panel` | Expo panel accessible, navigation visible |
-| `academy-panel` | Academy panel accessible, navigation visible |
+| `expo` | Expo panel accessible, navigation visible |
+| `academy` | Academy panel accessible, navigation visible |
 
 Camp panel is always available — no flag.
 
@@ -718,7 +718,7 @@ Camp panel is always available — no flag.
 
 | Flag | Controls |
 |---|---|
-| `academy-content-management` | Access to Academy Content Panel |
+| `academy-content` | Access to Academy Content Panel |
 
 ### Artisan Commands
 

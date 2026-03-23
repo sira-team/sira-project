@@ -23,4 +23,9 @@ final class CampExpensesRelationManager extends RelationManager
     {
         return CampExpensesTable::configure($table);
     }
+
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
 }

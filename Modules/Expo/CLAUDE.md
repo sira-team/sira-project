@@ -23,17 +23,17 @@ The app is multi-tenant. Each tenant is a city-based Verein. Not every tenant ho
 
 The Expo panel is NOT available to all tenants.
 
-Feature flag: `expo-panel`, scoped to `Tenant` model.
+Feature flag: `expo`, scoped to `Tenant` model.
 
 ```php
-Feature::for($tenant)->active('expo-panel');
+Feature::for($tenant)->active('expo');
 ```
 
 Check this flag in the Filament panel provider's `boot` method to conditionally register the Expo plugin. If the flag is inactive for the current tenant, the Expo navigation items are hidden entirely and routes return 403.
 
 Enable per tenant via artisan command:
 ```bash
-php artisan pennant:grant-tenant {tenantId} expo-panel
+php artisan pennant:grant-tenant {tenantId} expo
 ```
 
 ---

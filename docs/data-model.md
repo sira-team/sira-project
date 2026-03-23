@@ -484,9 +484,9 @@ Score is only shown to the user when `passed = true`.
 
 | feature | scoped to | notes |
 |---|---|---|
-| `academy-content-management` | `User` | only specific named users |
-| `expo-panel` | `Tenant` | tenant has expo module enabled |
-| `academy-panel` | `Tenant` | tenant has academy module enabled |
+| `academy-content` | `User` | only specific named users |
+| `expo` | `Tenant` | tenant has expo module enabled |
+| `academy` | `Tenant` | tenant has academy module enabled |
 
 Camp panel is always accessible — no flag.
 

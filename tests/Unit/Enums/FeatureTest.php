@@ -6,9 +6,9 @@ use App\Enums\FeatureFlag;
 
 describe('Feature enum', function () {
     it('has correct raw values', function () {
-        expect(FeatureFlag::ExpoPanel->value)->toBe('expo-panel');
-        expect(FeatureFlag::AcademyPanel->value)->toBe('academy-panel');
-        expect(FeatureFlag::AcademyManager->value)->toBe('academy-content-management');
+        expect(FeatureFlag::ExpoPanel->value)->toBe('expo');
+        expect(FeatureFlag::AcademyPanel->value)->toBe('academy');
+        expect(FeatureFlag::AcademyManager->value)->toBe('academy-content');
     });
 
     it('tenantFeatures returns only tenant-scoped features', function () {

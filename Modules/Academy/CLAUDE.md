@@ -22,19 +22,19 @@ This content is global. It is NOT tenant-scoped. All tenants consume the same Ac
 Access to the Academy Content Panel is controlled by a Pennant flag scoped to the `User` model.
 
 ```php
-Feature::for($user)->active('academy-content-management');
+Feature::for($user)->active('academy-content');
 ```
 
 This flag is set per specific user ID. It is NOT a role. It is NOT a permission. It is a named list of specific humans who are trusted to manage curriculum.
 
 Enable via artisan command:
 ```bash
-php artisan pennant:grant-user {userId} academy-content-management
+php artisan pennant:grant-user {userId} academy-content
 ```
 
 The Academy Content Panel middleware checks this flag on every request:
 ```php
-abort_unless(Feature::for($request->user())->active('academy-content-management'), 403);
+abort_unless(Feature::for($request->user())->active('academy-content'), 403);
 ```
 
 Users granted this flag still belong to their own tenant normally. This flag only grants access to the additional global panel.
@@ -184,17 +184,17 @@ The curriculum content (levels, sessions, quizzes) is global and read-only from 
 
 The Academy section within the tenant panel is NOT available to all tenants.
 
-Feature flag: `academy-panel`, scoped to `Tenant` model.
+Feature flag: `academy`, scoped to `Tenant` model.
 
 ```php
-Feature::for($tenant)->active('academy-panel');
+Feature::for($tenant)->active('academy');
 ```
 
 Check this flag in the Filament panel provider's boot method. If inactive for the current tenant, all Academy navigation items are hidden and routes return 403.
 
 Enable per tenant via artisan command:
 ```bash
-php artisan pennant:grant-tenant {tenantId} academy-panel
+php artisan pennant:grant-tenant {tenantId} academy
 ```
 
 ---

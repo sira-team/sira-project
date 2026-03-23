@@ -12,6 +12,12 @@
             <h1 class="text-2xl font-bold mb-2">{{ $camp->name }}</h1>
             <p class="text-gray-600 mb-6">{{ $camp->tenant->name }}</p>
 
+            @if (session('success'))
+                <div class="bg-green-50 border border-green-200 rounded p-4 mb-6">
+                    <p class="text-green-800 font-medium">{{ session('success') }}</p>
+                </div>
+            @endif
+
             @if (!$camp->registration_open)
                 <div class="bg-red-50 border border-red-200 rounded p-4">
                     <p class="text-red-800 font-medium">Registration is closed</p>
