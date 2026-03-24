@@ -622,7 +622,7 @@ Never query tenant-scoped models without a resolved tenant. In commands or jobs,
 ### Global Models
 
 Models without `tenant_id` are shared across all tenants. Read-only from the tenant perspective:
-- `AcademyLevel`, `AcademySession`
+- `AcademyLevel`
 - `Quiz`, `QuizQuestion`, `QuizOption`
 
 ---

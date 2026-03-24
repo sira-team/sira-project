@@ -25,16 +25,12 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, QuizAttemptAnswer> $answers
  * @property-read int|null $answers_count
- * @property-read AcademyEnrollment|null $enrollment
  * @property-read Quiz $quiz
- * @property-read AcademySessionTicket $ticket
  *
  * @method static \Modules\Academy\Database\Factories\QuizAttemptFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereAcademyEnrollmentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereAcademySessionTicketId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereStartedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCompletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCreatedAt($value)
@@ -50,21 +46,11 @@ final class QuizAttempt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['academy_enrollment_id', 'quiz_id', 'academy_session_ticket_id', 'started_at', 'completed_at', 'score_percent', 'passed'];
-
-    public function enrollment(): BelongsTo
-    {
-        return $this->belongsTo(AcademyEnrollment::class);
-    }
+    protected $fillable = ['quiz_id', 'started_at', 'completed_at', 'score_percent', 'passed'];
 
     public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);
-    }
-
-    public function ticket(): BelongsTo
-    {
-        return $this->belongsTo(AcademySessionTicket::class, 'academy_session_ticket_id');
     }
 
     public function answers(): HasMany

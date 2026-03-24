@@ -7,7 +7,6 @@ namespace Modules\Academy\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Modules\Academy\Enums\QuizQuestionType;
 use Modules\Academy\Models\AcademyLevel;
-use Modules\Academy\Models\AcademySession;
 use Modules\Academy\Models\Quiz;
 use Modules\Academy\Models\QuizOption;
 use Modules\Academy\Models\QuizQuestion;
@@ -26,28 +25,19 @@ final class AcademyContentSeeder extends Seeder
                 ]
             );
 
-            foreach ($levelData['sessions'] as $sessionData) {
-                $session = AcademySession::firstOrCreate(
-                    ['academy_level_id' => $level->id, 'title' => $sessionData['title']],
-                    [
-                        'description' => $sessionData['description'],
-                        'sort_order' => $sessionData['sort_order'],
-                    ]
-                );
-
-                if ($sessionData['quiz'] === null || Quiz::where('academy_session_id', $session->id)->exists()) {
+            foreach ($levelData['sessions'] as $quizData) {
+                if ($quizData['quiz'] === null) {
                     continue;
                 }
 
                 $quiz = Quiz::create([
-                    'academy_session_id' => $session->id,
-                    'title' => $sessionData['quiz']['title'],
+                    'title' => $quizData['quiz']['title'],
                     'max_attempts' => 3,
                     'min_days_between_attempts' => 7,
                     'passing_score_percent' => 70,
                 ]);
 
-                foreach ($sessionData['quiz']['questions'] as $sortOrder => $questionData) {
+                foreach ($quizData['quiz']['questions'] as $sortOrder => $questionData) {
                     $question = QuizQuestion::create([
                         'quiz_id' => $quiz->id,
                         'question_text' => $questionData['text'],

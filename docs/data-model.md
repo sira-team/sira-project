@@ -511,4 +511,3 @@ Camp panel is always accessible — no flag.
 | ExpoRequest | tenant | public |
 | Station | tenant | expo_manager |
 | AcademyLevel / Session / Quiz | global | academy content managers |
-| AcademyEnrollment / Ticket / Attempt | tenant | academy_manager |

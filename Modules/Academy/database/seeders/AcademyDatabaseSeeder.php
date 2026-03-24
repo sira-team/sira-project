@@ -15,7 +15,6 @@ final class AcademyDatabaseSeeder extends Seeder
     {
         $this->call([
             AcademyContentSeeder::class,
-            AcademyEnrollmentSeeder::class,
         ]);
     }
 }

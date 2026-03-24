@@ -72,24 +72,9 @@ Levels are orderable via drag and drop (sort_order column).
 
 ---
 
-### AcademySession Resource
-
-A session is one monthly meeting within a level. Each session can have one quiz.
-
-Managed as a relation manager within the AcademyLevel resource (nested under the level).
-
-List view columns: title, sort order, has quiz (boolean indicator)
-
-Create / Edit fields:
-- Title
-- Description (textarea, optional)
-- Sort order
-
----
-
 ### Quiz Resource
 
-One quiz per session. Managed as a relation manager within the AcademySession resource.
+One quiz per session. Managed as a relation manager
 
 A session can have zero or one quiz. If no quiz exists, the session is considered attendance-only.
 
@@ -126,10 +111,9 @@ Validation: exactly one option must be marked as correct before saving.
 
 ```
 AcademyLevel (e.g. Level 1)
-└── AcademySession (e.g. Session 3 — Hijra)
-    └── Quiz
-        └── QuizQuestion
-            └── QuizOption (one marked correct)
+└── Quiz
+    └── QuizQuestion
+        └── QuizOption (one marked correct)
 ```
 
 All of the above is global. No tenant can see or edit this panel.
@@ -139,8 +123,7 @@ All of the above is global. No tenant can see or edit this panel.
 ## Models
 
 - `AcademyLevel` — global, no tenant_id
-- `AcademySession` — belongs to AcademyLevel
-- `Quiz` — belongs to AcademySession (one-to-one)
+- `Quiz` — belongs to (one-to-one)
 - `QuizQuestion` — belongs to Quiz
 - `QuizOption` — belongs to QuizQuestion
 
@@ -333,14 +316,11 @@ If not enough time has passed, show: "Your next attempt will be available on [da
 
 ## Models (Tenant-Scoped)
 
-- `AcademyEnrollment` — belongs to User and AcademyLevel, scoped to tenant_id
-- `AcademySessionTicket` — belongs to AcademyEnrollment and AcademySession
-- `QuizAttempt` — belongs to AcademyEnrollment, Quiz, and AcademySessionTicket
+- `QuizAttempt` — belongs to Quiz
 - `QuizAttemptAnswer` — belongs to QuizAttempt, QuizQuestion, and QuizOption
 
 Global models consumed as read-only:
 - `AcademyLevel`
-- `AcademySession`
 - `Quiz`
 - `QuizQuestion`
 - `QuizOption`
