@@ -37,8 +37,8 @@ final class CampInfolist
             Section::make('Dates')
                 ->columns(2)
                 ->schema([
-                    TextEntry::make('starts_at')->date(),
-                    TextEntry::make('ends_at')->date(),
+                    TextEntry::make('starts_at')->date('d.m.Y'),
+                    TextEntry::make('ends_at')->date('d.m.Y'),
                 ]),
 
             Section::make('Target Group & Gender')

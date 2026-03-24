@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Camp\Providers\Filament;
 
 use App\Models\Tenant;
+use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,6 +35,7 @@ final class CampPanelProvider extends PanelProvider
         return $panel
             ->id(self::ID)
             ->path('camp')
+            ->login()
             ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
@@ -67,8 +69,9 @@ final class CampPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->tenantMiddleware([
+                SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
-            ]);
+            ], isPersistent: true);
     }
 
     public function getNavigationLabel(): string

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\Hostels\Tables;
 
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -33,7 +32,6 @@ final class HostelTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
                 //

@@ -73,6 +73,7 @@ final class TenantAdminPanelProvider extends PanelProvider
             ])
             ->tenantMiddleware([
                 SyncShieldTenant::class,
+                'tenant.feature:'.self::ID,
             ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,

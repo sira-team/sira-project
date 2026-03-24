@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Academy\Providers\Filament;
 
 use App\Models\Tenant;
+use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -64,6 +65,7 @@ final class AcademyPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->tenantMiddleware([
+                SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
             ->authMiddleware([Authenticate::class]);

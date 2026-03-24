@@ -6,8 +6,11 @@ namespace Modules\Camp\Filament\Resources\Camps\Tables;
 
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Modules\Camp\Filament\Resources\Hostels\Pages\ViewHostel;
+use Modules\Camp\Models\Camp;
 
 final class CampTable
 {
@@ -19,7 +22,10 @@ final class CampTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('hostelContract.hostel.name')
+                    ->badge()
+                    ->color(Color::Blue)
                     ->label('Hostel')
+                    ->url(fn (Camp $record) => ViewHostel::getUrl(['record' => $record->hostelContract->hostel]))
                     ->sortable(),
                 TextColumn::make('starts_at')
                     ->label('Dates')

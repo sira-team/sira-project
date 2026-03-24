@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
-use App\Http\Middleware\ResolveTenantFromSubdomain;
 use App\Models\Tenant;
+use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,6 +35,7 @@ final class ExpoPanelProvider extends PanelProvider
         return $panel
             ->id(self::ID)
             ->path('expo')
+            ->login()
             ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
@@ -67,9 +68,9 @@ final class ExpoPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->tenantMiddleware([
-                ResolveTenantFromSubdomain::class,
+                SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
-            ]);
+            ], isPersistent: true);
     }
 
     public function getNavigationLabel(): string

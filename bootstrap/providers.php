@@ -11,11 +11,16 @@ use Modules\Camp\Providers\Filament\CampPanelProvider;
 use Modules\Expo\Providers\Filament\ExpoPanelProvider;
 
 return [
+    // Laravel Standard App Service Provider
     AppServiceProvider::class,
+
+    // Panel without a Tenant
     GlobalAdminPanelProvider::class,
+    AcademyContentPanelProvider::class,
+
+    // Panels with Tenant
     TenantAdminPanelProvider::class,
     CampPanelProvider::class,
     ExpoPanelProvider::class,
-    AcademyContentPanelProvider::class,
     AcademyPanelProvider::class,
 ];
