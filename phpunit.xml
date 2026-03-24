@@ -5,16 +5,37 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Unit">
+        <testsuite name="Core-Unit">
             <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Feature">
+        <testsuite name="Core-Feature">
             <directory>tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Academy-Unit">
+            <directory>Modules/Academy/tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Academy-Feature">
+            <directory>Modules/Academy/tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Camp-Unit">
+            <directory>Modules/Camp/tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Camp-Feature">
+            <directory>Modules/Camp/tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Expo-Unit">
+            <directory>Modules/Expo/tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Expo-Feature">
+            <directory>Modules/Expo/tests/Feature</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
+            <directory>Modules/Academy/app</directory>
+            <directory>Modules/Camp/app</directory>
+            <directory>Modules/Expo/app</directory>
         </include>
     </source>
     <php>

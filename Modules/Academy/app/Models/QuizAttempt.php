@@ -14,9 +14,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
 
 /**
  * @property int $id
- * @property int $academy_enrollment_id
  * @property int $quiz_id
- * @property int $academy_session_ticket_id
  * @property Carbon $started_at
  * @property Carbon|null $completed_at
  * @property int|null $score_percent

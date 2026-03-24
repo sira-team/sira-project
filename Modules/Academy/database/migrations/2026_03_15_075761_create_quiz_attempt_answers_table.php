@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_attempt_id')->constrained()->cascadeOnDelete();
             $table->foreignId('quiz_question_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('quiz_option_id')->nullable()->constrained()->setOnDelete('set null');
+            $table->json('selected_options'); // array of quiz_option ids
             $table->timestamps();
 
             $table->unique(['quiz_attempt_id', 'quiz_question_id'], 'attempt_question_unique');

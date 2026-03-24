@@ -13,18 +13,13 @@
         <meta name="keywords" content="{{ $keywords ?? '' }}">
         <meta name="author" content="{{ $author ?? '' }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        {{-- Vite CSS --}}
-        {{-- {{ module_vite('build-academy', 'resources/assets/sass/app.scss') }} --}}
+        <script src="https://cdn.tailwindcss.com"></script>
+        @livewireStyles
     </head>
 
-    <body>
+    <body class="bg-gray-50 text-gray-900 antialiased">
         {{ $slot }}
 
-        {{-- Vite JS --}}
-        {{-- {{ module_vite('build-academy', 'resources/assets/js/app.js') }} --}}
+        @livewireScripts
     </body>
 </html>

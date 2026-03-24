@@ -64,7 +64,12 @@ final class TenantAdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make()->scopeToTenant(true),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup(__('Management'))
+                    ->parentResource(null)
+                    ->scopeToTenant(true)
+                    ->tenantRelationshipName('tenant')
+                    ->navigationParentItem(null),
             ])
             ->tenantMiddleware([
                 SyncShieldTenant::class,

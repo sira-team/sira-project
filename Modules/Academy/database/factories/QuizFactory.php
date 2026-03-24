@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Academy\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Academy\Models\AcademyLevel;
 use Modules\Academy\Models\Quiz;
 
 /**
@@ -21,7 +20,6 @@ final class QuizFactory extends Factory
     public function definition(): array
     {
         return [
-            'academy_level_id' => AcademyLevel::factory(),
             'title' => fake()->words(3, true).' Quiz',
             'max_attempts' => 3,
             'min_days_between_attempts' => 7,

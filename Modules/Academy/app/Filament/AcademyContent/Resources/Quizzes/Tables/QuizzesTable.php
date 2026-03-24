@@ -18,9 +18,6 @@ final class QuizzesTable
             ->columns([
                 TextColumn::make('title')
                     ->searchable(),
-                TextColumn::make('level.title')
-                    ->label('Level')
-                    ->sortable(),
                 TextColumn::make('questions_count')
                     ->label('Questions')
                     ->counts('questions')

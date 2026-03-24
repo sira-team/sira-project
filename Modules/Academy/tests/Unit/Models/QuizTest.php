@@ -2,16 +2,9 @@
 
 declare(strict_types=1);
 
-use Modules\Academy\Models\AcademyLevel;
 use Modules\Academy\Models\Quiz;
 
 describe('Quiz model', function () {
-    it('belongs to a level', function () {
-        $level = AcademyLevel::factory()->create();
-        $quiz = Quiz::factory()->create(['academy_level_id' => $level->id]);
-        expect($quiz->level->id)->toBe($level->id);
-    });
-
     it('has default values', function () {
         $quiz = Quiz::factory()->create();
         expect($quiz->max_attempts)->toBe(3);

@@ -8,7 +8,6 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -16,7 +15,6 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Modules\Academy\Models\AcademyLevel;
 
 final class QuizForm
 {
@@ -26,19 +24,9 @@ final class QuizForm
             ->components([
                 Section::make('Quiz Settings')
                     ->schema([
-                        Select::make('academy_level_id')
-                            ->label('Level')
-                            ->options(
-                                AcademyLevel::query()
-                                    ->orderBy('sort_order')
-                                    ->pluck('title', 'id')
-                            )
-                            ->required()
-                            ->searchable()
-                            ->disabledOn('edit'),
                         TextInput::make('title')
                             ->required()
-                            ->columnSpan(2),
+                            ->columnSpanFull(),
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('max_attempts')

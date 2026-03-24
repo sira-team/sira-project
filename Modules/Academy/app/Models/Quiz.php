@@ -7,21 +7,18 @@ namespace Modules\Academy\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Modules\Academy\Database\Factories\QuizFactory;
 
 /**
  * @property int $id
- * @property int $academy_level_id
  * @property string $title
  * @property int $max_attempts
  * @property int $min_days_between_attempts
  * @property int $passing_score_percent
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read AcademyLevel $level
  * @property-read Collection<int, QuizQuestion> $questions
  * @property-read int|null $questions_count
  *
@@ -29,7 +26,6 @@ use Modules\Academy\Database\Factories\QuizFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereAcademyLevelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Quiz whereMaxAttempts($value)
@@ -45,7 +41,6 @@ final class Quiz extends Model
     use HasFactory;
 
     protected $fillable = [
-        'academy_level_id',
         'title',
         'max_attempts',
         'min_days_between_attempts',
@@ -59,11 +54,6 @@ final class Quiz extends Model
             'min_days_between_attempts' => 'integer',
             'passing_score_percent' => 'integer',
         ];
-    }
-
-    public function level(): BelongsTo
-    {
-        return $this->belongsTo(AcademyLevel::class, 'academy_level_id');
     }
 
     public function questions(): HasMany

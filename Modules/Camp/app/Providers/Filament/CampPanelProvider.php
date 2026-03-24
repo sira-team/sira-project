@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Modules\Camp\Providers\Filament;
 
 use App\Models\Tenant;
-use App\Providers\Filament\TenantAdminPanelProvider;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -71,14 +68,6 @@ final class CampPanelProvider extends PanelProvider
             ])
             ->tenantMiddleware([
                 'tenant.feature:'.self::ID,
-            ])
-            ->navigationItems([
-                // Add a backlink to the tenant admin panel
-                NavigationItem::make()
-                    ->label(__('Back'))
-                    ->sort(-1000)
-                    ->icon('heroicon-o-home-modern')
-                    ->url(fn () => Filament::getPanel(TenantAdminPanelProvider::ID)->getUrl()),
             ]);
     }
 

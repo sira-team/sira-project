@@ -6,7 +6,6 @@ namespace Modules\Academy\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Modules\Academy\Database\Factories\AcademyLevelFactory;
 
@@ -18,7 +17,6 @@ use Modules\Academy\Database\Factories\AcademyLevelFactory;
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Quiz|null $quiz
  *
  * @method static \Modules\Academy\Database\Factories\AcademyLevelFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AcademyLevel newModelQuery()
@@ -51,11 +49,6 @@ final class AcademyLevel extends Model
             'duration_months' => 'integer',
             'sort_order' => 'integer',
         ];
-    }
-
-    public function quiz(): HasOne
-    {
-        return $this->hasOne(Quiz::class, 'academy_level_id');
     }
 
     protected static function newFactory(): AcademyLevelFactory
