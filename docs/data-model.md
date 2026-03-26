@@ -153,26 +153,25 @@ Tenant-scoped via `camp_id → tenant_id`. A tenant can only see contracts for t
 ### `camps`
 Created per tenant by a Camp Manager or Tenant Admin.
 
-| column | type | notes |
-|---|---|---|
-| id | bigint | |
-| tenant_id | FK tenants | |
-| name | string | e.g. "Sommer Camp 2025" |
-| starts_at | date | |
-| ends_at | date | |
-| capacity | integer | total participant registrations allowed |
-| price | decimal | price per participant in EUR |
-| target_group | enum | juniors, adults, mixed |
-| age_min | integer | nullable |
-| age_max | integer | nullable |
-| gender_policy | enum | mixed, separated, brothers_only, sisters_only |
-| food_provided | boolean | venue provides meals |
+| column                | type | notes |
+|-----------------------|---|---|
+| id                    | bigint | |
+| tenant_id             | FK tenants | |
+| name                  | string | e.g. "Sommer Camp 2025" |
+| starts_at             | date | |
+| ends_at               | date | |
+| capacity              | integer | total participant registrations allowed |
+| price                 | decimal | price per participant in EUR |
+| target_group          | enum | juniors, adults, mixed |
+| age_min               | integer | nullable |
+| age_max               | integer | nullable |
+| gender_policy         | enum | mixed, separated, brothers_only, sisters_only |
 | registration_opens_at | timestamp | nullable |
-| registration_deadline | timestamp | nullable |
-| iban | string | for Überweisung instructions in confirmation email |
-| bank_recipient | string | |
-| notes | text | nullable — internal notes |
-| deleted_at | timestamp | nullable |
+| registration_ends_at  | timestamp | nullable |
+| iban                  | string | for Überweisung instructions in confirmation email |
+| bank_recipient        | string | |
+| notes                 | text | nullable — internal notes |
+| deleted_at            | timestamp | nullable |
 
 **Three participant numbers exist:**
 1. `predicted_participants` — set during planning, drives cost calculator

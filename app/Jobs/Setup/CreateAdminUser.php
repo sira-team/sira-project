@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Setup;
 
+use App\Enums\Gender;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -34,6 +35,7 @@ final class CreateAdminUser
             'password' => bcrypt($admin['password']),
             'email_verified_at' => now(),
             'tenant_id' => Tenant::firstWhere('slug', config('setup.tenant.slug'))->id,
+            'gender' => Gender::Male,
         ]);
     }
 }

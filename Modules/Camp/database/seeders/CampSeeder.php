@@ -135,14 +135,14 @@ final class CampSeeder extends Seeder
         }
 
         $entries = [
-            ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male, 'status' => VisitorStatus::Confirmed],
-            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female, 'status' => VisitorStatus::Paid],
-            ['name' => 'Omar Benali', 'gender' => Gender::Male, 'status' => VisitorStatus::Confirmed],
-            ['name' => 'Safiya Öztürk', 'gender' => Gender::Female, 'status' => VisitorStatus::Confirmed],
-            ['name' => 'Hamza Khalil', 'gender' => Gender::Male, 'status' => VisitorStatus::Pending],
-            ['name' => 'Aisha Rahman', 'gender' => Gender::Female, 'status' => VisitorStatus::Pending],
-            ['name' => 'Yusuf Demir', 'gender' => Gender::Male, 'status' => VisitorStatus::Waitlisted],
-            ['name' => 'Nour Al-Din', 'gender' => Gender::Male, 'status' => VisitorStatus::Waitlisted],
+            ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2010-01-01'],
+            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Paid, 'date_of_birth' => '2015-05-15'],
+            ['name' => 'Omar Benali', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2012-08-01'],
+            ['name' => 'Safiya Öztürk', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2018-03-15'],
+            ['name' => 'Hamza Khalil', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Pending, 'date_of_birth' => '2018-09-20'],
+            ['name' => 'Aisha Rahman', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Pending, 'date_of_birth' => '2013-11-05'],
+            ['name' => 'Yusuf Demir', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted, 'date_of_birth' => '2017-07-10'],
+            ['name' => 'Nour Al-Din', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted, 'date_of_birth' => '2019-02-20'],
         ];
 
         $waitlistPosition = 1;
@@ -152,7 +152,12 @@ final class CampSeeder extends Seeder
 
             $visitor = Visitor::firstOrCreate(
                 ['email' => $email],
-                ['name' => $data['name'], 'phone' => null]
+                [
+                    'name' => $data['name'],
+                    'phone' => null,
+                    'gender' => $data['gender'],
+                    'date_of_birth' => $data['date_of_birth'],
+                ],
             );
 
             $isWaitlisted = $data['status'] === VisitorStatus::Waitlisted;

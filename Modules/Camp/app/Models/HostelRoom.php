@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,8 @@ use Modules\Camp\Database\Factories\HostelRoomFactory;
  * @property-read Hostel|null $hostel
  * @property-read Collection<int, CampVisitor> $campVisitors
  * @property-read int|null $camp_visitors_count
+ * @property-read Collection<int, CampUser> $campUsers
+ * @property-read int|null $camp_users_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newQuery()
@@ -57,6 +60,25 @@ final class HostelRoom extends Model
     public function campVisitors(): HasMany
     {
         return $this->hasMany(CampVisitor::class, 'room_id');
+    }
+
+    public function campUsers(): HasMany
+    {
+        return $this->hasMany(CampUser::class, 'room_id');
+    }
+
+    public function scopeAvailableForStaff(Builder $query, Camp $camp): void
+    {
+        $query
+            ->where('hostel_id', $camp->contract->hostel_id)
+            ->whereDoesntHave('campVisitors', fn (Builder $q) => $q->where('camp_id', $camp->id));
+    }
+
+    public function scopeAvailableForVisitors(Builder $query, Camp $camp): void
+    {
+        $query
+            ->where('hostel_id', $camp->contract->hostel_id)
+            ->whereDoesntHave('campUsers', fn (Builder $q) => $q->where('camp_id', $camp->id));
     }
 
     protected static function newFactory(): HostelRoomFactory

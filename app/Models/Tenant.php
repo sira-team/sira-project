@@ -59,7 +59,9 @@ final class Tenant extends Model
         'country',
         'email',
         'iban',
-        'bank_recipient_name',
+        'bank_recipient',
+        'bank_name',
+        'bic',
     ];
 
     public static function default(): static

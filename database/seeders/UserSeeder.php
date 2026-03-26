@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\FeatureFlag;
+use App\Enums\Gender;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -27,6 +28,7 @@ final class UserSeeder extends Seeder
                     'password' => 'password',
                     'email_verified_at' => now(),
                     'tenant_id' => $tenant->id,
+                    'gender' => $definition['gender'],
                 ]
             );
 
@@ -53,31 +55,36 @@ final class UserSeeder extends Seeder
         return [
             [
                 'email' => 'admin@example.com',
-                'name' => 'Admin User',
+                'name' => 'Ahmad Abdul-Rahman',
+                'gender' => Gender::Male,
                 'role' => 'tenant_admin',
                 'flags' => [FeatureFlag::GlobalAdmin, FeatureFlag::AcademyManager],
             ],
             [
                 'email' => 'expo@example.com',
-                'name' => 'Expo Manager',
+                'name' => 'Hussam Malek',
+                'gender' => Gender::Male,
                 'role' => 'expo_manager',
                 'flags' => [],
             ],
             [
                 'email' => 'camp@example.com',
-                'name' => 'Camp Manager',
+                'name' => 'Baraa Al-Hassan',
+                'gender' => Gender::Female,
                 'role' => 'camp_manager',
                 'flags' => [],
             ],
             [
                 'email' => 'academy@example.com',
-                'name' => 'Academy Manager',
+                'name' => 'Rawan Uthman',
+                'gender' => Gender::Female,
                 'role' => 'academy_manager',
                 'flags' => [],
             ],
             [
                 'email' => 'academy-manager@example.com',
-                'name' => 'Curriculum Manager',
+                'name' => 'Husseyn Firas',
+                'gender' => Gender::Male,
                 'role' => 'member',
                 'flags' => [FeatureFlag::AcademyManager],
             ],

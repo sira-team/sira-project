@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('camp_user', function (Blueprint $table) {
             $table->foreignId('camp_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('room_id')->nullable()->constrained('hostel_rooms', 'id')->cascadeOnDelete();
             $table->primary(['camp_id', 'user_id']);
         });
     }

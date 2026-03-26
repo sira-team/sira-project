@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('country')->default('DE');
             $table->string('email');
             $table->string('iban')->nullable();
-            $table->string('bank_recipient_name')->nullable();
+            $table->string('bank_recipient')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bic')->nullable();
             $table->timestamps();
         });
     }

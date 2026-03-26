@@ -141,10 +141,9 @@ Table: `camps`. Tenant-scoped, soft deletes.
 - `age_min` (nullable integer)
 - `age_max` (nullable integer)
 - `gender_policy` (enum: `all`, `male`, `female`)
-- `food_provided` (boolean)
 - `participants_bring_food` (boolean)
 - `registration_opens_at` (nullable datetime)
-- `registration_deadline` (nullable datetime)
+- `registration_ends_at` (nullable datetime)
 - `price_per_participant` (decimal, EUR)
 - `timestamps`
 
@@ -236,7 +235,7 @@ Table: `camp_expenses`. Tenant-scoped via `camp_id`.
 - Gender policy (`all`, `male`, `female`)
 - Food provided / participants bring food (toggles)
 - Registration open (toggle)
-- Registration opens at / deadline (optional datetime)
+- Registration opens at / ends_at (optional datetime)
 - Price per participant
 
 ---

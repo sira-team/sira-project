@@ -119,7 +119,9 @@ final class Camp extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'camp_user');
+        return $this->belongsToMany(User::class, 'camp_user')
+            ->using(CampUser::class)
+            ->withPivot('room_id');
     }
 
     public function visitors(): BelongsToMany
