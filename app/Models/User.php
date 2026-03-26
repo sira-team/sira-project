@@ -6,6 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\FeatureFlag;
+use App\Enums\Gender;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -22,6 +24,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Feature;
+use Modules\Camp\Models\Camp;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -86,6 +89,7 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         'password',
         'tenant_id',
         'email_verified_at',
+        'gender',
     ];
 
     /**
@@ -147,6 +151,11 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         return [$this->tenant];
     }
 
+    public function camps(): BelongsToMany
+    {
+        return $this->belongsToMany(Camp::class, 'camp_user');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -157,6 +166,7 @@ final class User extends Authenticatable implements FilamentUser, HasTenants
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'gender' => Gender::class,
         ];
     }
 }

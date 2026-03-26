@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Enums;
 
-enum CampExpenseCategory: string
+use Filament\Support\Colors\Color;
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum CampExpenseCategory: string implements HasColor, HasLabel
 {
     case Accommodation = 'accommodation';
     case Catering = 'catering';
@@ -14,7 +18,7 @@ enum CampExpenseCategory: string
     case Investment = 'investment';
     case Other = 'other';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::Accommodation => 'Accommodation',
@@ -24,6 +28,19 @@ enum CampExpenseCategory: string
             self::Transport => 'Transport',
             self::Investment => 'Investment',
             self::Other => 'Other',
+        };
+    }
+
+    public function getColor(): array
+    {
+        return match ($this) {
+            CampExpenseCategory::Accommodation => Color::Teal,
+            CampExpenseCategory::Catering => Color::Amber,
+            CampExpenseCategory::Materials => Color::Emerald,
+            CampExpenseCategory::Activities => Color::Indigo,
+            CampExpenseCategory::Transport => Color::Slate,
+            CampExpenseCategory::Investment => Color::Rose,
+            CampExpenseCategory::Other => Color::Gray,
         };
     }
 }

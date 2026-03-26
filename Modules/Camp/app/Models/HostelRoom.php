@@ -34,6 +34,7 @@ use Modules\Camp\Database\Factories\HostelRoomFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom whereUpdatedAt($value)
+ * @method static \Modules\Camp\Database\Factories\HostelRoomFactory factory($count = null, $state = [])
  *
  * @mixin \Eloquent
  */

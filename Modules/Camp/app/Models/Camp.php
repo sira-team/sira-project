@@ -8,6 +8,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Visitor;
 use App\Traits\BelongsToTenant;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampFactory;
 use Modules\Camp\Enums\CampGenderPolicy;
-use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Enums\VisitorStatus;
 
 /**
  * @property int $id
@@ -33,11 +34,9 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property int|null $age_min
  * @property int|null $age_max
  * @property CampGenderPolicy $gender_policy
- * @property bool $food_provided
- * @property bool $participants_bring_food
- * @property bool $registration_open
+ * @property-read bool $registration_is_open
  * @property Carbon|null $registration_opens_at
- * @property Carbon|null $registration_deadline
+ * @property Carbon|null $registration_ends_at
  * @property float $price_per_participant
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
@@ -62,6 +61,30 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withoutTrashed()
  *
+ * @property-read int $confirmed_visitors_count
+ * @property-read Collection<int, User> $users
+ * @property-read int|null $users_count
+ * @property-read CampVisitor|null $pivot
+ *
+ * @method static \Modules\Camp\Database\Factories\CampFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereGenderPolicy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereInternalNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp wherePricePerParticipant($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereRegistrationEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereRegistrationOpensAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereStartsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTargetGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 final class Camp extends Model
@@ -79,11 +102,8 @@ final class Camp extends Model
         'age_min',
         'age_max',
         'gender_policy',
-        'food_provided',
-        'participants_bring_food',
-        'registration_open',
         'registration_opens_at',
-        'registration_deadline',
+        'registration_ends_at',
         'price_per_participant',
     ];
 
@@ -97,10 +117,16 @@ final class Camp extends Model
         return $this->hasMany(CampVisitor::class);
     }
 
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'camp_user');
+    }
+
     public function visitors(): BelongsToMany
     {
         return $this->belongsToMany(Visitor::class, 'camp_visitor')
             ->withPivot('id', 'status', 'price', 'special_wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->using(CampVisitor::class)
             ->withTimestamps();
     }
 
@@ -119,10 +145,17 @@ final class Camp extends Model
         return (int) $this->starts_at->diffInDays($this->ends_at);
     }
 
+    public function registrationIsOpen(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->registration_opens_at?->isPast() && $this->registration_ends_at?->isFuture(),
+        );
+    }
+
     public function getConfirmedVisitorsCountAttribute(): int
     {
         return $this->visitors()
-            ->wherePivot('status', CampRegistrationStatus::Confirmed)
+            ->wherePivot('status', VisitorStatus::Confirmed)
             ->count();
     }
 
@@ -139,11 +172,8 @@ final class Camp extends Model
             'price_per_participant' => 'decimal:2',
             'target_group' => CampTargetGroup::class,
             'gender_policy' => CampGenderPolicy::class,
-            'food_provided' => 'boolean',
-            'participants_bring_food' => 'boolean',
-            'registration_open' => 'boolean',
             'registration_opens_at' => 'datetime',
-            'registration_deadline' => 'datetime',
+            'registration_ends_at' => 'datetime',
         ];
     }
 }

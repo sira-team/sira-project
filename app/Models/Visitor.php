@@ -42,6 +42,16 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereUpdatedAt($value)
  *
+ * @property-read VisitorChild|null $pivot
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereAllergies($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereDateOfBirth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereEmergencyContactName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereEmergencyContactPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedicalNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedications($value)
+ *
  * @mixin \Eloquent
  */
 final class Visitor extends Model

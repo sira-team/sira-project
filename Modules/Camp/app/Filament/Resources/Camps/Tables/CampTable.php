@@ -36,8 +36,8 @@ final class CampTable
                     ->sortable(),
                 TextColumn::make('confirmedRegistrationsCount')
                     ->label('Confirmed')
-                    ->counts('registrations'),
-                TextColumn::make('registration_open')
+                    ->counts('visitors'),
+                TextColumn::make('registration_is_open')
                     ->label('Open')
                     ->formatStateUsing(fn (bool $state) => $state ? 'Yes' : 'No'),
             ])

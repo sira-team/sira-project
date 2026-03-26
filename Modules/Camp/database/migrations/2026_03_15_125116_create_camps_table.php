@@ -25,14 +25,11 @@ return new class extends Migration
             $table->integer('age_min')->nullable();
             $table->integer('age_max')->nullable();
             $table->enum('gender_policy', ['all', 'male', 'female']);
-            $table->boolean('food_provided')->default(false);
-            $table->boolean('participants_bring_food')->default(false);
-            $table->boolean('registration_open')->default(true);
             $table->dateTime('registration_opens_at')->nullable();
-            $table->dateTime('registration_deadline')->nullable();
+            $table->dateTime('registration_ends_at')->nullable();
             $table->decimal('price_per_participant', 8, 2)->default(0);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

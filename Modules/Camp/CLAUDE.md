@@ -113,16 +113,15 @@ Table: `camp_contracts`. Tenant-scoped via `camp_id`. One contract per camp.
 - `camp_id` (FK → camps)
 - `hostel_id` (FK → hostels)
 - `price_per_person_per_night` (decimal)
-- `catering_included` (boolean — whether hostel catering is part of the contracted price)
-- `contracted_participants` (integer) — **the capacity ceiling for participant registrations**
-- `contracted_supporters` (integer)
+- `includes_catering` (boolean — whether hostel catering is part of the contracted price)
+- `contracted_beds` (integer) — **the capacity minimum for participant registrations**
 - `contract_date` (nullable date)
 - `notes` (nullable text — cancellation terms, special conditions)
 - `timestamps`
 
-> **Capacity lives here, not on `Camp`.** When checking whether a new registration fits, compare confirmed + pending `camp_visitor` records against `contracted_participants`. If no contract exists yet, capacity is unconstrained.
+> **Capacity lives here, not on `Camp`.** When checking whether a new registration fits, compare confirmed + pending `camp_visitor` records against `contracted_beds`. If no contract exists yet, capacity is unconstrained.
 
-> **Catering note:** many hostels offer catering and non-catering packages at different prices. `catering_included` reflects which was contracted. If catering is not included, food costs are expected as a `CampExpense` with category `catering`.
+> **Catering note:** many hostels offer catering and non-catering packages at different prices. `includes_catering` reflects which was contracted. If catering is not included, food costs are expected as a `CampExpense` with category `catering`.
 
 ---
 
@@ -144,7 +143,6 @@ Table: `camps`. Tenant-scoped, soft deletes.
 - `gender_policy` (enum: `all`, `male`, `female`)
 - `food_provided` (boolean)
 - `participants_bring_food` (boolean)
-- `registration_open` (boolean)
 - `registration_opens_at` (nullable datetime)
 - `registration_deadline` (nullable datetime)
 - `price_per_participant` (decimal, EUR)
@@ -157,7 +155,7 @@ Table: `camps`. Tenant-scoped, soft deletes.
 - `Camp::supportStaff()` — `belongsToMany(User::class, 'camp_user')`
 
 **Two participant numbers — never consolidate:**
-1. `contracted_participants` — from `CampContract`, the hostel's agreed ceiling
+1. `contracted_beds` — from `CampContract`, the hostel's agreed ceiling
 2. Confirmed visitors — live count of `camp_visitor` where `status = confirmed`
 
 ---
@@ -194,9 +192,6 @@ Table: `camp_user`. Pivot between `Camp` and `User` (internal users).
 **Columns:**
 - `camp_id` (FK → camps)
 - `user_id` (FK → users)
-
-Support staff consume beds from `camp_contract.contracted_supporters`.
-
 ---
 
 ### CampExpense
@@ -308,11 +303,11 @@ Displayed on Camp detail page. Shows a notice if no contract exists.
 **Note: negative totals are valid.** When `price_per_participant = 0` the total may show a deficit — do not add validation preventing this.
 
 **Displays:**
-- Accommodation cost: `contract.price_per_person_per_night × (contracted_participants + contracted_supporters) × camp_nights`
+- Accommodation cost: `contract.price_per_person_per_night × (contracted_beds) × camp_nights`
 - Catering status: "Catering included in accommodation price" or "Catering not included — see expenses"
 - Total expenses per category
 - Grand total
-- Price per participant: `(accommodation_cost + total_expenses) / contracted_participants`
+- Price per participant: `(accommodation_cost + total_expenses) / contracted_beds`
 
 Camp nights = `ends_at - starts_at` in days.
 
@@ -362,8 +357,8 @@ Run for each visitor in the submission:
 2. For child registrations: create child `Visitor` (no email), create `VisitorChild` pivot record with `parent_id`, `child_id`, and `relationship`
 3. For self-registration: update the guardian's own health/demographic fields; use guardian as the participant
 4. Count confirmed + pending `camp_visitor` records for this camp (via `$camp->campVisitors()`)
-5. If count < `camp_contract.contracted_participants` (or no contract) → status = `pending`
-6. If count ≥ `camp_contract.contracted_participants` → status = `waitlisted`, assign `waitlist_position`
+5. If count < `camp_contract.contracted_beds` (or no contract) → status = `pending`
+6. If count ≥ `camp_contract.contracted_beds` → status = `waitlisted`, assign `waitlist_position`
 7. Set `price` from `camp.price_per_participant` (apply sibling discounts here if applicable)
 8. Create `CampVisitor` record using `participant->id` as `visitor_id`
 9. Send notification email — IBAN sourced from `tenant.iban` / `tenant.bank_recipient_name`

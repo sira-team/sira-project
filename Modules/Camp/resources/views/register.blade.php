@@ -18,7 +18,7 @@
                 </div>
             @endif
 
-            @if (!$camp->registration_open)
+            @if (!$camp->registration_is_open)
                 <div class="bg-red-50 border border-red-200 rounded p-4">
                     <p class="text-red-800 font-medium">Registration is closed</p>
                 </div>

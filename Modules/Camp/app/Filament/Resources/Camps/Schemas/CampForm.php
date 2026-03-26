@@ -9,11 +9,12 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Models\Hostel;
 
 final class CampForm
 {
@@ -21,36 +22,58 @@ final class CampForm
     {
         return $schema->components([
             Section::make('Basic Information')
+                ->columns(2)
                 ->schema([
                     TextInput::make('name')
                         ->required()
+                        ->columnSpanFull()
                         ->maxLength(255),
-                    TextInput::make('price')
+                    TextInput::make('price_per_participant')
                         ->numeric()
+                        ->columnSpanFull()
                         ->required()
                         ->label('Price per Participant (EUR)'),
-                    TextInput::make('capacity')
-                        ->numeric()
-                        ->required()
-                        ->minValue(1)
-                        ->label('Total Capacity'),
-                ]),
-
-            Section::make('Dates & Duration')
-                ->schema([
                     DatePicker::make('starts_at')
                         ->required(),
                     DatePicker::make('ends_at')
                         ->required()
                         ->afterOrEqual('starts_at'),
                 ]),
-
+            Section::make('Contract')
+                ->schema([
+                    Fieldset::make('Contract')
+                        ->hiddenLabel()
+                        ->contained(false)
+                        ->relationship('contract')
+                        ->schema([
+                            Select::make('hostel_id')
+                                ->label('Hostel')
+                                ->options(Hostel::query()->pluck('name', 'id'))
+                                ->required()
+                                ->searchable(),
+                            TextInput::make('price_per_person_per_night')
+                                ->numeric()
+                                ->required()
+                                ->label('Price per Person per Night (EUR)'),
+                            TextInput::make('contracted_beds')
+                                ->numeric()
+                                ->required()
+                                ->minValue(1),
+                            DatePicker::make('contract_date'),
+                            Textarea::make('notes')
+                                ->columnSpanFull()
+                                ->rows(3)
+                                ->placeholder('e.g. cancellation terms, special conditions'),
+                        ]),
+                ]),
             Section::make('Target Group & Gender')
+                ->columns(2)
                 ->schema([
                     Select::make('target_group')
                         ->options(CampTargetGroup::class)
-                        ->required()
                         ->live(),
+                    Select::make('gender_policy')
+                        ->options(CampGenderPolicy::class),
                     TextInput::make('age_min')
                         ->numeric()
                         ->minValue(0)
@@ -59,46 +82,12 @@ final class CampForm
                         ->numeric()
                         ->minValue(0)
                         ->visible(fn (string $operation) => $operation !== 'view'),
-                    Select::make('gender_policy')
-                        ->options(CampGenderPolicy::class)
-                        ->required(),
                 ]),
-
-            Section::make('Food & Accommodations')
-                ->schema([
-                    Toggle::make('food_provided')
-                        ->label('Camp provides food'),
-                    Toggle::make('participants_bring_food')
-                        ->label('Participants bring food'),
-                ]),
-
             Section::make('Registration & Planning')
                 ->schema([
-                    Toggle::make('registration_open')
-                        ->label('Open for registration'),
                     DateTimePicker::make('registration_opens_at'),
-                    DateTimePicker::make('registration_deadline'),
-                    TextInput::make('predicted_participants')
-                        ->numeric()
-                        ->minValue(0)
-                        ->label('Predicted Participants'),
-                    TextInput::make('predicted_supporters')
-                        ->numeric()
-                        ->minValue(0)
-                        ->label('Predicted Supporters'),
-                ]),
-
-            Section::make('Banking & Notes')
-                ->schema([
-                    TextInput::make('iban')
-                        ->required()
-                        ->maxLength(34),
-                    TextInput::make('bank_recipient')
-                        ->required()
-                        ->maxLength(255),
-                    Textarea::make('notes')
-                        ->rows(3),
-                ]),
+                    DateTimePicker::make('registration_ends_at'),
+                ])->columns(2),
         ]);
     }
 }

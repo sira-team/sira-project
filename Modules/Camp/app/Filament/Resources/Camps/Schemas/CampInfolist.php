@@ -9,7 +9,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -23,60 +22,14 @@ final class CampInfolist
     {
         return $schema->components([
             Section::make('Basic Information')
-                ->columns(3)
+                ->columns(2)
                 ->schema([
                     TextEntry::make('name'),
-                    TextEntry::make('price')
+                    TextEntry::make('price_per_participant')
                         ->label('Price per Participant')
                         ->money('EUR'),
-                    TextEntry::make('capacity')
-                        ->label('Total Capacity')
-                        ->numeric(),
-                ]),
-
-            Section::make('Dates')
-                ->columns(2)
-                ->schema([
                     TextEntry::make('starts_at')->date('d.m.Y'),
                     TextEntry::make('ends_at')->date('d.m.Y'),
-                ]),
-
-            Section::make('Target Group & Gender')
-                ->columns(2)
-                ->schema([
-                    TextEntry::make('target_group')->badge(),
-                    TextEntry::make('gender_policy')->badge(),
-                    TextEntry::make('age_min')->label('Min Age')->placeholder('—'),
-                    TextEntry::make('age_max')->label('Max Age')->placeholder('—'),
-                ]),
-
-            Section::make('Food & Accommodations')
-                ->columns(2)
-                ->schema([
-                    IconEntry::make('food_provided')->label('Camp provides food')->boolean(),
-                    IconEntry::make('participants_bring_food')->label('Participants bring food')->boolean(),
-                ]),
-
-            Section::make('Registration & Planning')
-                ->columns(2)
-                ->schema([
-                    IconEntry::make('registration_open')->label('Open for registration')->boolean(),
-                    TextEntry::make('registration_opens_at')->dateTime()->placeholder('—'),
-                    TextEntry::make('registration_deadline')->dateTime()->placeholder('—'),
-                    TextEntry::make('predicted_participants')->label('Predicted Participants')->numeric()->placeholder('—'),
-                    TextEntry::make('predicted_supporters')->label('Predicted Supporters')->numeric()->placeholder('—'),
-                ]),
-
-            Section::make('Banking')
-                ->columns(2)
-                ->schema([
-                    TextEntry::make('iban')->label('IBAN'),
-                    TextEntry::make('bank_recipient')->label('Bank Recipient'),
-                ]),
-
-            Section::make('Notes')
-                ->schema([
-                    TextEntry::make('notes')->placeholder('—')->columnSpanFull(),
                 ]),
 
             Section::make('Hostel Contract')
@@ -122,12 +75,8 @@ final class CampInfolist
                         ->label('Price / Person / Night')
                         ->money('EUR')
                         ->placeholder('—'),
-                    TextEntry::make('contract.contracted_participants')
+                    TextEntry::make('contract.contracted_beds')
                         ->label('Contracted Participants')
-                        ->numeric()
-                        ->placeholder('—'),
-                    TextEntry::make('contract.contracted_supporters')
-                        ->label('Contracted Supporters')
                         ->numeric()
                         ->placeholder('—'),
                     TextEntry::make('contract.contract_date')
@@ -139,6 +88,23 @@ final class CampInfolist
                         ->placeholder('—')
                         ->columnSpanFull(),
                 ]),
+
+            Section::make('Target Group & Gender')
+                ->columns(2)
+                ->schema([
+                    TextEntry::make('target_group')->badge(),
+                    TextEntry::make('gender_policy')->badge(),
+                    TextEntry::make('age_min')->label('Min Age')->placeholder('—'),
+                    TextEntry::make('age_max')->label('Max Age')->placeholder('—'),
+                ]),
+
+            Section::make('Registration & Planning')
+                ->columns(2)
+                ->schema([
+                    TextEntry::make('registration_opens_at')->dateTime()->placeholder('—'),
+                    TextEntry::make('registration_ends_at')->dateTime()->placeholder('—'),
+                ]),
+
         ]);
     }
 
@@ -155,16 +121,11 @@ final class CampInfolist
                 ->label('Price per Person per Night (EUR)')
                 ->numeric()
                 ->required(),
-            TextInput::make('contracted_participants')
+            TextInput::make('contracted_beds')
                 ->label('Contracted Participants')
                 ->numeric()
                 ->required()
                 ->minValue(1),
-            TextInput::make('contracted_supporters')
-                ->label('Contracted Supporters')
-                ->numeric()
-                ->required()
-                ->minValue(0),
             DatePicker::make('contract_date'),
             Textarea::make('notes')
                 ->rows(3)

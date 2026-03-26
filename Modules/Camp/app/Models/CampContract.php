@@ -15,9 +15,8 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @property int $camp_id
  * @property int $hostel_id
  * @property float $price_per_person_per_night
- * @property bool $catering_included
- * @property int $contracted_participants
- * @property int $contracted_supporters
+ * @property bool $includes_catering
+ * @property int $contracted_beds
  * @property Carbon|null $contract_date
  * @property string|null $notes
  * @property Carbon|null $created_at
@@ -39,6 +38,9 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract wherePricePerPersonPerNight($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereUpdatedAt($value)
+ * @method static \Modules\Camp\Database\Factories\CampContractFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereContractedBeds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereIncludesCatering($value)
  *
  * @mixin \Eloquent
  */
@@ -52,9 +54,8 @@ final class CampContract extends Model
         'camp_id',
         'hostel_id',
         'price_per_person_per_night',
-        'catering_included',
-        'contracted_participants',
-        'contracted_supporters',
+        'includes_catering',
+        'contracted_beds',
         'contract_date',
         'notes',
     ];
@@ -78,7 +79,7 @@ final class CampContract extends Model
     {
         return [
             'price_per_person_per_night' => 'decimal:2',
-            'catering_included' => 'boolean',
+            'includes_catering' => 'boolean',
             'contract_date' => 'date',
         ];
     }

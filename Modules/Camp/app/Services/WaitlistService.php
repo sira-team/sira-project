@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Camp\Services;
 
 use Illuminate\Support\Facades\Mail;
-use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Mails\CampWaitlistPromotedMail;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
@@ -16,12 +16,12 @@ final class WaitlistService
     {
         /** @var CampVisitor $registration */
         $registration = $camp->campVisitors()
-            ->where('status', CampRegistrationStatus::Waitlisted)
+            ->where('status', VisitorStatus::Waitlisted)
             ->orderBy('waitlist_position')
             ->firstOrFail();
 
         $registration->update([
-            'status' => CampRegistrationStatus::Pending,
+            'status' => VisitorStatus::Pending,
             'waitlist_position' => null,
         ]);
 
@@ -35,7 +35,7 @@ final class WaitlistService
         $position = 1;
 
         $camp->campVisitors()
-            ->where('status', CampRegistrationStatus::Waitlisted)
+            ->where('status', VisitorStatus::Waitlisted)
             ->orderBy('registered_at')
             ->each(function ($registration) use (&$position) {
                 $registration->update(['waitlist_position' => $position++]);
@@ -45,7 +45,7 @@ final class WaitlistService
     public function assignPosition(Camp $camp): int
     {
         return ($camp->campVisitors()
-            ->where('status', CampRegistrationStatus::Waitlisted)
+            ->where('status', VisitorStatus::Waitlisted)
             ->max('waitlist_position') ?? 0) + 1;
     }
 }

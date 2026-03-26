@@ -9,6 +9,7 @@ enum CampTargetGroup: string
     case Children = 'children';
     case Teenagers = 'teenagers';
     case Adults = 'adults';
+    case Family = 'family';
 
     public function label(): string
     {
@@ -16,6 +17,7 @@ enum CampTargetGroup: string
             self::Children => 'Children',
             self::Adults => 'Adults',
             self::Teenagers => 'Teenagers',
+            self::Family => 'Family'
         };
     }
 }

@@ -15,6 +15,13 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Visitor $parent
  * @property-read Visitor $child
  *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild whereChildId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|VisitorChild whereRelationship($value)
+ *
  * @mixin \Eloquent
  */
 final class VisitorChild extends Pivot

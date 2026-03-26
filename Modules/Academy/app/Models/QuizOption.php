@@ -30,6 +30,7 @@ use Modules\Academy\Database\Factories\QuizOptionFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereQuizQuestionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizOption wherePoints($value)
  *
  * @mixin \Eloquent
  */

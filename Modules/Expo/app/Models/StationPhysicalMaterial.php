@@ -32,6 +32,10 @@ use Modules\Expo\Enums\PhysicalMaterialType;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StationPhysicalMaterial whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StationPhysicalMaterial whereUpdatedAt($value)
  *
+ * @property string|null $image
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StationPhysicalMaterial whereImage($value)
+ *
  * @mixin \Eloquent
  */
 final class StationPhysicalMaterial extends Model

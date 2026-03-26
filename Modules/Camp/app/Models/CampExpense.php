@@ -42,6 +42,7 @@ use Modules\Camp\Enums\CampExpenseCategory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereUserId($value)
+ * @method static \Modules\Camp\Database\Factories\CampExpenseFactory factory($count = null, $state = [])
  *
  * @mixin \Eloquent
  */

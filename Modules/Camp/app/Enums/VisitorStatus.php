@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Enums;
 
-enum CampRegistrationStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum VisitorStatus: string implements HasColor, HasLabel
 {
     case Pending = 'pending';
     case Waitlisted = 'waitlisted';
@@ -12,7 +15,7 @@ enum CampRegistrationStatus: string
     case Paid = 'paid';
     case Cancelled = 'cancelled';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::Pending => 'Pending',
@@ -23,12 +26,12 @@ enum CampRegistrationStatus: string
         };
     }
 
-    public function color(): string
+    public function getColor(): string
     {
         return match ($this) {
             self::Pending => 'warning',
             self::Waitlisted => 'info',
-            self::Confirmed => 'success',
+            self::Confirmed => 'primary',
             self::Paid => 'success',
             self::Cancelled => 'danger',
         };

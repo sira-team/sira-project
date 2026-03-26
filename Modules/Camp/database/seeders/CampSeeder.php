@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Database\Seeders;
 
+use App\Enums\Gender;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Visitor;
 use Illuminate\Database\Seeder;
 use Modules\Camp\Enums\CampExpenseCategory;
 use Modules\Camp\Enums\CampGenderPolicy;
-use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampContract;
 use Modules\Camp\Models\CampExpense;
@@ -36,9 +37,6 @@ final class CampSeeder extends Seeder
                 'price_per_participant' => 120.00,
                 'target_group' => CampTargetGroup::Children,
                 'gender_policy' => CampGenderPolicy::All,
-                'food_provided' => true,
-                'participants_bring_food' => false,
-                'registration_open' => true,
                 'description' => 'Schwerpunkt: Sira des Propheten ﷺ. Programm durch Jugendteam.',
                 'tenant_id' => $tenant->id,
             ]
@@ -49,9 +47,8 @@ final class CampSeeder extends Seeder
                 'camp_id' => $upcomingCamp->id,
                 'hostel_id' => $altenberg->id,
                 'price_per_person_per_night' => 38.50,
-                'catering_included' => true,
-                'contracted_participants' => 55,
-                'contracted_supporters' => 10,
+                'includes_catering' => true,
+                'contracted_beds' => 55,
                 'contract_date' => now()->subWeeks(3)->format('Y-m-d'),
                 'notes' => 'Stornierung bis 4 Wochen vor Beginn kostenfrei.',
             ]);
@@ -69,9 +66,6 @@ final class CampSeeder extends Seeder
                 'price_per_participant' => 95.00,
                 'target_group' => CampTargetGroup::Teenagers,
                 'gender_policy' => CampGenderPolicy::All,
-                'food_provided' => true,
-                'participants_bring_food' => false,
-                'registration_open' => false,
                 'internal_notes' => 'Sehr gut verlaufen. Unterlagen archiviert.',
                 'tenant_id' => $tenant->id,
             ]
@@ -82,9 +76,8 @@ final class CampSeeder extends Seeder
                 'camp_id' => $pastCamp->id,
                 'hostel_id' => $bonn->id,
                 'price_per_person_per_night' => 35.00,
-                'catering_included' => false,
-                'contracted_participants' => 40,
-                'contracted_supporters' => 8,
+                'includes_catering' => false,
+                'contracted_beds' => 40,
                 'contract_date' => now()->subMonths(7)->format('Y-m-d'),
                 'notes' => 'Abgerechnet und abgeschlossen.',
             ]);
@@ -142,14 +135,14 @@ final class CampSeeder extends Seeder
         }
 
         $entries = [
-            ['name' => 'Ahmad Al-Hassan', 'status' => CampRegistrationStatus::Confirmed],
-            ['name' => 'Maryam Yilmaz', 'status' => CampRegistrationStatus::Paid],
-            ['name' => 'Omar Benali', 'status' => CampRegistrationStatus::Confirmed],
-            ['name' => 'Safiya Öztürk', 'status' => CampRegistrationStatus::Confirmed],
-            ['name' => 'Hamza Khalil', 'status' => CampRegistrationStatus::Pending],
-            ['name' => 'Aisha Rahman', 'status' => CampRegistrationStatus::Pending],
-            ['name' => 'Yusuf Demir', 'status' => CampRegistrationStatus::Waitlisted],
-            ['name' => 'Nour Al-Din', 'status' => CampRegistrationStatus::Waitlisted],
+            ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female, 'status' => VisitorStatus::Paid],
+            ['name' => 'Omar Benali', 'gender' => Gender::Male, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Safiya Öztürk', 'gender' => Gender::Female, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Hamza Khalil', 'gender' => Gender::Male, 'status' => VisitorStatus::Pending],
+            ['name' => 'Aisha Rahman', 'gender' => Gender::Female, 'status' => VisitorStatus::Pending],
+            ['name' => 'Yusuf Demir', 'gender' => Gender::Male, 'status' => VisitorStatus::Waitlisted],
+            ['name' => 'Nour Al-Din', 'gender' => Gender::Male, 'status' => VisitorStatus::Waitlisted],
         ];
 
         $waitlistPosition = 1;
@@ -162,7 +155,7 @@ final class CampSeeder extends Seeder
                 ['name' => $data['name'], 'phone' => null]
             );
 
-            $isWaitlisted = $data['status'] === CampRegistrationStatus::Waitlisted;
+            $isWaitlisted = $data['status'] === VisitorStatus::Waitlisted;
 
             CampVisitor::create([
                 'camp_id' => $camp->id,

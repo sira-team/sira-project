@@ -18,9 +18,8 @@ return new class extends Migration
             $table->foreignId('camp_id')->constrained('camps')->cascadeOnDelete();
             $table->foreignId('hostel_id')->constrained()->cascadeOnDelete();
             $table->decimal('price_per_person_per_night', 8, 2);
-            $table->boolean('catering_included')->default(false);
-            $table->integer('contracted_participants');
-            $table->integer('contracted_supporters');
+            $table->boolean('includes_catering')->default(false);
+            $table->integer('contracted_beds')->default(0);
             $table->date('contract_date')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();

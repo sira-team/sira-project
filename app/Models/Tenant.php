@@ -41,6 +41,8 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankRecipientName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereIban($value)
  *
  * @mixin \Eloquent
  */

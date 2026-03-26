@@ -71,7 +71,8 @@ final class CampPanelProvider extends PanelProvider
             ->tenantMiddleware([
                 SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
-            ], isPersistent: true);
+            ], isPersistent: true)
+            ->resourceEditPageRedirect('view');
     }
 
     public function getNavigationLabel(): string

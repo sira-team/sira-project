@@ -18,14 +18,14 @@ final class CampWaitlistPromotedMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public function __construct(
-        public CampVisitor $registration,
+        public CampVisitor $visitor,
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Warteliste - Platz verfügbar - '.$this->registration->camp->name,
+            subject: 'Warteliste - Platz verfügbar - '.$this->visitor->camp->name,
         );
     }
 

@@ -27,9 +27,8 @@ final class CampContractFactory extends Factory
             'camp_id' => Camp::factory(),
             'hostel_id' => Hostel::factory(),
             'price_per_person_per_night' => fake()->randomFloat(2, 30, 60),
-            'catering_included' => fake()->boolean(),
-            'contracted_participants' => fake()->numberBetween(50, 150),
-            'contracted_supporters' => fake()->numberBetween(10, 30),
+            'includes_catering' => fake()->boolean(),
+            'contracted_beds' => fake()->numberBetween(50, 150),
             'contract_date' => fake()->date(),
             'notes' => fake()->sentence(),
         ];

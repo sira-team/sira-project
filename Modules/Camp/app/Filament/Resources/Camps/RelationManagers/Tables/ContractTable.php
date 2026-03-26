@@ -24,10 +24,7 @@ final class ContractTable
                     ->label('Price/Person/Night')
                     ->numeric(decimalPlaces: 2)
                     ->sortable(),
-                TextColumn::make('contracted_participants')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('contracted_supporters')
+                TextColumn::make('contracted_beds')
                     ->numeric()
                     ->sortable(),
             ])

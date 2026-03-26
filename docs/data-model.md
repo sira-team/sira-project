@@ -136,15 +136,14 @@ Only super_admin can manage these. Tenants read them when assigning beds.
 ### `jugendherberge_contracts`
 The negotiated agreement between a tenant and a JH for a specific camp. Bridges the global JH to the tenant's camp.
 
-| column | type | notes |
-|---|---|---|
-| id | bigint | |
-| jugendherberge_id | FK jugendherbergen | |
-| camp_id | FK camps | unique — one contract per camp |
-| price_per_person_per_night | decimal | what was negotiated |
-| contracted_participants | integer | max participants the JH agreed to host |
-| contracted_supporters | integer | max supporters the JH agreed to host |
-| contract_date | date | nullable |
+| column | type | notes                                             |
+|---|---|---------------------------------------------------|
+| id | bigint |                                                   |
+| jugendherberge_id | FK jugendherbergen |                                                   |
+| camp_id | FK camps | unique — one contract per camp                    |
+| price_per_person_per_night | decimal | what was negotiated                               |
+| contracted_beds | integer | min participants the JH agreed to host            |
+| contract_date | date | nullable                                          |
 | notes | text | nullable — cancellation terms, special conditions |
 
 Tenant-scoped via `camp_id → tenant_id`. A tenant can only see contracts for their own camps.
@@ -168,10 +167,6 @@ Created per tenant by a Camp Manager or Tenant Admin.
 | age_max | integer | nullable |
 | gender_policy | enum | mixed, separated, brothers_only, sisters_only |
 | food_provided | boolean | venue provides meals |
-| participants_bring_food | boolean | participants cook/bring food together |
-| predicted_participants | integer | nullable — planning estimate, drives cost calculator |
-| predicted_supporters | integer | nullable — planning estimate |
-| registration_open | boolean | |
 | registration_opens_at | timestamp | nullable |
 | registration_deadline | timestamp | nullable |
 | iban | string | for Überweisung instructions in confirmation email |
@@ -181,7 +176,7 @@ Created per tenant by a Camp Manager or Tenant Admin.
 
 **Three participant numbers exist:**
 1. `predicted_participants` — set during planning, drives cost calculator
-2. `contracted_participants` — from JugendherbergeContract, the legal/logistical ceiling
+2. `contracted_beds` — from JugendherbergeContract, the legal/logistical ceiling
 3. confirmed registrations — count of `camp_registrations` where `status = confirmed` (derived, not stored)
 
 These are intentionally separate. Do not try to consolidate them.

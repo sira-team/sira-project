@@ -25,14 +25,10 @@ final class ContractForm
                 ->numeric()
                 ->required()
                 ->label('Price per Person per Night (EUR)'),
-            TextInput::make('contracted_participants')
+            TextInput::make('contracted_beds')
                 ->numeric()
                 ->required()
                 ->minValue(1),
-            TextInput::make('contracted_supporters')
-                ->numeric()
-                ->required()
-                ->minValue(0),
             DatePicker::make('contract_date'),
             Textarea::make('notes')
                 ->rows(3)

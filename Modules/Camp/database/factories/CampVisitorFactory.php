@@ -6,7 +6,7 @@ namespace Modules\Camp\Database\Factories;
 
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
 
@@ -27,7 +27,7 @@ final class CampVisitorFactory extends Factory
         return [
             'camp_id' => Camp::factory(),
             'visitor_id' => Visitor::factory(),
-            'status' => CampRegistrationStatus::Pending,
+            'status' => VisitorStatus::Pending,
             'price' => fake()->randomFloat(2, 80, 200),
             'registered_at' => now(),
         ];
@@ -36,14 +36,14 @@ final class CampVisitorFactory extends Factory
     public function confirmed(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => CampRegistrationStatus::Confirmed,
+            'status' => VisitorStatus::Confirmed,
         ]);
     }
 
     public function waitlisted(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => CampRegistrationStatus::Waitlisted,
+            'status' => VisitorStatus::Waitlisted,
             'waitlist_position' => 1,
         ]);
     }
@@ -51,14 +51,14 @@ final class CampVisitorFactory extends Factory
     public function cancelled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => CampRegistrationStatus::Cancelled,
+            'status' => VisitorStatus::Cancelled,
         ]);
     }
 
     public function paid(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => CampRegistrationStatus::Paid,
+            'status' => VisitorStatus::Paid,
         ]);
     }
 }

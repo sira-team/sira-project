@@ -8,11 +8,11 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\CampVisitorForm;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\CampRegistrationsTable;
+use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\CampVisitorsTable;
 
 final class CampVisitorsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'registrations';
+    protected static string $relationship = 'campVisitors';
 
     public function form(Schema $schema): Schema
     {
@@ -21,7 +21,7 @@ final class CampVisitorsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return CampRegistrationsTable::configure($table);
+        return CampVisitorsTable::configure($table);
     }
 
     public function canCreate(): bool

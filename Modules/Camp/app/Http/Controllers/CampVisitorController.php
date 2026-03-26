@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
-use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Mails\CampRegistrationReceivedMail;
 use Modules\Camp\Mails\CampWaitlistedMail;
 use Modules\Camp\Models\Camp;
@@ -26,7 +26,7 @@ final class CampVisitorController
     public function show(Tenant $tenant, Camp $camp): View
     {
         abort_unless($camp->tenant_id === $tenant->id, 404);
-        abort_unless($camp->registration_open, 403, 'Registration is not open for this camp');
+        abort_unless($camp->registration_is_open, 403, 'Registration is not open for this camp');
 
         return view('camp::register', compact('camp', 'tenant'));
     }
@@ -34,7 +34,7 @@ final class CampVisitorController
     public function store(Tenant $tenant, Camp $camp, WaitlistService $waitlistService): RedirectResponse
     {
         abort_unless($camp->tenant_id === $tenant->id, 404);
-        abort_unless($camp->registration_open, 403);
+        abort_unless($camp->registration_is_open, 403);
 
         $validated = $this->validate(request(), [
             'target_group' => 'required|in:myself,child',
@@ -64,10 +64,10 @@ final class CampVisitorController
             );
 
             $isChild = $validated['target_group'] === 'child';
-            $capacity = $camp->contract?->contracted_participants;
+            $capacity = $camp->contract?->contracted_beds;
             $confirmedCount = $camp->campVisitors()
                 ->lockForUpdate()
-                ->whereIn('status', [CampRegistrationStatus::Confirmed, CampRegistrationStatus::Pending])
+                ->whereIn('status', [VisitorStatus::Confirmed, VisitorStatus::Pending])
                 ->count();
 
             foreach ($validated['participants'] as $participantData) {
@@ -102,10 +102,10 @@ final class CampVisitorController
                 }
 
                 if ($capacity === null || $confirmedCount < $capacity) {
-                    $status = CampRegistrationStatus::Pending;
+                    $status = VisitorStatus::Pending;
                     $waitlistPosition = null;
                 } else {
-                    $status = CampRegistrationStatus::Waitlisted;
+                    $status = VisitorStatus::Waitlisted;
                     $waitlistPosition = $waitlistService->assignPosition($camp);
                 }
 
@@ -118,7 +118,7 @@ final class CampVisitorController
                     'registered_at' => now(),
                 ]);
 
-                if ($status === CampRegistrationStatus::Pending) {
+                if ($status === VisitorStatus::Pending) {
                     Mail::queue(new CampRegistrationReceivedMail($registration));
                 } else {
                     Mail::queue(new CampWaitlistedMail($registration));

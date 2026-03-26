@@ -155,7 +155,7 @@ class CampForm
                 ]),
             Section::make('Registration')
                 ->schema([
-                    Toggle::make('registration_open'),
+                    Toggle::make('registration_is_open'),
                     // ...
                 ]),
         ]);
@@ -191,7 +191,7 @@ class CampTable
                     ->sortable(),
                 TextColumn::make('ends_at')
                     ->date(),
-                ToggleColumn::make('registration_open'),
+                ToggleColumn::make('registration_is_open'),
             ])
             ->filters([
                 // filters here

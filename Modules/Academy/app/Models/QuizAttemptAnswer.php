@@ -24,6 +24,12 @@ use Modules\Academy\Database\Factories\QuizAttemptAnswerFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereQuizAttemptId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereQuizQuestionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereSelectedOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttemptAnswer whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

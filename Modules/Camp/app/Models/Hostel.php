@@ -45,6 +45,7 @@ use Modules\Camp\Database\Factories\HostelFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel whereWebsite($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel withoutTrashed()
+ * @method static \Modules\Camp\Database\Factories\HostelFactory factory($count = null, $state = [])
  *
  * @mixin \Eloquent
  */

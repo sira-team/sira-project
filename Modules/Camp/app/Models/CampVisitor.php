@@ -6,17 +6,17 @@ namespace Modules\Camp\Models;
 
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampVisitorFactory;
-use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Enums\VisitorStatus;
 
 /**
  * @property int $id
  * @property int $camp_id
  * @property int $visitor_id
- * @property CampRegistrationStatus $status
+ * @property VisitorStatus $status
  * @property float $price
  * @property string|null $special_wishes
  * @property int|null $room_id
@@ -41,10 +41,12 @@ use Modules\Camp\Enums\CampRegistrationStatus;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereVisitorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWaitlistPosition($value)
+ * @method static \Modules\Camp\Database\Factories\CampVisitorFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereSpecialWishes($value)
  *
  * @mixin \Eloquent
  */
-final class CampVisitor extends Model
+final class CampVisitor extends Pivot
 {
     use HasFactory;
 
@@ -84,7 +86,7 @@ final class CampVisitor extends Model
     protected function casts(): array
     {
         return [
-            'status' => CampRegistrationStatus::class,
+            'status' => VisitorStatus::class,
             'price' => 'decimal:2',
             'registered_at' => 'datetime',
         ];

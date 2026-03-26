@@ -22,38 +22,37 @@ final class CampCostCalculatorWidget extends StatsOverviewWidget
         $nights = $camp->nights;
         $totalExpenses = (float) $camp->expenses()->sum('amount');
         $accommodationCost = 0;
+        $confirmedCount = $camp->visitors->count();
+        $usersCount = $camp->users->count();
 
-        if ($camp->contract) {
-            $totalParticipants = ($camp->predicted_participants ?? 0) + ($camp->predicted_supporters ?? 0);
-            $accommodationCost = $camp->contract->price_per_person_per_night * $totalParticipants * $nights;
-        }
+        $participants = max($camp->contract->contracted_beds, ($confirmedCount + $usersCount));
+        $accommodationCost = $camp->contract->price_per_person_per_night * $participants * $nights;
 
         $grandTotal = $accommodationCost + $totalExpenses;
-        $confirmedCount = $camp->visitors_count;
 
-        $predictedPrice = ($camp->predicted_participants ?? 0) > 0
-            ? $grandTotal / $camp->contract->hostel->rooms->sum('capacity')
-            : 0;
+        $predictedPrice = $grandTotal / max(1, $confirmedCount);
 
-        $confirmedPrice = $confirmedCount > 0
-            ? $grandTotal / $confirmedCount
-            : 0;
+        $confirmedPrice = $grandTotal / max(1, $confirmedCount);
+
+        $netPerParticipant = $camp->price_per_participant - $predictedPrice;
+
+        $covered = $camp->price_per_participant * $confirmedCount;
 
         return [
             Stat::make('Accommodation Cost', '€'.number_format($accommodationCost, 2))
                 ->description($nights.' nights'),
 
-            Stat::make('Total Expenses', '€'.number_format($totalExpenses, 2))
+            Stat::make('Other Expenses', '€'.number_format($totalExpenses, 2))
                 ->description('All categories'),
 
             Stat::make('Grand Total', '€'.number_format($grandTotal, 2))
                 ->description('Accommodation + Expenses')
                 ->color($grandTotal < 0 ? 'danger' : 'success'),
 
-            Stat::make('Predicted Price/Participant', '€'.number_format($predictedPrice, 2))
-                ->description('Based on '.($camp->predicted_participants ?? 0).' participants'),
+            Stat::make('Net profit', '€'.number_format($covered - $grandTotal, 2))
+                ->description('Based on '.$confirmedCount.' confirmed'),
 
-            Stat::make('Confirmed Price/Participant', '€'.number_format($confirmedPrice, 2))
+            Stat::make('Covered Participants', '€'.number_format($covered, 2))
                 ->description('Based on '.$confirmedCount.' confirmed'),
         ];
     }

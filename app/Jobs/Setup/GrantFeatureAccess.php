@@ -38,10 +38,10 @@ final class GrantFeatureAccess
         $user->syncRoles($tenant->roles);
 
         Feature::for($user)->activate(FeatureFlag::GlobalAdmin->value);
-        Feature::for($user)->activate(FeatureFlag::AcademyManager->value);
+        Feature::for($user)->deactivate(FeatureFlag::AcademyManager->value);
         Feature::for($tenant)->activate(FeatureFlag::TenantAdmin->value);
-        Feature::for($tenant)->activate(FeatureFlag::AcademyPanel->value);
-        Feature::for($tenant)->activate(FeatureFlag::CampPanel->value);
-        Feature::for($tenant)->activate(FeatureFlag::ExpoPanel->value);
+        Feature::for($tenant)->deactivate(FeatureFlag::AcademyPanel->value);
+        Feature::for($tenant)->active(FeatureFlag::CampPanel->value);
+        Feature::for($tenant)->deactivate(FeatureFlag::ExpoPanel->value);
     }
 }

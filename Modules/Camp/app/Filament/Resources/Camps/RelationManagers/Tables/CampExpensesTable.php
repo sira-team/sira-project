@@ -10,7 +10,6 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\Camp\Enums\CampExpenseCategory;
 
 final class CampExpensesTable
 {
@@ -19,16 +18,7 @@ final class CampExpensesTable
         return $table
             ->columns([
                 TextColumn::make('category')
-                    ->badge()
-                    ->color(fn (CampExpenseCategory $state) => match ($state) {
-                        CampExpenseCategory::Accommodation => 'info',
-                        CampExpenseCategory::Catering => 'success',
-                        CampExpenseCategory::Materials => 'warning',
-                        CampExpenseCategory::Activities => 'warning',
-                        CampExpenseCategory::Transport => 'danger',
-                        CampExpenseCategory::Investment => 'primary',
-                        CampExpenseCategory::Other => 'secondary',
-                    }),
+                    ->badge(),
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),

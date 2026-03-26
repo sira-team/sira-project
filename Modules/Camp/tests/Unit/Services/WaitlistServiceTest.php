@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
 
@@ -12,13 +12,13 @@ describe('WaitlistService', function () {
         $camp = Camp::factory()->create(['tenant_id' => $tenant->id]);
         $first = CampVisitor::factory()->create([
             'camp_id' => $camp->id,
-            'status' => CampRegistrationStatus::Waitlisted,
+            'status' => VisitorStatus::Waitlisted,
             'waitlist_position' => 1,
             'registered_at' => now()->subMinutes(10),
         ]);
         $second = CampVisitor::factory()->create([
             'camp_id' => $camp->id,
-            'status' => CampRegistrationStatus::Waitlisted,
+            'status' => VisitorStatus::Waitlisted,
             'waitlist_position' => 2,
             'registered_at' => now()->subMinutes(5),
         ]);
@@ -36,7 +36,7 @@ describe('WaitlistService', function () {
         $camp = Camp::factory()->create(['tenant_id' => $tenant->id]);
         $regs = collect(range(1, 3))->map(fn ($i) => CampVisitor::factory()->create([
             'camp_id' => $camp->id,
-            'status' => CampRegistrationStatus::Waitlisted,
+            'status' => VisitorStatus::Waitlisted,
             'waitlist_position' => $i,
             'registered_at' => now()->addMinutes($i),
         ]));
