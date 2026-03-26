@@ -7,8 +7,12 @@ namespace Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
+use Modules\Academy\Models\Quiz;
 use Modules\Academy\Traits\SyncsQuizQuestions;
 
+/**
+ * @property Quiz $record
+ */
 final class EditQuiz extends EditRecord
 {
     use SyncsQuizQuestions;

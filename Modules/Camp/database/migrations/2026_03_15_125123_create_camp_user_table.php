@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('hostel_rooms', function (Blueprint $table) {
-            $table->string('gender')->default('mixed');
+        Schema::create('camp_user', function (Blueprint $table) {
+            $table->foreignId('camp_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->primary(['camp_id', 'user_id']);
         });
     }
 
@@ -23,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('hostel_rooms', function (Blueprint $table) {
-            $table->dropColumn('gender');
-        });
+        Schema::dropIfExists('camp_user');
     }
 };

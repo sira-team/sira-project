@@ -6,18 +6,16 @@ namespace Modules\Camp\Enums;
 
 enum CampGenderPolicy: string
 {
-    case Mixed = 'mixed';
-    case Separated = 'separated';
-    case BrothersOnly = 'brothers_only';
-    case SistersOnly = 'sisters_only';
+    case All = 'all';
+    case Male = 'male';
+    case Female = 'female';
 
     public function label(): string
     {
         return match ($this) {
-            self::Mixed => 'Mixed',
-            self::Separated => 'Separated (gender-specific rooms)',
-            self::BrothersOnly => 'Brothers Only',
-            self::SistersOnly => 'Sisters Only',
+            self::All => 'all',
+            self::Male => 'male',
+            self::Female => 'female',
         };
     }
 }

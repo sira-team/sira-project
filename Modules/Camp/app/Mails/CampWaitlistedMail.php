@@ -11,14 +11,14 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Modules\Camp\Models\CampRegistration;
+use Modules\Camp\Models\CampVisitor;
 
 final class CampWaitlistedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public function __construct(
-        public CampRegistration $registration,
+        public CampVisitor $registration,
     ) {}
 
     public function envelope(): Envelope

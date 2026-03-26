@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Modules\Camp\Database\Factories\HostelFactory;
 
 /**
  * @property int $id
@@ -24,7 +25,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, HostelRoom> $rooms
  * @property-read int|null $rooms_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, HostelContract> $contracts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CampContract> $contracts
  * @property-read int|null $contracts_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel newModelQuery()
@@ -68,6 +69,11 @@ final class Hostel extends Model
 
     public function contracts(): HasMany
     {
-        return $this->hasMany(HostelContract::class);
+        return $this->hasMany(CampContract::class);
+    }
+
+    protected static function newFactory(): HostelFactory
+    {
+        return HostelFactory::new();
     }
 }

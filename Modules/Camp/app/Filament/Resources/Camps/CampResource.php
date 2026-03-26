@@ -10,7 +10,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampExpensesRelationManager;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampRegistrationsRelationManager;
+use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampVisitorsRelationManager;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
@@ -43,7 +43,7 @@ final class CampResource extends Resource
     {
         return [
             CampExpensesRelationManager::class,
-            CampRegistrationsRelationManager::class,
+            CampVisitorsRelationManager::class,
         ];
     }
 

@@ -85,56 +85,56 @@ final class CampInfolist
                     Action::make('createContract')
                         ->label('Add Contract')
                         ->icon(Heroicon::OutlinedPlus)
-                        ->visible(fn (Camp $record) => $record->hostelContract === null)
+                        ->visible(fn (Camp $record) => $record->contract === null)
                         ->schema(self::contractFormFields())
                         ->action(function (array $data, Camp $record) {
-                            $record->hostelContract()->create($data);
-                            $record->load('hostelContract.hostel');
+                            $record->contract()->create($data);
+                            $record->load('contract.hostel');
                         }),
 
                     Action::make('editContract')
                         ->label('Edit')
                         ->icon(Heroicon::OutlinedPencilSquare)
-                        ->visible(fn (Camp $record) => $record->hostelContract !== null)
-                        ->fillForm(fn (Camp $record) => $record->hostelContract->toArray())
+                        ->visible(fn (Camp $record) => $record->contract !== null)
+                        ->fillForm(fn (Camp $record) => $record->contract->toArray())
                         ->schema(self::contractFormFields())
                         ->action(function (array $data, Camp $record) {
-                            $record->hostelContract->update($data);
-                            $record->load('hostelContract.hostel');
+                            $record->contract->update($data);
+                            $record->load('contract.hostel');
                         }),
 
                     Action::make('deleteContract')
                         ->label('Delete')
                         ->icon(Heroicon::OutlinedTrash)
                         ->color('danger')
-                        ->visible(fn (Camp $record) => $record->hostelContract !== null)
+                        ->visible(fn (Camp $record) => $record->contract !== null)
                         ->requiresConfirmation()
                         ->action(function (Camp $record) {
-                            $record->hostelContract->delete();
-                            $record->unsetRelation('hostelContract');
+                            $record->contract->delete();
+                            $record->unsetRelation('contract');
                         }),
                 ])
                 ->schema([
-                    TextEntry::make('hostelContract.hostel.name')
+                    TextEntry::make('contract.hostel.name')
                         ->label('Hostel')
                         ->placeholder('No contract yet'),
-                    TextEntry::make('hostelContract.price_per_person_per_night')
+                    TextEntry::make('contract.price_per_person_per_night')
                         ->label('Price / Person / Night')
                         ->money('EUR')
                         ->placeholder('—'),
-                    TextEntry::make('hostelContract.contracted_participants')
+                    TextEntry::make('contract.contracted_participants')
                         ->label('Contracted Participants')
                         ->numeric()
                         ->placeholder('—'),
-                    TextEntry::make('hostelContract.contracted_supporters')
+                    TextEntry::make('contract.contracted_supporters')
                         ->label('Contracted Supporters')
                         ->numeric()
                         ->placeholder('—'),
-                    TextEntry::make('hostelContract.contract_date')
+                    TextEntry::make('contract.contract_date')
                         ->label('Contract Date')
                         ->date()
                         ->placeholder('—'),
-                    TextEntry::make('hostelContract.notes')
+                    TextEntry::make('contract.notes')
                         ->label('Notes')
                         ->placeholder('—')
                         ->columnSpanFull(),

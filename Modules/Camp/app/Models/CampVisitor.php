@@ -1,0 +1,92 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Camp\Models;
+
+use App\Models\Visitor;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+use Modules\Camp\Database\Factories\CampVisitorFactory;
+use Modules\Camp\Enums\CampRegistrationStatus;
+
+/**
+ * @property int $id
+ * @property int $camp_id
+ * @property int $visitor_id
+ * @property CampRegistrationStatus $status
+ * @property float $price
+ * @property string|null $special_wishes
+ * @property int|null $room_id
+ * @property int|null $waitlist_position
+ * @property Carbon $registered_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Camp|null $camp
+ * @property-read Visitor|null $visitor
+ * @property-read HostelRoom|null $room
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCampId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereRegisteredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereRoomId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereVisitorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWaitlistPosition($value)
+ *
+ * @mixin \Eloquent
+ */
+final class CampVisitor extends Model
+{
+    use HasFactory;
+
+    protected $table = 'camp_visitor';
+
+    protected $fillable = [
+        'camp_id',
+        'visitor_id',
+        'status',
+        'price',
+        'special_wishes',
+        'room_id',
+        'waitlist_position',
+        'registered_at',
+    ];
+
+    public function camp(): BelongsTo
+    {
+        return $this->belongsTo(Camp::class);
+    }
+
+    public function visitor(): BelongsTo
+    {
+        return $this->belongsTo(Visitor::class);
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(HostelRoom::class, 'room_id');
+    }
+
+    protected static function newFactory(): CampVisitorFactory
+    {
+        return CampVisitorFactory::new();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'status' => CampRegistrationStatus::class,
+            'price' => 'decimal:2',
+            'registered_at' => 'datetime',
+        ];
+    }
+}

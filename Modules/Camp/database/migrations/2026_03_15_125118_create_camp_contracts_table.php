@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hostel_contracts', function (Blueprint $table) {
+        Schema::create('camp_contracts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('camp_id')->constrained('camps')->cascadeOnDelete();
             $table->foreignId('hostel_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('camp_id')->nullable()->constrained('camps')->cascadeOnDelete();
             $table->decimal('price_per_person_per_night', 8, 2);
+            $table->boolean('catering_included')->default(false);
             $table->integer('contracted_participants');
             $table->integer('contracted_supporters');
             $table->date('contract_date')->nullable();
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hostel_contracts');
+        Schema::dropIfExists('camp_contracts');
     }
 };

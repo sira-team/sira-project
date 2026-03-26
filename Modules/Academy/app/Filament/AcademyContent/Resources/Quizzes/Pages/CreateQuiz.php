@@ -6,8 +6,12 @@ namespace Modules\Academy\Filament\AcademyContent\Resources\Quizzes\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
 use Modules\Academy\Filament\AcademyContent\Resources\Quizzes\QuizResource;
+use Modules\Academy\Models\Quiz;
 use Modules\Academy\Traits\SyncsQuizQuestions;
 
+/**
+ * @property Quiz|null $record
+ */
 final class CreateQuiz extends CreateRecord
 {
     use SyncsQuizQuestions;

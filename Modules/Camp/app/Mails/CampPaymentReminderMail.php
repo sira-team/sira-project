@@ -11,21 +11,21 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Modules\Camp\Models\CampRegistration;
+use Modules\Camp\Models\CampVisitor;
 
 final class CampPaymentReminderMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public function __construct(
-        public CampRegistration $registration,
+        public CampVisitor $visitor,
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Zahlungserinnerung - '.$this->registration->camp->name,
+            subject: 'Zahlungserinnerung - '.$this->visitor->camp->name,
         );
     }
 

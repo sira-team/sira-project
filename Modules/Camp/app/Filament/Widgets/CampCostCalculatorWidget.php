@@ -23,16 +23,16 @@ final class CampCostCalculatorWidget extends StatsOverviewWidget
         $totalExpenses = (float) $camp->expenses()->sum('amount');
         $accommodationCost = 0;
 
-        if ($camp->hostelContract) {
+        if ($camp->contract) {
             $totalParticipants = ($camp->predicted_participants ?? 0) + ($camp->predicted_supporters ?? 0);
-            $accommodationCost = $camp->hostelContract->price_per_person_per_night * $totalParticipants * $nights;
+            $accommodationCost = $camp->contract->price_per_person_per_night * $totalParticipants * $nights;
         }
 
         $grandTotal = $accommodationCost + $totalExpenses;
-        $confirmedCount = $camp->confirmedRegistrationsCount;
+        $confirmedCount = $camp->visitors_count;
 
         $predictedPrice = ($camp->predicted_participants ?? 0) > 0
-            ? $grandTotal / $camp->predicted_participants
+            ? $grandTotal / $camp->contract->hostel->rooms->sum('capacity')
             : 0;
 
         $confirmedPrice = $confirmedCount > 0

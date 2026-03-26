@@ -419,7 +419,7 @@ This file describes the architecture, conventions, and business logic of the Sir
 
 ## Module Documentation
 
-- `Modules/Camp/CLAUDE.md` — camp registration, waitlist, room assignment, notifications
+- `Modules/Camp/CLAUDE.md` — hostels, camp contracts, visitor registration, waitlist, room assignment, notifications
 - `Modules/Expo/CLAUDE.md` — expo requests, station inventory, file downloads
 - `Modules/Academy/CLAUDE.md` — global curriculum management and tenant academy access
 
@@ -450,7 +450,6 @@ A multi-tenant Laravel application for a network of Islamic educational Vereins 
 ### coolsam/modules
 
 Packagist name is `coolsam/modules`, GitHub is `savannabits/filament-modules`.
-
 ```bash
 composer require coolsam/modules
 php artisan modules:install
@@ -508,7 +507,7 @@ Forms\Components\Select::make('roles')
     ->relationship('roles', 'name')
     ->saveRelationshipsUsing(function (Model $record, $state) {
         $record->roles()->syncWithPivotValues($state, [
-            config('permission.column_names.tenant_foreign_key') => getPermissionsTeamtId()
+            config('permission.column_names.tenant_foreign_key') => getPermissionsTeamId()
         ]);
     })
     ->multiple()
@@ -600,7 +599,6 @@ Tenancy is implemented manually using Filament's built-in multi-tenancy support.
 ### Tenant Resolution
 
 Resolved from subdomain via middleware registered in `bootstrap/app.php`.
-
 ```
 bonn.sira-app.de  →  Tenant where slug = 'bonn'
 koeln.sira-app.de →  Tenant where slug = 'koeln'
@@ -643,6 +641,9 @@ External people who submit public forms. No Filament access. Will eventually hav
 
 - Guard: `visitor`
 - Model: `App\Models\Visitor`
+- Self-referencing: a visitor can be a parent (root, `parent_id = null`) or a child (`parent_id` FK → `visitors.id`)
+- Child visitors have no email — notifications always go to the root visitor's email
+- All participant health data (date of birth, gender, allergies, medications, emergency contact) lives directly on the `Visitor` model — there is no separate Participant model
 
 Never mix these two. Do not use `users` for visitors. Do not use `visitors` for Filament users.
 
@@ -721,7 +722,6 @@ Camp panel is always available — no flag.
 | `academy-content` | Access to Academy Content Panel |
 
 ### Artisan Commands
-
 ```bash
 php artisan pennant:grant --tenant={id} --feature={flag}
 php artisan pennant:revoke --tenant={id} --feature={flag}
@@ -738,6 +738,17 @@ No UI for flag management. CLI only. Developer only.
 Fires on `Tenant::created`. Must:
 1. Seed all tenant roles scoped to the new `tenant_id`
 2. If a tenant owner user ID is provided (from Super Admin Panel creation flow): assign `tenant_admin` role and send invitation email
+
+---
+
+## Tenant Model
+
+The `Tenant` model holds two bank transfer fields used across modules for payment notification emails:
+
+- `iban` (nullable string)
+- `bank_recipient_name` (nullable string)
+
+These are set once per tenant in the Tenant Admin Panel. Never store IBAN on individual camp or event records — always read from the resolved tenant.
 
 ---
 

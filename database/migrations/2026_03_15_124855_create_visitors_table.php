@@ -16,10 +16,15 @@ return new class extends Migration
         Schema::create('visitors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('password')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->text('allergies')->nullable();
+            $table->text('medications')->nullable();
+            $table->text('medical_notes')->nullable();
+            $table->string('emergency_contact_name')->nullable();
+            $table->string('emergency_contact_phone')->nullable();
             $table->timestamps();
         });
     }

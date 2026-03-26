@@ -13,19 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('camp_registrations', function (Blueprint $table) {
+        Schema::create('camp_visitor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('camp_id')->constrained()->cascadeOnDelete();
             $table->foreignId('visitor_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('participant_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['pending', 'confirmed', 'waitlisted', 'cancelled']);
-            $table->enum('payment_status', ['pending', 'paid', 'cancelled']);
+            $table->string('status');
+            $table->decimal('price', 8, 2)->default(0);
+            $table->text('special_wishes')->nullable();
+            $table->foreignId('room_id')->nullable()->constrained('hostel_rooms')->nullOnDelete();
             $table->integer('waitlist_position')->nullable();
-            $table->dateTime('registered_at');
-            $table->dateTime('confirmed_at')->nullable();
-            $table->dateTime('cancelled_at')->nullable();
-            $table->text('cancellation_reason')->nullable();
-            $table->text('internal_notes')->nullable();
+            $table->timestamp('registered_at');
             $table->timestamps();
         });
     }
@@ -35,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('camp_registrations');
+        Schema::dropIfExists('camp_visitor');
     }
 };

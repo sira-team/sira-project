@@ -6,7 +6,7 @@ namespace Modules\Camp\Enums;
 
 enum CampNotificationType: string
 {
-    case RegistrationReceived = 'registration_received';
+    case Received = 'received';
     case Confirmed = 'confirmed';
     case Waitlisted = 'waitlisted';
     case WaitlistPromoted = 'waitlist_promoted';
@@ -17,7 +17,7 @@ enum CampNotificationType: string
     public function label(): string
     {
         return match ($this) {
-            self::RegistrationReceived => 'Registration Received',
+            self::Received => 'Received',
             self::Confirmed => 'Confirmed',
             self::Waitlisted => 'Waitlisted',
             self::WaitlistPromoted => 'Waitlist Promoted',

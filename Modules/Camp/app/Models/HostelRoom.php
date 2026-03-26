@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Modules\Camp\Database\Factories\HostelRoomFactory;
 
 /**
  * @property int $id
@@ -19,8 +21,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Hostel|null $hostel
- * @property-read \Illuminate\Database\Eloquent\Collection<int, CampRoomAssignment> $campRoomAssignments
- * @property-read int|null $campRoomAssignments_count
+ * @property-read Collection<int, CampVisitor> $campVisitors
+ * @property-read int|null $camp_visitors_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|HostelRoom newQuery()
@@ -51,13 +53,13 @@ final class HostelRoom extends Model
         return $this->belongsTo(Hostel::class);
     }
 
-    public function campRoomAssignments(): HasMany
+    public function campVisitors(): HasMany
     {
-        return $this->hasMany(CampRoomAssignment::class);
+        return $this->hasMany(CampVisitor::class, 'room_id');
     }
 
-    protected function casts(): array
+    protected static function newFactory(): HostelRoomFactory
     {
-        return [];
+        return HostelRoomFactory::new();
     }
 }

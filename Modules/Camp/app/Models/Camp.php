@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Modules\Camp\Models;
 
 use App\Models\Tenant;
+use App\Models\User;
+use App\Models\Visitor;
 use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Modules\Camp\Database\Factories\CampFactory;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Enums\CampTargetGroup;
@@ -23,63 +27,38 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property string $name
  * @property Carbon $starts_at
  * @property Carbon $ends_at
- * @property int $capacity
- * @property float $price
- * @property string $target_group
+ * @property string|null $description
+ * @property string|null $internal_notes
+ * @property CampTargetGroup $target_group
  * @property int|null $age_min
  * @property int|null $age_max
- * @property string $gender_policy
+ * @property CampGenderPolicy $gender_policy
  * @property bool $food_provided
  * @property bool $participants_bring_food
- * @property int|null $predicted_participants
- * @property int|null $predicted_supporters
  * @property bool $registration_open
  * @property Carbon|null $registration_opens_at
  * @property Carbon|null $registration_deadline
- * @property string $iban
- * @property string $bank_recipient
- * @property string|null $notes
+ * @property float $price_per_participant
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Tenant|null $tenant
- * @property-read HostelContract|null $hostelContract
- * @property-read int|null $hostelContract_count
- * @property-read Collection<int, CampRegistration> $registrations
- * @property-read int|null $registrations_count
+ * @property-read CampContract|null $contract
+ * @property-read Collection<int, CampVisitor> $campVisitors
+ * @property-read int|null $camp_visitors_count
+ * @property-read Collection<int, Visitor> $visitors
+ * @property-read int|null $visitors_count
  * @property-read Collection<int, CampExpense> $expenses
  * @property-read int|null $expenses_count
+ * @property-read Collection<int, User> $supportStaff
+ * @property-read int|null $support_staff_count
  * @property-read int $nights
- * @property-read int $confirmedRegistrationsCount
+ * @property-read int $confirmedVisitorsCount
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMin($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereBankRecipient($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereCapacity($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereEndsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereFoodProvided($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereGenderPolicy($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereIban($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereParticipantsBringFood($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp wherePredictedParticipants($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp wherePredictedSupporters($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereRegistrationDeadline($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereRegistrationOpen($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereRegistrationOpensAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereStartsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTargetGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withoutTrashed()
  *
@@ -94,32 +73,35 @@ final class Camp extends Model
         'name',
         'starts_at',
         'ends_at',
-        'capacity',
-        'price',
+        'description',
+        'internal_notes',
         'target_group',
         'age_min',
         'age_max',
         'gender_policy',
         'food_provided',
         'participants_bring_food',
-        'predicted_participants',
-        'predicted_supporters',
         'registration_open',
         'registration_opens_at',
         'registration_deadline',
-        'iban',
-        'bank_recipient',
-        'notes',
+        'price_per_participant',
     ];
 
-    public function hostelContract(): HasOne
+    public function contract(): HasOne
     {
-        return $this->hasOne(HostelContract::class);
+        return $this->hasOne(CampContract::class);
     }
 
-    public function registrations(): HasMany
+    public function campVisitors(): HasMany
     {
-        return $this->hasMany(CampRegistration::class);
+        return $this->hasMany(CampVisitor::class);
+    }
+
+    public function visitors(): BelongsToMany
+    {
+        return $this->belongsToMany(Visitor::class, 'camp_visitor')
+            ->withPivot('id', 'status', 'price', 'special_wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->withTimestamps();
     }
 
     public function expenses(): HasMany
@@ -127,16 +109,26 @@ final class Camp extends Model
         return $this->hasMany(CampExpense::class);
     }
 
+    public function supportStaff(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'camp_user');
+    }
+
     public function getNightsAttribute(): int
     {
         return (int) $this->starts_at->diffInDays($this->ends_at);
     }
 
-    public function getConfirmedRegistrationsCountAttribute(): int
+    public function getConfirmedVisitorsCountAttribute(): int
     {
-        return $this->registrations()
-            ->where('status', CampRegistrationStatus::Confirmed)
+        return $this->visitors()
+            ->wherePivot('status', CampRegistrationStatus::Confirmed)
             ->count();
+    }
+
+    protected static function newFactory(): CampFactory
+    {
+        return CampFactory::new();
     }
 
     protected function casts(): array
@@ -144,7 +136,7 @@ final class Camp extends Model
         return [
             'starts_at' => 'date',
             'ends_at' => 'date',
-            'price' => 'decimal:2',
+            'price_per_participant' => 'decimal:2',
             'target_group' => CampTargetGroup::class,
             'gender_policy' => CampGenderPolicy::class,
             'food_provided' => 'boolean',

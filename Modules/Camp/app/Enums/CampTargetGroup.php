@@ -6,16 +6,16 @@ namespace Modules\Camp\Enums;
 
 enum CampTargetGroup: string
 {
-    case Juniors = 'juniors';
+    case Children = 'children';
+    case Teenagers = 'teenagers';
     case Adults = 'adults';
-    case Mixed = 'mixed';
 
     public function label(): string
     {
         return match ($this) {
-            self::Juniors => 'Children',
+            self::Children => 'Children',
             self::Adults => 'Adults',
-            self::Mixed => 'Mixed',
+            self::Teenagers => 'Teenagers',
         };
     }
 }

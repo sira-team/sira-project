@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Camp\Enums\CampExpenseCategory;
 use Modules\Camp\Models\Camp;
@@ -25,6 +26,7 @@ final class CampExpenseFactory extends Factory
     {
         return [
             'camp_id' => Camp::factory(),
+            'user_id' => User::factory(),
             'category' => fake()->randomElement(CampExpenseCategory::cases()),
             'title' => fake()->sentence(3),
             'description' => fake()->sentence(),

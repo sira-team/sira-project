@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Database\Seeders;
 
-use App\Enums\Gender;
-use App\Models\Participant;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Models\Visitor;
 use Illuminate\Database\Seeder;
 use Modules\Camp\Enums\CampExpenseCategory;
 use Modules\Camp\Enums\CampGenderPolicy;
-use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Models\Camp;
+use Modules\Camp\Models\CampContract;
 use Modules\Camp\Models\CampExpense;
-use Modules\Camp\Models\CampRegistration;
+use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Models\Hostel;
-use Modules\Camp\Models\HostelContract;
 
 final class CampSeeder extends Seeder
 {
     public function run(): void
     {
         $tenant = Tenant::default();
+        $user = User::where('tenant_id', $tenant->id)->firstOrFail();
         $altenberg = Hostel::firstWhere('name', 'Jugendherberge Altenberg');
         $bonn = Hostel::firstWhere('name', 'Jugendherberge Bonn Venusberg');
 
@@ -34,27 +33,23 @@ final class CampSeeder extends Seeder
             [
                 'starts_at' => now()->addMonths(2)->next('Friday')->format('Y-m-d'),
                 'ends_at' => now()->addMonths(2)->next('Friday')->addDays(4)->format('Y-m-d'),
-                'capacity' => 60,
-                'price' => 120.00,
-                'target_group' => CampTargetGroup::Juniors,
-                'gender_policy' => CampGenderPolicy::Separated,
+                'price_per_participant' => 120.00,
+                'target_group' => CampTargetGroup::Children,
+                'gender_policy' => CampGenderPolicy::All,
                 'food_provided' => true,
                 'participants_bring_food' => false,
-                'predicted_participants' => 50,
-                'predicted_supporters' => 10,
                 'registration_open' => true,
-                'iban' => 'DE89370400440532013000',
-                'bank_recipient' => 'Sira e.V. Bonn',
-                'notes' => 'Schwerpunkt: Sira des Propheten ﷺ. Programm durch Jugendteam.',
+                'description' => 'Schwerpunkt: Sira des Propheten ﷺ. Programm durch Jugendteam.',
                 'tenant_id' => $tenant->id,
             ]
         );
 
-        if ($altenberg && ! HostelContract::where('camp_id', $upcomingCamp->id)->exists()) {
-            HostelContract::create([
-                'hostel_id' => $altenberg->id,
+        if ($altenberg && ! CampContract::where('camp_id', $upcomingCamp->id)->exists()) {
+            CampContract::create([
                 'camp_id' => $upcomingCamp->id,
+                'hostel_id' => $altenberg->id,
                 'price_per_person_per_night' => 38.50,
+                'catering_included' => true,
                 'contracted_participants' => 55,
                 'contracted_supporters' => 10,
                 'contract_date' => now()->subWeeks(3)->format('Y-m-d'),
@@ -62,8 +57,8 @@ final class CampSeeder extends Seeder
             ]);
         }
 
-        $this->seedExpenses($upcomingCamp);
-        $this->seedRegistrations($upcomingCamp, $tenant);
+        $this->seedExpenses($upcomingCamp, $user);
+        $this->seedVisitors($upcomingCamp);
 
         // Past camp — completed
         $pastCamp = Camp::firstOrCreate(
@@ -71,27 +66,23 @@ final class CampSeeder extends Seeder
             [
                 'starts_at' => now()->subMonths(5)->next('Friday')->format('Y-m-d'),
                 'ends_at' => now()->subMonths(5)->next('Friday')->addDays(3)->format('Y-m-d'),
-                'capacity' => 40,
-                'price' => 95.00,
-                'target_group' => CampTargetGroup::Mixed,
-                'gender_policy' => CampGenderPolicy::Mixed,
+                'price_per_participant' => 95.00,
+                'target_group' => CampTargetGroup::Teenagers,
+                'gender_policy' => CampGenderPolicy::All,
                 'food_provided' => true,
                 'participants_bring_food' => false,
-                'predicted_participants' => 35,
-                'predicted_supporters' => 8,
                 'registration_open' => false,
-                'iban' => 'DE89370400440532013000',
-                'bank_recipient' => 'Sira e.V. Bonn',
-                'notes' => 'Sehr gut verlaufen. Unterlagen archiviert.',
+                'internal_notes' => 'Sehr gut verlaufen. Unterlagen archiviert.',
                 'tenant_id' => $tenant->id,
             ]
         );
 
-        if ($bonn && ! HostelContract::where('camp_id', $pastCamp->id)->exists()) {
-            HostelContract::create([
-                'hostel_id' => $bonn->id,
+        if ($bonn && ! CampContract::where('camp_id', $pastCamp->id)->exists()) {
+            CampContract::create([
                 'camp_id' => $pastCamp->id,
+                'hostel_id' => $bonn->id,
                 'price_per_person_per_night' => 35.00,
+                'catering_included' => false,
                 'contracted_participants' => 40,
                 'contracted_supporters' => 8,
                 'contract_date' => now()->subMonths(7)->format('Y-m-d'),
@@ -99,10 +90,10 @@ final class CampSeeder extends Seeder
             ]);
         }
 
-        $this->seedExpenses($pastCamp);
+        $this->seedExpenses($pastCamp, $user);
     }
 
-    private function seedExpenses(Camp $camp): void
+    private function seedExpenses(Camp $camp, User $user): void
     {
         $expenses = [
             [
@@ -112,19 +103,19 @@ final class CampSeeder extends Seeder
                 'amount' => 420.00,
             ],
             [
-                'category' => CampExpenseCategory::Material,
+                'category' => CampExpenseCategory::Materials,
                 'title' => 'Bastelmaterial und Druckkosten',
                 'description' => 'Papier, Stifte, Drucken Programmhefte',
                 'amount' => 85.00,
             ],
             [
-                'category' => CampExpenseCategory::Aktivitaeten,
+                'category' => CampExpenseCategory::Activities,
                 'title' => 'Lagerfeuer-Set (Holz + Grillgut)',
                 'description' => null,
                 'amount' => 60.00,
             ],
             [
-                'category' => CampExpenseCategory::Sonstiges,
+                'category' => CampExpenseCategory::Other,
                 'title' => 'Erste-Hilfe-Set Nachfüllung',
                 'description' => null,
                 'amount' => 25.00,
@@ -135,6 +126,7 @@ final class CampSeeder extends Seeder
             CampExpense::firstOrCreate(
                 ['camp_id' => $camp->id, 'title' => $expense['title']],
                 [
+                    'user_id' => $user->id,
                     'category' => $expense['category'],
                     'description' => $expense['description'],
                     'amount' => $expense['amount'],
@@ -143,52 +135,41 @@ final class CampSeeder extends Seeder
         }
     }
 
-    private function seedRegistrations(Camp $camp, Tenant $tenant): void
+    private function seedVisitors(Camp $camp): void
     {
-        if (CampRegistration::where('camp_id', $camp->id)->exists()) {
+        if (CampVisitor::where('camp_id', $camp->id)->exists()) {
             return;
         }
 
-        $participants = [
-            ['name' => 'Ahmad Al-Hassan', 'status' => CampRegistrationStatus::Confirmed, 'paid' => true],
-            ['name' => 'Maryam Yilmaz', 'status' => CampRegistrationStatus::Confirmed, 'paid' => true],
-            ['name' => 'Omar Benali', 'status' => CampRegistrationStatus::Confirmed, 'paid' => false],
-            ['name' => 'Safiya Öztürk', 'status' => CampRegistrationStatus::Confirmed, 'paid' => false],
-            ['name' => 'Hamza Khalil', 'status' => CampRegistrationStatus::Pending, 'paid' => false],
-            ['name' => 'Aisha Rahman', 'status' => CampRegistrationStatus::Pending, 'paid' => false],
-            ['name' => 'Yusuf Demir', 'status' => CampRegistrationStatus::Waitlisted, 'paid' => false],
-            ['name' => 'Nour Al-Din', 'status' => CampRegistrationStatus::Waitlisted, 'paid' => false],
+        $entries = [
+            ['name' => 'Ahmad Al-Hassan', 'status' => CampRegistrationStatus::Confirmed],
+            ['name' => 'Maryam Yilmaz', 'status' => CampRegistrationStatus::Paid],
+            ['name' => 'Omar Benali', 'status' => CampRegistrationStatus::Confirmed],
+            ['name' => 'Safiya Öztürk', 'status' => CampRegistrationStatus::Confirmed],
+            ['name' => 'Hamza Khalil', 'status' => CampRegistrationStatus::Pending],
+            ['name' => 'Aisha Rahman', 'status' => CampRegistrationStatus::Pending],
+            ['name' => 'Yusuf Demir', 'status' => CampRegistrationStatus::Waitlisted],
+            ['name' => 'Nour Al-Din', 'status' => CampRegistrationStatus::Waitlisted],
         ];
 
         $waitlistPosition = 1;
 
-        foreach ($participants as $data) {
+        foreach ($entries as $data) {
             $email = mb_strtolower(str_replace(' ', '.', $data['name'])).'@example.com';
 
             $visitor = Visitor::firstOrCreate(
                 ['email' => $email],
-                ['name' => $data['name'], 'phone' => null, 'email_verified_at' => now()]
-            );
-
-            $participant = Participant::firstOrCreate(
-                ['visitor_id' => $visitor->id, 'name' => $data['name']],
-                [
-                    'date_of_birth' => fake()->dateTimeBetween('-18 years', '-10 years')->format('Y-m-d'),
-                    'gender' => fake()->randomElement(Gender::cases())->value,
-                    'is_self' => false,
-                ]
+                ['name' => $data['name'], 'phone' => null]
             );
 
             $isWaitlisted = $data['status'] === CampRegistrationStatus::Waitlisted;
 
-            CampRegistration::create([
+            CampVisitor::create([
                 'camp_id' => $camp->id,
                 'visitor_id' => $visitor->id,
-                'participant_id' => $participant->id,
                 'status' => $data['status'],
-                'payment_status' => $data['paid'] ? CampPaymentStatus::Paid : CampPaymentStatus::Pending,
+                'price' => $camp->price_per_participant,
                 'registered_at' => now(),
-                'confirmed_at' => $data['status'] === CampRegistrationStatus::Confirmed ? now() : null,
                 'waitlist_position' => $isWaitlisted ? $waitlistPosition++ : null,
             ]);
         }

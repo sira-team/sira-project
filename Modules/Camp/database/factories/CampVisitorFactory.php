@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Database\Factories;
 
-use App\Models\Participant;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Models\Camp;
-use Modules\Camp\Models\CampRegistration;
+use Modules\Camp\Models\CampVisitor;
 
 /**
- * @extends Factory<CampRegistration>
+ * @extends Factory<CampVisitor>
  */
-final class CampRegistrationFactory extends Factory
+final class CampVisitorFactory extends Factory
 {
-    protected $model = CampRegistration::class;
+    protected $model = CampVisitor::class;
 
     /**
      * Define the model's default state.
@@ -29,9 +27,8 @@ final class CampRegistrationFactory extends Factory
         return [
             'camp_id' => Camp::factory(),
             'visitor_id' => Visitor::factory(),
-            'participant_id' => Participant::factory(),
             'status' => CampRegistrationStatus::Pending,
-            'payment_status' => CampPaymentStatus::Pending,
+            'price' => fake()->randomFloat(2, 80, 200),
             'registered_at' => now(),
         ];
     }
@@ -40,7 +37,6 @@ final class CampRegistrationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => CampRegistrationStatus::Confirmed,
-            'confirmed_at' => now(),
         ]);
     }
 
@@ -56,14 +52,13 @@ final class CampRegistrationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => CampRegistrationStatus::Cancelled,
-            'cancelled_at' => now(),
         ]);
     }
 
     public function paid(): static
     {
         return $this->state(fn (array $attributes) => [
-            'payment_status' => CampPaymentStatus::Paid,
+            'status' => CampRegistrationStatus::Paid,
         ]);
     }
 }

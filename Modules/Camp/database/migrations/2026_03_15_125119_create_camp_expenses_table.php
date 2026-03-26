@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('camp_expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('camp_id')->constrained()->cascadeOnDelete();
-            $table->enum('category', ['uebernachtung', 'verpflegung', 'material', 'aktivitaeten', 'transport', 'investition', 'sonstiges']);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('category');
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('amount', 8, 2);
+            $table->string('receipt_image')->nullable();
             $table->timestamps();
         });
     }

@@ -7,7 +7,6 @@ namespace Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -19,15 +18,16 @@ final class CampExpensesTable
     {
         return $table
             ->columns([
-                BadgeColumn::make('category')
+                TextColumn::make('category')
+                    ->badge()
                     ->color(fn (CampExpenseCategory $state) => match ($state) {
-                        CampExpenseCategory::Uebernachtung => 'info',
-                        CampExpenseCategory::Verpflegung => 'success',
-                        CampExpenseCategory::Material => 'warning',
-                        CampExpenseCategory::Aktivitaeten => 'warning',
+                        CampExpenseCategory::Accommodation => 'info',
+                        CampExpenseCategory::Catering => 'success',
+                        CampExpenseCategory::Materials => 'warning',
+                        CampExpenseCategory::Activities => 'warning',
                         CampExpenseCategory::Transport => 'danger',
-                        CampExpenseCategory::Investition => 'primary',
-                        CampExpenseCategory::Sonstiges => 'secondary',
+                        CampExpenseCategory::Investment => 'primary',
+                        CampExpenseCategory::Other => 'secondary',
                     }),
                 TextColumn::make('title')
                     ->searchable()

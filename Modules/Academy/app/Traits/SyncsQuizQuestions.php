@@ -6,6 +6,8 @@ namespace Modules\Academy\Traits;
 
 use Modules\Academy\Enums\QuizQuestionType;
 use Modules\Academy\Models\Quiz;
+use Modules\Academy\Models\QuizOption;
+use Modules\Academy\Models\QuizQuestion;
 
 trait SyncsQuizQuestions
 {
@@ -20,6 +22,7 @@ trait SyncsQuizQuestions
             $type = QuizQuestionType::from($block['type']);
             $data = $block['data'];
 
+            /** @var QuizQuestion $question */
             $question = $quiz->questions()->create([
                 'question_text' => $data['question_text'],
                 'type' => $type,
@@ -52,7 +55,7 @@ trait SyncsQuizQuestions
         return $quiz->questions()
             ->with('options')
             ->get()
-            ->map(function ($question) {
+            ->map(function (QuizQuestion $question) {
                 if ($question->type === QuizQuestionType::TrueOrFalse) {
                     $correctOption = $question->options->firstWhere('is_correct', true);
 
@@ -69,7 +72,7 @@ trait SyncsQuizQuestions
                     'type' => $question->type->value,
                     'data' => [
                         'question_text' => $question->question_text,
-                        'options' => $question->options->map(fn ($opt) => [
+                        'options' => $question->options->map(fn (QuizOption $opt) => [
                             'text' => $opt->text,
                             'is_correct' => $opt->is_correct,
                             'points' => $opt->points,

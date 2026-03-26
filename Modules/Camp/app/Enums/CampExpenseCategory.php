@@ -6,24 +6,24 @@ namespace Modules\Camp\Enums;
 
 enum CampExpenseCategory: string
 {
-    case Uebernachtung = 'uebernachtung';
-    case Verpflegung = 'verpflegung';
-    case Material = 'material';
-    case Aktivitaeten = 'aktivitaeten';
+    case Accommodation = 'accommodation';
+    case Catering = 'catering';
+    case Materials = 'materials';
+    case Activities = 'activities';
     case Transport = 'transport';
-    case Investition = 'investition';
-    case Sonstiges = 'sonstiges';
+    case Investment = 'investment';
+    case Other = 'other';
 
     public function label(): string
     {
         return match ($this) {
-            self::Uebernachtung => 'Übernachtung (Accommodation)',
-            self::Verpflegung => 'Verpflegung (Food)',
-            self::Material => 'Material (Consumables)',
-            self::Aktivitaeten => 'Aktivitäten (Activities)',
+            self::Accommodation => 'Accommodation',
+            self::Catering => 'Catering',
+            self::Materials => 'Materials',
+            self::Activities => 'Activities',
             self::Transport => 'Transport',
-            self::Investition => 'Investition (Equipment)',
-            self::Sonstiges => 'Sonstiges (Other)',
+            self::Investment => 'Investment',
+            self::Other => 'Other',
         };
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Academy\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Academy\Models\Quiz;
 use Modules\Academy\Models\QuizAttempt;
+use Modules\Academy\Models\QuizQuestion;
 
 final class QuizScoreService
 {
@@ -14,6 +16,7 @@ final class QuizScoreService
      */
     public function score(Quiz $quiz, array $answers): QuizAttempt
     {
+        /** @var Collection<int, QuizQuestion> $questions */
         $questions = $quiz->questions()->with('options')->get();
 
         $correctCount = 0;

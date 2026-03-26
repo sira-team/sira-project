@@ -32,21 +32,16 @@ final class CampFactory extends Factory
             'name' => fake()->words(3, true).' Camp',
             'starts_at' => $startsAt,
             'ends_at' => Carbon::createFromFormat('Y-m-d', $startsAt)->addDays(5)->format('Y-m-d'),
-            'capacity' => fake()->numberBetween(50, 150),
-            'price' => fake()->randomFloat(2, 80, 200),
             'target_group' => fake()->randomElement(CampTargetGroup::cases()),
             'gender_policy' => fake()->randomElement(CampGenderPolicy::cases()),
             'food_provided' => true,
             'participants_bring_food' => false,
-            'predicted_participants' => 80,
-            'predicted_supporters' => 20,
             'registration_open' => true,
-            'iban' => 'DE89370400440532013000',
-            'bank_recipient' => 'Sira '.fake()->lastName(),
+            'price_per_participant' => fake()->randomFloat(2, 80, 200),
         ];
     }
 
-    public function closed(): static
+    public function closed(): CampFactory
     {
         return $this->state(fn (array $attributes) => [
             'registration_open' => false,

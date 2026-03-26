@@ -21,11 +21,11 @@ final class CampTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('hostelContract.hostel.name')
+                TextColumn::make('contract.hostel.name')
                     ->badge()
                     ->color(Color::Blue)
                     ->label('Hostel')
-                    ->url(fn (Camp $record) => ViewHostel::getUrl(['record' => $record->hostelContract->hostel]))
+                    ->url(fn (Camp $record) => ViewHostel::getUrl(['record' => $record->contract->hostel]))
                     ->sortable(),
                 TextColumn::make('starts_at')
                     ->label('Dates')

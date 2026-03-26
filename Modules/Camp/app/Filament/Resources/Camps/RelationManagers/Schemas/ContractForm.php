@@ -11,7 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Modules\Camp\Models\Hostel;
 
-final class HostelContractForm
+final class ContractForm
 {
     public static function configure(Schema $schema): Schema
     {

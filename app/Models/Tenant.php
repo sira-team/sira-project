@@ -20,6 +20,8 @@ use Illuminate\Support\Str;
  * @property string $city
  * @property string $country
  * @property string $email
+ * @property string|null $iban
+ * @property string|null $bank_recipient_name
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Role> $roles
@@ -54,6 +56,8 @@ final class Tenant extends Model
         'city',
         'country',
         'email',
+        'iban',
+        'bank_recipient_name',
     ];
 
     public static function default(): static

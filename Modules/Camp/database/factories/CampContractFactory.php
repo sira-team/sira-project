@@ -6,15 +6,15 @@ namespace Modules\Camp\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Camp\Models\Camp;
+use Modules\Camp\Models\CampContract;
 use Modules\Camp\Models\Hostel;
-use Modules\Camp\Models\HostelContract;
 
 /**
- * @extends Factory<HostelContract>
+ * @extends Factory<CampContract>
  */
-final class HostelContractFactory extends Factory
+final class CampContractFactory extends Factory
 {
-    protected $model = HostelContract::class;
+    protected $model = CampContract::class;
 
     /**
      * Define the model's default state.
@@ -24,9 +24,10 @@ final class HostelContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'hostel_id' => Hostel::factory(),
             'camp_id' => Camp::factory(),
+            'hostel_id' => Hostel::factory(),
             'price_per_person_per_night' => fake()->randomFloat(2, 30, 60),
+            'catering_included' => fake()->boolean(),
             'contracted_participants' => fake()->numberBetween(50, 150),
             'contracted_supporters' => fake()->numberBetween(10, 30),
             'contract_date' => fake()->date(),

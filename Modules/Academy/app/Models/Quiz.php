@@ -56,6 +56,7 @@ final class Quiz extends Model
         ];
     }
 
+    /** @return HasMany<QuizQuestion, $this> */
     public function questions(): HasMany
     {
         return $this->hasMany(QuizQuestion::class)->orderBy('sort_order');

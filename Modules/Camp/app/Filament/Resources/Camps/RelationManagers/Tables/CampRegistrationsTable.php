@@ -12,8 +12,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
+use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Models\HostelRoom;
 use Modules\Camp\Services\WaitlistService;
 
@@ -41,13 +41,16 @@ final class CampRegistrationsTable
                         CampRegistrationStatus::Confirmed => 'success',
                         CampRegistrationStatus::Waitlisted => 'info',
                         CampRegistrationStatus::Cancelled => 'danger',
+                        CampRegistrationStatus::Paid => throw new Exception('To be implemented'),
                     }),
                 TextColumn::make('payment_status')
                     ->badge()
-                    ->color(fn (CampPaymentStatus $state) => match ($state) {
-                        CampPaymentStatus::Pending => 'danger',
-                        CampPaymentStatus::Paid => 'success',
-                        CampPaymentStatus::Cancelled => throw new Exception('To be implemented'),
+                    ->color(fn (CampRegistrationStatus $state) => match ($state) {
+                        CampRegistrationStatus::Pending => 'danger',
+                        CampRegistrationStatus::Paid => 'success',
+                        CampRegistrationStatus::Cancelled => throw new Exception('To be implemented'),
+                        CampRegistrationStatus::Waitlisted => throw new Exception('To be implemented'),
+                        CampRegistrationStatus::Confirmed => throw new Exception('To be implemented'),
                     }),
                 TextColumn::make('waitlist_position')
                     ->label('Waitlist Pos')
@@ -74,33 +77,32 @@ final class CampRegistrationsTable
                     ->color('info')
                     ->requiresConfirmation()
                     ->action(function ($record) {
-                        $record->update(['payment_status' => CampPaymentStatus::Paid]);
+                        $record->update(['payment_status' => CampRegistrationStatus::Paid]);
                     })
-                    ->visible(fn ($record) => $record->payment_status === CampPaymentStatus::Pending),
+                    ->visible(fn ($record) => $record->payment_status === CampRegistrationStatus::Pending),
 
                 Action::make('assignRoom')
                     ->label('Assign Room')
                     ->icon('heroicon-o-home')
-                    ->form([
+                    ->schema([
                         Select::make('hostel_room_id')
                             ->label('Room')
-                            ->options(function ($record) {
+                            ->options(function (CampVisitor $record) {
                                 $camp = $record->camp;
-                                if (! $camp->hostelContract) {
+                                if (! $camp->contract) {
                                     return [];
                                 }
 
                                 return HostelRoom::query()
-                                    ->where('hostel_id', $camp->hostelContract->hostel_id)
+                                    ->where('hostel_id', $camp->contract->hostel_id)
                                     ->pluck('name', 'id');
                             })
                             ->required(),
                     ])
-                    ->action(function ($record, array $data) {
-                        \Modules\Camp\Models\CampRoomAssignment::updateOrCreate(
-                            ['camp_registration_id' => $record->id],
-                            ['hostel_room_id' => $data['hostel_room_id']]
-                        );
+                    ->action(function (CampVisitor $record, array $data) {
+                        $record->update([
+                            'room_id' => $data['hostel_room_id'],
+                        ]);
                     }),
 
                 Action::make('moveToWaitlist')
@@ -133,7 +135,7 @@ final class CampRegistrationsTable
                     ->icon('heroicon-o-information-circle')
                     ->modal()
                     ->modalHeading(fn ($record) => "Health Info: {$record->participant->name}")
-                    ->form([
+                    ->schema([
                         Textarea::make('allergies')
                             ->label('Allergies')
                             ->disabled()
@@ -165,7 +167,7 @@ final class CampRegistrationsTable
                     ->label('Mark Selected as Paid')
                     ->icon('heroicon-o-check-circle')
                     ->action(function (Collection $records) {
-                        $records->each(fn ($record) => $record->update(['payment_status' => CampPaymentStatus::Paid]));
+                        $records->each(fn ($record) => $record->update(['payment_status' => CampRegistrationStatus::Paid]));
                     })
                     ->deselectRecordsAfterCompletion(),
             ])

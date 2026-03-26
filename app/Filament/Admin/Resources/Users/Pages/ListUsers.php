@@ -52,7 +52,7 @@ final class ListUsers extends ListRecords
                     $user->assignRole('member');
 
                     $setupUrl = URL::temporarySignedRoute(
-                        'password.setup',
+                        'account.setup',
                         now()->addDays(7),
                         ['user' => $user->id]
                     );

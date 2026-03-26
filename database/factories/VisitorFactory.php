@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\Gender;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,14 +26,16 @@ final class VisitorFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
-            'email_verified_at' => now(),
+            'date_of_birth' => fake()->dateTimeBetween('-40 years', '-18 years')->format('Y-m-d'),
+            'gender' => fake()->randomElement(Gender::cases()),
         ];
     }
 
-    public function unverified(): static
+    public function child(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'email' => null,
+            'date_of_birth' => fake()->dateTimeBetween('-17 years', '-6 years')->format('Y-m-d'),
         ]);
     }
 }

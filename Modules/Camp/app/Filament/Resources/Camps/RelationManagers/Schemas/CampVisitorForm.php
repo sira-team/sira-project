@@ -7,10 +7,9 @@ namespace Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
 
-final class CampRegistrationForm
+final class CampVisitorForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -21,7 +20,7 @@ final class CampRegistrationForm
                         ->options(CampRegistrationStatus::class)
                         ->required(),
                     Select::make('payment_status')
-                        ->options(CampPaymentStatus::class)
+                        ->options(CampRegistrationStatus::class)
                         ->required(),
                 ]),
         ]);

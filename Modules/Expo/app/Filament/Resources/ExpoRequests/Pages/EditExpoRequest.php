@@ -36,7 +36,7 @@ final class EditExpoRequest extends EditRecord
             ->label('Create Expo from Request')
             ->icon('heroicon-o-sparkles')
             ->visible(fn () => $this->record->status === ExpoRequestStatus::Accepted)
-            ->form([
+            ->schema([
                 TextInput::make('name')
                     ->label('Expo Name')
                     ->required()

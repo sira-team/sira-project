@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Http\Controllers;
 
-use App\Models\Participant;
 use App\Models\Tenant;
 use App\Models\Visitor;
+use App\Models\VisitorChild;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
-use Modules\Camp\Enums\CampNotificationType;
-use Modules\Camp\Enums\CampPaymentStatus;
 use Modules\Camp\Enums\CampRegistrationStatus;
 use Modules\Camp\Mails\CampRegistrationReceivedMail;
 use Modules\Camp\Mails\CampWaitlistedMail;
 use Modules\Camp\Models\Camp;
-use Modules\Camp\Models\CampNotificationLog;
-use Modules\Camp\Models\CampRegistration;
+use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Services\WaitlistService;
 
-final class CampRegistrationController
+final class CampVisitorController
 {
     use ValidatesRequests;
 
@@ -45,6 +42,7 @@ final class CampRegistrationController
             'participants.*.name' => 'required|string|max:255',
             'participants.*.date_of_birth' => 'required|date',
             'participants.*.gender' => 'required|in:male,female',
+            'participants.*.relationship' => 'required_if:target_group,child|nullable|in:father,mother,uncle,aunt',
             'participants.*.allergies' => 'nullable|string',
             'participants.*.medications' => 'nullable|string',
             'participants.*.medical_notes' => 'nullable|string',
@@ -57,7 +55,7 @@ final class CampRegistrationController
         ]);
 
         return DB::transaction(function () use ($tenant, $camp, $validated, $waitlistService) {
-            $visitor = Visitor::firstOrCreate(
+            $guardian = Visitor::firstOrCreate(
                 ['email' => $validated['visitor']['email']],
                 [
                     'name' => $validated['visitor']['name'],
@@ -65,28 +63,45 @@ final class CampRegistrationController
                 ]
             );
 
-            $isTarget = $validated['target_group'] === 'myself';
-            $confirmedCount = $camp->registrations()
+            $isChild = $validated['target_group'] === 'child';
+            $capacity = $camp->contract?->contracted_participants;
+            $confirmedCount = $camp->campVisitors()
                 ->lockForUpdate()
-                ->where('status', CampRegistrationStatus::Confirmed)
-                ->orWhere('status', CampRegistrationStatus::Pending)
+                ->whereIn('status', [CampRegistrationStatus::Confirmed, CampRegistrationStatus::Pending])
                 ->count();
 
             foreach ($validated['participants'] as $participantData) {
-                $participant = Participant::create([
-                    'visitor_id' => $visitor->id,
-                    'name' => $participantData['name'],
-                    'date_of_birth' => $participantData['date_of_birth'],
-                    'gender' => $participantData['gender'],
-                    'is_self' => $isTarget,
-                    'allergies' => $participantData['allergies'] ?? null,
-                    'medications' => $participantData['medications'] ?? null,
-                    'medical_notes' => $participantData['medical_notes'] ?? null,
-                    'emergency_contact_name' => $participantData['emergency_contact_name'],
-                    'emergency_contact_phone' => $participantData['emergency_contact_phone'],
-                ]);
+                if ($isChild) {
+                    $participant = Visitor::create([
+                        'name' => $participantData['name'],
+                        'date_of_birth' => $participantData['date_of_birth'],
+                        'gender' => $participantData['gender'],
+                        'allergies' => $participantData['allergies'] ?? null,
+                        'medications' => $participantData['medications'] ?? null,
+                        'medical_notes' => $participantData['medical_notes'] ?? null,
+                        'emergency_contact_name' => $participantData['emergency_contact_name'],
+                        'emergency_contact_phone' => $participantData['emergency_contact_phone'],
+                    ]);
 
-                if ($confirmedCount < $camp->capacity) {
+                    VisitorChild::create([
+                        'parent_id' => $guardian->id,
+                        'child_id' => $participant->id,
+                        'relationship' => $participantData['relationship'],
+                    ]);
+                } else {
+                    $guardian->update([
+                        'date_of_birth' => $participantData['date_of_birth'],
+                        'gender' => $participantData['gender'],
+                        'allergies' => $participantData['allergies'] ?? null,
+                        'medications' => $participantData['medications'] ?? null,
+                        'medical_notes' => $participantData['medical_notes'] ?? null,
+                        'emergency_contact_name' => $participantData['emergency_contact_name'],
+                        'emergency_contact_phone' => $participantData['emergency_contact_phone'],
+                    ]);
+                    $participant = $guardian;
+                }
+
+                if ($capacity === null || $confirmedCount < $capacity) {
                     $status = CampRegistrationStatus::Pending;
                     $waitlistPosition = null;
                 } else {
@@ -94,22 +109,13 @@ final class CampRegistrationController
                     $waitlistPosition = $waitlistService->assignPosition($camp);
                 }
 
-                $registration = CampRegistration::create([
+                $registration = CampVisitor::create([
                     'camp_id' => $camp->id,
-                    'visitor_id' => $visitor->id,
-                    'participant_id' => $participant->id,
+                    'visitor_id' => $participant->id,
                     'status' => $status,
-                    'payment_status' => CampPaymentStatus::Pending,
+                    'price' => $camp->price_per_participant,
                     'waitlist_position' => $waitlistPosition,
                     'registered_at' => now(),
-                ]);
-
-                CampNotificationLog::create([
-                    'camp_registration_id' => $registration->id,
-                    'notification_type' => $status === CampRegistrationStatus::Pending
-                        ? CampNotificationType::RegistrationReceived
-                        : CampNotificationType::Waitlisted,
-                    'sent_at' => now(),
                 ]);
 
                 if ($status === CampRegistrationStatus::Pending) {

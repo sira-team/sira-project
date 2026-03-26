@@ -7,21 +7,21 @@ namespace Modules\Camp\Filament\Resources\Camps\RelationManagers;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\HostelContractForm;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\HostelContractTable;
+use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\ContractForm;
+use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\ContractTable;
 
-final class HostelContractRelationManager extends RelationManager
+final class ContractRelationManager extends RelationManager
 {
-    protected static string $relationship = 'hostelContract';
+    protected static string $relationship = 'contract';
 
     public function form(Schema $schema): Schema
     {
-        return HostelContractForm::configure($schema);
+        return ContractForm::configure($schema);
     }
 
     public function table(Table $table): Table
     {
-        return HostelContractTable::configure($table);
+        return ContractTable::configure($table);
     }
 
     public function canCreate(): bool
