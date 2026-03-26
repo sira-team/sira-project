@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\Camps\RelationManagers;
 
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\AttachAction;
 use Filament\Forms\Components\Select;
@@ -11,6 +12,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampUser;
 use Modules\Camp\Models\HostelRoom;
@@ -28,6 +30,7 @@ final class CampUsersRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('gender')
+                    ->sortable()
                     ->label('Gender')
                     ->badge(),
                 TextColumn::make('pivot.room.name')
@@ -47,6 +50,26 @@ final class CampUsersRelationManager extends RelationManager
                     ->multiple()
                     ->preloadRecordSelect()
                     ->recordTitleAttribute('name'),
+                Action::make('swapRooms')
+                    ->label('Swap Rooms')
+                    ->icon('heroicon-o-arrows-right-left')
+                    ->schema([
+                        Select::make('first_user_id')
+                            ->label('First Staff Member')
+                            ->options(fn (): array => $this->staffOptionsWithRoom())
+                            ->required(),
+                        Select::make('second_user_id')
+                            ->label('Second Staff Member')
+                            ->options(fn (): array => $this->staffOptionsWithRoom())
+                            ->required(),
+                    ])
+                    ->action(function (array $data): void {
+                        $camp = $this->ownerRecord;
+                        $firstRoomId = CampUser::query()->where('camp_id', $camp->id)->where('user_id', $data['first_user_id'])->value('room_id');
+                        $secondRoomId = CampUser::query()->where('camp_id', $camp->id)->where('user_id', $data['second_user_id'])->value('room_id');
+                        CampUser::query()->where('camp_id', $camp->id)->where('user_id', $data['first_user_id'])->update(['room_id' => $secondRoomId]);
+                        CampUser::query()->where('camp_id', $camp->id)->where('user_id', $data['second_user_id'])->update(['room_id' => $firstRoomId]);
+                    }),
             ])
             ->recordActions([
                 Action::make('assignRoom')
@@ -103,5 +126,24 @@ final class CampUsersRelationManager extends RelationManager
     public function isReadOnly(): bool
     {
         return false;
+    }
+
+    /** @return array<int, string> */
+    private function staffOptionsWithRoom(): array
+    {
+        /** @var Collection<int, CampUser> $rooms */
+        $rooms = CampUser::query()
+            ->where('camp_id', $this->ownerRecord->id)
+            ->whereNotNull('room_id')
+            ->with('room')
+            ->get()
+            ->keyBy('user_id');
+
+        return $this->ownerRecord->users()
+            ->get()
+            ->mapWithKeys(fn (User $user, int $id): array => [
+                $id => $user->name.' — '.($rooms->get($id)?->room->name),
+            ])
+            ->all();
     }
 }

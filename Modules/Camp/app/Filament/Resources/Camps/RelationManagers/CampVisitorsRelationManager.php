@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\Camps\RelationManagers;
 
 use Filament\Actions\Action;
-use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\CampVisitorForm;
 use Modules\Camp\Models\Camp;
@@ -37,10 +36,11 @@ final class CampVisitorsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('visitor.name')
-                    ->label('Participant')
+                    ->label('Visitor')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('visitor.gender')
+                    ->sortable()
                     ->label('Gender')
                     ->badge(),
                 TextColumn::make('registered_at')
@@ -81,45 +81,47 @@ final class CampVisitorsRelationManager extends RelationManager
                     ->icon('heroicon-o-home')
                     ->fillForm(fn (CampVisitor $record): array => ['room_id' => $record->room_id])
                     ->schema([
-                        Select::make('room_id')
-                            ->label('Room')
-                            ->options(function (CampVisitor $record): array {
-                                $camp = $this->ownerRecord;
+                        Grid::make()->columns(2)->schema([
+                            Select::make('room_id')
+                                ->label('Room')
+                                ->options(function (CampVisitor $record): array {
+                                    $camp = $this->ownerRecord;
 
-                                if (! $camp->contract) {
-                                    return [];
-                                }
+                                    if (! $camp->contract) {
+                                        return [];
+                                    }
 
-                                $occupancy = CampVisitor::query()
-                                    ->where('camp_id', $camp->id)
-                                    ->whereNotNull('room_id')
-                                    ->groupBy('room_id')
-                                    ->selectRaw('room_id, count(*) as count')
-                                    ->pluck('count', 'room_id');
+                                    $occupancy = CampVisitor::query()
+                                        ->where('camp_id', $camp->id)
+                                        ->whereNotNull('room_id')
+                                        ->groupBy('room_id')
+                                        ->selectRaw('room_id, count(*) as count')
+                                        ->pluck('count', 'room_id');
 
-                                $options = HostelRoom::query()
-                                    ->availableForVisitors($camp)
-                                    ->get()
-                                    ->filter(fn (HostelRoom $room): bool => $occupancy->get($room->id, 0) < $room->capacity)
-                                    ->mapWithKeys(fn (HostelRoom $room): array => [
-                                        $room->id => "{$room->name} · Floor {$room->floor} · {$occupancy->get($room->id, 0)}/{$room->capacity}",
-                                    ])
-                                    ->all();
+                                    $options = HostelRoom::query()
+                                        ->availableForVisitors($camp)
+                                        ->get()
+                                        ->filter(fn (HostelRoom $room): bool => $occupancy->get($room->id, 0) < $room->capacity)
+                                        ->mapWithKeys(fn (HostelRoom $room): array => [
+                                            $room->id => "{$room->name} · Floor {$room->floor} · {$occupancy->get($room->id, 0)}/{$room->capacity}",
+                                        ])
+                                        ->all();
 
-                                if ($record->room_id) {
-                                    if (array_key_exists($record->room_id, $options)) {
-                                        $options[$record->room_id] .= ' (current)';
-                                    } else {
-                                        $current = HostelRoom::find($record->room_id);
-                                        if ($current) {
-                                            $options[$record->room_id] = "{$current->name} · Floor {$current->floor} · {$occupancy->get($current->id, 0)}/{$current->capacity} (current)";
+                                    if ($record->room_id) {
+                                        if (array_key_exists($record->room_id, $options)) {
+                                            $options[$record->room_id] .= ' (current)';
+                                        } else {
+                                            $current = HostelRoom::find($record->room_id);
+                                            if ($current) {
+                                                $options[$record->room_id] = "{$current->name} · Floor {$current->floor} · {$occupancy->get($current->id, 0)}/{$current->capacity} (current)";
+                                            }
                                         }
                                     }
-                                }
 
-                                return $options;
-                            })
-                            ->required(),
+                                    return $options;
+                                })
+                                ->required(),
+                        ]),
                     ])
                     ->action(fn (CampVisitor $record, array $data) => $record->update(['room_id' => $data['room_id']])),
 
@@ -182,30 +184,44 @@ final class CampVisitorsRelationManager extends RelationManager
                             ->default(fn (CampVisitor $record) => "{$record->visitor->emergency_contact_name} / {$record->visitor->emergency_contact_phone}"),
                     ]),
             ])
-            ->groupedBulkActions([
-                BulkAction::make('confirmSelected')
-                    ->label('Confirm Selected')
-                    ->icon('heroicon-o-check')
-                    ->action(function (Collection $records) {
-                        $records->each(fn ($record) => $record->update(['status' => VisitorStatus::Confirmed]));
-                    })
-                    ->deselectRecordsAfterCompletion(),
-
-                BulkAction::make('markSelectedPaid')
-                    ->label('Mark Selected as Paid')
-                    ->icon('heroicon-o-check-circle')
-                    ->action(function (Collection $records) {
-                        $records->each(fn ($record) => $record->update(['payment_status' => VisitorStatus::Paid]));
-                    })
-                    ->deselectRecordsAfterCompletion(),
-            ])
-            ->toolbarActions([
-                //
+            ->headerActions([
+                Action::make('swapRooms')
+                    ->label('Swap Rooms')
+                    ->icon('heroicon-o-arrows-right-left')
+                    ->schema([
+                        Select::make('first_camp_visitor_id')
+                            ->label('First Visitor')
+                            ->options(fn (): array => $this->visitorOptionsWithRoom())
+                            ->required(),
+                        Select::make('second_camp_visitor_id')
+                            ->label('Second Visitor')
+                            ->options(fn (): array => $this->visitorOptionsWithRoom())
+                            ->required(),
+                    ])
+                    ->action(function (array $data): void {
+                        $firstRoomId = CampVisitor::query()->where('id', $data['first_camp_visitor_id'])->value('room_id');
+                        $secondRoomId = CampVisitor::query()->where('id', $data['second_camp_visitor_id'])->value('room_id');
+                        CampVisitor::query()->where('id', $data['first_camp_visitor_id'])->update(['room_id' => $secondRoomId]);
+                        CampVisitor::query()->where('id', $data['second_camp_visitor_id'])->update(['room_id' => $firstRoomId]);
+                    }),
             ]);
     }
 
     public function canCreate(): bool
     {
         return false;
+    }
+
+    /** @return array<int, string> */
+    private function visitorOptionsWithRoom(): array
+    {
+        return CampVisitor::query()
+            ->where('camp_id', $this->ownerRecord->id)
+            ->with(['visitor', 'room'])
+            ->get()
+            ->mapWithKeys(fn (CampVisitor $cv): array => [
+                $cv->id => $cv->visitor->name.' — '.($cv->room?->name),
+            ])
+            ->all();
     }
 }

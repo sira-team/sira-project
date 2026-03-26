@@ -117,6 +117,9 @@ final class Camp extends Model
         return $this->hasMany(CampVisitor::class);
     }
 
+    /**
+     * @return BelongsToMany<User, $this, CampUser>
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'camp_user')

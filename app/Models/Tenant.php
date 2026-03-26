@@ -28,6 +28,9 @@ use Illuminate\Support\Str;
  * @property-read int|null $roles_count
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
+ * @property string|null $bank_recipient
+ * @property string|null $bank_name
+ * @property string|null $bic
  *
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant newModelQuery()
@@ -43,6 +46,9 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankRecipientName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereIban($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankRecipient($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBic($value)
  *
  * @mixin \Eloquent
  */

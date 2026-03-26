@@ -49,6 +49,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Tenant|null $tenant
  * @property-read Collection<int, Tenant> $tenants
  * @property-read int|null $tenants_count
+ * @property Gender|null $gender
+ * @property-read Collection<int, Camp> $camps
+ * @property-read int|null $camps_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -70,6 +73,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGender($value)
  *
  * @mixin \Eloquent
  */

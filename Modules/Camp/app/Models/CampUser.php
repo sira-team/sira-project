@@ -11,10 +11,16 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $camp_id
  * @property int $user_id
  * @property int|null $room_id
+ * @property-read HostelRoom|null $room
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereCampId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereRoomId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereUserId($value)
+ *
+ * @mixin \Eloquent
  */
 final class CampUser extends Pivot
 {
