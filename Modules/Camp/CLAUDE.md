@@ -90,7 +90,7 @@ Global model, no `tenant_id`, soft deletes. Managed in Super Admin Panel only. T
 - `Hostel::rooms()` — `hasMany(HostelRoom::class)`
 - `Hostel::contracts()` — `hasMany(CampContract::class)`
 
-The Hostel and HostelRoom resources live in the Super Admin Panel, not the Camp Panel.
+The Hostel and HostelRoom resources live in the Camp Panel with `$isScopedToTenant = false`. They are global (no `tenant_id`) and shared across all tenants. Discovered via a second `discoverResources` call from `Filament/Resources/` alongside the cluster resources in `Filament/Clusters/Camp/Resources/`.
 
 **HostelRoom form fields:** name, floor, capacity. Rooms are fixed per venue — no gender field, gender-based assignment is handled by the camp's gender policy.
 

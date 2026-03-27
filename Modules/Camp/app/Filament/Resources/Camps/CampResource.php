@@ -5,16 +5,22 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\Camps;
 
 use BackedEnum;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampExpensesRelationManager;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampUsersRelationManager;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampVisitorsRelationManager;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
+use Modules\Camp\Filament\Resources\CampUsers\Pages\ListCampUsers;
+use Modules\Camp\Filament\Resources\CampVisitors\Pages\ListCampVisitors;
 use Modules\Camp\Models\Camp;
 
 final class CampResource extends Resource
@@ -35,9 +41,25 @@ final class CampResource extends Resource
         return CampInfolist::configure($schema);
     }
 
+    public static function getRecordTitle(?Model $record): string|Htmlable|null
+    {
+        return $record->name;
+    }
+
     public static function table(Table $table): Table
     {
         return CampTable::configure($table);
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewCamp::class,
+            Pages\EditCamp::class,
+            ListCampExpenses::class,
+            ListCampVisitors::class,
+            ListCampUsers::class,
+        ]);
     }
 
     public static function getRelations(): array

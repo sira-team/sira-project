@@ -124,7 +124,7 @@ final class Camp extends Model
     {
         return $this->belongsToMany(User::class, 'camp_user')
             ->using(CampUser::class)
-            ->withPivot('room_id');
+            ->withPivot('id', 'room_id');
     }
 
     public function visitors(): BelongsToMany

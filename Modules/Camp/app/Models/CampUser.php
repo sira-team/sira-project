@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -34,8 +35,18 @@ final class CampUser extends Pivot
         'room_id',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function room(): BelongsTo
     {
         return $this->belongsTo(HostelRoom::class);
+    }
+
+    public function camp(): BelongsTo
+    {
+        return $this->belongsTo(Camp::class);
     }
 }

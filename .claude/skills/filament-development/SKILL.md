@@ -65,12 +65,7 @@ RelationManagers/
 
 namespace Modules\Camp\Filament\Resources\Camps;
 
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Tables\Table;
-use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
-use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
-use Modules\Camp\Models\Camp;
+use Filament\Resources\Resource;use Filament\Schemas\Schema;use Filament\Tables\Table;use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;use Modules\Camp\Models\Camp;
 
 class CampResource extends Resource
 {
@@ -215,11 +210,7 @@ class CampTable
 
 namespace Modules\Camp\Filament\Resources\Camps\RelationManagers;
 
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Schemas\Schema;
-use Filament\Tables\Table;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\CampExpenseForm;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\CampExpensesTable;
+use Filament\Resources\RelationManagers\RelationManager;use Filament\Schemas\Schema;use Filament\Tables\Table;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\CampExpenseForm;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\CampExpensesTable;
 
 class CampExpensesRelationManager extends RelationManager
 {

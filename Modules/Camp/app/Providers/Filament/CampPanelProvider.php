@@ -40,21 +40,21 @@ final class CampPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->topNavigation()
             ->tenantMenu(false)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->tenant(Tenant::class, slugAttribute: 'slug')
-            ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\Resources'))
-            ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\Pages'))
+            ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\\Resources'))
+            ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\\Pages'))
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: module('Camp', true)->appPath("Filament{$separator}Widgets"), for: module('Camp', true)->appNamespace('Filament\Widgets'))
+            ->discoverWidgets(in: module('Camp', true)->appPath("Filament{$separator}Widgets"), for: module('Camp', true)->appNamespace('Filament\\Widgets'))
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->discoverClusters(in: module('Camp', true)->appPath("Filament{$separator}Clusters"), for: module('Camp', true)->appNamespace('Filament\Clusters'))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
