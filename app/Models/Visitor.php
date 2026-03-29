@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 /**
@@ -59,6 +60,8 @@ final class Visitor extends Model
     /** @use HasFactory<VisitorFactory> */
     use HasFactory;
 
+    use Notifiable;
+
     protected $fillable = [
         'name',
         'email',
@@ -90,6 +93,20 @@ final class Visitor extends Model
         return $this->belongsToMany(self::class, 'visitor_children', 'parent_id', 'child_id')
             ->withPivot('relationship')
             ->using(VisitorChild::class);
+    }
+
+    /**
+     * Determine where to send the mail notification.
+     */
+    public function routeNotificationForMail($notification): array
+    {
+        $emails = $this->guardians()->pluck('email')->filter()->all();
+
+        if ($this->email) {
+            $emails[] = $this->email;
+        }
+
+        return array_unique($emails);
     }
 
     protected function casts(): array

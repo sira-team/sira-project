@@ -8,7 +8,6 @@ use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -40,7 +39,7 @@ final class CampEmailTemplatesTable
             ])
             ->recordActions([
                 Action::make('send')
-                    ->label(__('Send'))
+                    ->label(__('Test E-Mail'))
                     ->icon('heroicon-o-paper-airplane')
                     ->schema(fn (CampEmailTemplate $record): array => [
                         Select::make('camp_visitor_id')
@@ -55,26 +54,15 @@ final class CampEmailTemplatesTable
                                 ->all())
                             ->searchable()
                             ->required(),
-                        Toggle::make('debugging')
-                            ->label(__('Debugging'))
-                            ->live(),
-                        TextInput::make('override_email')
+                        TextInput::make('email')
+                            ->required()
                             ->label(__('Override Email'))
                             ->email()
                             ->visible(fn (Get $get): bool => (bool) $get('debugging')),
                     ])
                     ->action(function (array $data, CampEmailTemplate $record): void {
-                        $campVisitor = CampVisitor::with(['visitor', 'camp.tenant', 'visitor.guardians'])
-                            ->findOrFail($data['camp_visitor_id']);
-
-                        $email = ($data['debugging'] ?? false) && filled($data['override_email'] ?? null)
-                            ? $data['override_email']
-                            : ($campVisitor->visitor->email ?? $campVisitor->visitor->guardians()->first()?->email);
-
-                        if (! filled($email)) {
-                            return;
-                        }
-
+                        $campVisitor = CampVisitor::with(['visitor', 'camp.tenant', 'visitor.guardians'])->findOrFail($data['camp_visitor_id']);
+                        $email = $data['email'];
                         Mail::to($email)->queue(new CampTemplateMail($record, $campVisitor));
                     }),
                 EditAction::make(),

@@ -410,25 +410,18 @@ Notification recipient is always the root visitor's email. For child visitors, r
 Email templates are resolved via the `CampEmailTemplate::resolve(array $data)` method, which returns `['subject' => string, 'body' => string]`. It uses Filament's `RichContentRenderer` to handle TipTap-style merge tags and Laravel's `Str::replace` for `{{ tag }}` placeholders.
 
 ```php
-$template = CampEmailTemplate::where('key', CampNotificationType::Waitlisted)->first();
-
-['subject' => $subject, 'body' => $body] = $template->resolve([
-    'visitor_name'     => $campVisitor->visitor->name,
-    'camp_name'        => $camp->name,
-    'tenant_name'      => $camp->tenant->name,
-    'price'            => number_format($campVisitor->price, 2),
-    'iban'             => $camp->tenant->iban ?? '',
-    'bank_recipient'   => $camp->tenant->bank_recipient ?? '',
-    'bank_name'        => $camp->tenant->bank_name ?? '',
-    'bic'              => $camp->tenant->bic ?? '',
-    'payment_due_date' => $campVisitor->registered_at->addDays(7)->format('d.m.Y'),
-    'waitlist_position' => (string) $campVisitor->waitlist_position,
-]);
-
-Mail::to($email)->queue(new CampTemplateMail($subject, $body));
+$campVisitor->notify(CampNotificationType::Confirmed);
 ```
 
-`CampTemplateMail` accepts pre-resolved `$resolvedSubject` and `$resolvedBody` strings and renders them via `camp::mails.template`.
+The `CampVisitor::notify()` method triggers a `CampStatusNotification`, which is a Laravel Notification. The recipient is resolved via the `Visitor` model's `routeNotificationForMail()` method, which includes both the visitor and their guardians.
+
+### Notification recipient
+
+Notification recipient is resolved in `App\Models\Visitor::routeNotificationForMail()`. It returns an array of unique email addresses including the visitor's email and all their guardians' emails.
+
+### CampTemplateMail
+
+`CampTemplateMail` accepts a `CampEmailTemplate` and a `CampVisitor`. It internally resolves the subject and body using the template's `resolve()` method and the visitor's data.
 
 ### Artisan Commands
 
