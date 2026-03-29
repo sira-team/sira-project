@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\CampEmailTemplates\Schemas;
 
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Illuminate\Support\HtmlString;
 use Modules\Camp\Models\CampEmailTemplate;
 
 final class CampEmailTemplateForm
@@ -26,23 +24,18 @@ final class CampEmailTemplateForm
                 ->label(__('Content'))
                 ->required()
                 ->columnSpanFull()
+                ->mergeTags(fn (CampEmailTemplate $record): array => collect($record->key->mergeTags())
+                    ->mapWithKeys(fn (string $tag): array => [
+                        $tag => ucwords(str_replace('_', ' ', $tag)),
+                    ])
+                    ->all())
                 ->toolbarButtons([
                     ['bold', 'italic', 'underline', 'strike', 'link'],
-                    ['h1', 'h2', 'h3'],
+                    ['h2', 'h3'],
                     ['bulletList', 'orderedList', 'blockquote'],
                     ['undo', 'redo'],
+                    ['mergeTags'],
                 ]),
-
-            Placeholder::make('available_tags')
-                ->label(__('Available merge tags'))
-                ->content(function (CampEmailTemplate $record): HtmlString {
-                    $tags = collect($record->key->mergeTags())
-                        ->map(fn (string $tag): string => '<code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:0.8em">'.$tag.'</code>')
-                        ->implode(' ');
-
-                    return new HtmlString($tags);
-                })
-                ->columnSpanFull(),
         ]);
     }
 }

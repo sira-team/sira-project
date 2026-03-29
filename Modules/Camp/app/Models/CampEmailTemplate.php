@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Modules\Camp\Models;
 
 use App\Traits\BelongsToTenant;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Camp\Database\Factories\CampEmailTemplateFactory;
 use Modules\Camp\Enums\CampNotificationType;
 
@@ -36,6 +38,24 @@ final class CampEmailTemplate extends Model
         'subject',
         'body',
     ];
+
+    /**
+     * @param  array<string, string>  $data
+     * @return array{subject: string, body: string}
+     */
+    public function resolve(array $data): array
+    {
+        $body = RichContentRenderer::make($this->body)
+            ->mergeTags($data)
+            ->toHtml();
+
+        $search = array_map(fn (string $key): string => '{{ '.$key.' }}', array_keys($data));
+
+        return [
+            'subject' => Str::replace($search, array_values($data), $this->subject),
+            'body' => Str::replace($search, array_values($data), $body),
+        ];
+    }
 
     protected static function newFactory(): CampEmailTemplateFactory
     {

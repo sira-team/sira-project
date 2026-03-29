@@ -10,11 +10,9 @@ use App\Models\VisitorChild;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
+use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
-use Modules\Camp\Mails\CampRegistrationReceivedMail;
-use Modules\Camp\Mails\CampWaitlistedMail;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Services\WaitlistService;
@@ -119,9 +117,9 @@ final class CampVisitorController
                 ]);
 
                 if ($status === VisitorStatus::Pending) {
-                    Mail::queue(new CampRegistrationReceivedMail($registration));
+                    $registration->notify(CampNotificationType::Received);
                 } else {
-                    Mail::queue(new CampWaitlistedMail($registration));
+                    $registration->notify(CampNotificationType::Waitlisted);
                 }
 
                 $confirmedCount++;

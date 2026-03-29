@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\CampEmailTemplates\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 use Modules\Camp\Enums\CampNotificationType;
+use Modules\Camp\Mails\CampTemplateMail;
+use Modules\Camp\Models\CampEmailTemplate;
+use Modules\Camp\Models\CampVisitor;
 
 final class CampEmailTemplatesTable
 {
@@ -30,6 +39,44 @@ final class CampEmailTemplatesTable
                     ->sortable(),
             ])
             ->recordActions([
+                Action::make('send')
+                    ->label(__('Send'))
+                    ->icon('heroicon-o-paper-airplane')
+                    ->schema(fn (CampEmailTemplate $record): array => [
+                        Select::make('camp_visitor_id')
+                            ->label(__('Recipient'))
+                            ->options(fn (): array => CampVisitor::query()
+                                ->whereHas('camp', fn ($q) => $q->where('tenant_id', $record->tenant_id))
+                                ->with(['visitor', 'camp'])
+                                ->get()
+                                ->mapWithKeys(fn (CampVisitor $cv): array => [
+                                    $cv->id => $cv->visitor->name.' ('.$cv->camp->name.')',
+                                ])
+                                ->all())
+                            ->searchable()
+                            ->required(),
+                        Toggle::make('debugging')
+                            ->label(__('Debugging'))
+                            ->live(),
+                        TextInput::make('override_email')
+                            ->label(__('Override Email'))
+                            ->email()
+                            ->visible(fn (Get $get): bool => (bool) $get('debugging')),
+                    ])
+                    ->action(function (array $data, CampEmailTemplate $record): void {
+                        $campVisitor = CampVisitor::with(['visitor', 'camp.tenant', 'visitor.guardians'])
+                            ->findOrFail($data['camp_visitor_id']);
+
+                        $email = ($data['debugging'] ?? false) && filled($data['override_email'] ?? null)
+                            ? $data['override_email']
+                            : ($campVisitor->visitor->email ?? $campVisitor->visitor->guardians()->first()?->email);
+
+                        if (! filled($email)) {
+                            return;
+                        }
+
+                        Mail::to($email)->queue(new CampTemplateMail($record, $campVisitor));
+                    }),
                 EditAction::make(),
             ])
             ->defaultSort('key');

@@ -33,13 +33,13 @@ enum CampNotificationType: string
      */
     public function mergeTags(): array
     {
-        $common = ['{{ visitor_name }}', '{{ camp_name }}', '{{ tenant_name }}'];
-        $bankDetails = ['{{ iban }}', '{{ bank_recipient }}', '{{ bank_name }}', '{{ bic }}'];
+        $common = ['visitor_name', 'camp_name', 'tenant_name'];
+        $bankDetails = ['iban', 'bank_recipient', 'bank_name', 'bic'];
 
         return match ($this) {
-            self::Received, self::WaitlistPromoted, self::PaymentReminder => [...$common, '{{ price }}', ...$bankDetails],
-            self::Confirmed => [...$common, '{{ payment_due_date }}'],
-            self::Waitlisted => [...$common, '{{ waitlist_position }}'],
+            self::Received, self::WaitlistPromoted, self::PaymentReminder => [...$common, 'price', ...$bankDetails],
+            self::Confirmed => [...$common, 'payment_due_date'],
+            self::Waitlisted => [...$common, 'waitlist_position'],
             self::Cancelled => $common,
         };
     }

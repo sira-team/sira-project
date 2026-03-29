@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Modules\Camp\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
-use Modules\Camp\Mails\CampTemplateMail;
 use Modules\Camp\Models\Camp;
-use Modules\Camp\Models\CampEmailTemplate;
 use Modules\Camp\Models\CampVisitor;
-use Modules\Camp\Services\MergeTagReplacer;
 
 /**
  * Runs daily. For each active, over-subscribed camp, moves confirmed
@@ -28,7 +24,7 @@ final class ExpireUnpaidRegistrationsCommand extends Command
 
     protected $description = 'Move confirmed, unpaid registrations older than 8 days to the waitlist end for over-subscribed camps';
 
-    public function __construct(private readonly MergeTagReplacer $replacer)
+    public function __construct()
     {
         parent::__construct();
     }
@@ -90,42 +86,6 @@ final class ExpireUnpaidRegistrationsCommand extends Command
             'waitlist_position' => $maxPosition + 1,
         ]);
 
-        $this->sendWaitlistedEmail($camp, $campVisitor);
-    }
-
-    private function sendWaitlistedEmail(Camp $camp, CampVisitor $campVisitor): void
-    {
-        $template = CampEmailTemplate::withoutGlobalScopes()
-            ->where('tenant_id', $camp->tenant_id)
-            ->where('key', CampNotificationType::Waitlisted->value)
-            ->first();
-
-        if ($template === null) {
-            return;
-        }
-
-        $recipientEmails = $this->resolveRecipientEmail($campVisitor);
-
-        ['subject' => $subject, 'body' => $body] = $this->replacer->resolve($template, [
-            'visitor_name' => $campVisitor->visitor->name,
-            'camp_name' => $camp->name,
-            'tenant_name' => $camp->tenant->name,
-            'waitlist_position' => (string) $campVisitor->waitlist_position,
-        ]);
-
-        Mail::to($recipientEmails)->queue(new CampTemplateMail($subject, $body));
-    }
-
-    private function resolveRecipientEmail(CampVisitor $campVisitor): array
-    {
-        $visitor = $campVisitor->visitor;
-
-        $emails = $visitor->guardians()->pluck('email')->filter()->all();
-
-        if ($visitor->email) {
-            $emails[] = $visitor->email;
-        }
-
-        return $emails;
+        $campVisitor->notify(CampNotificationType::Waitlisted);
     }
 }

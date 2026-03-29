@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Modules\Camp\Database\Factories\CampVisitorFactory;
+use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
+use Modules\Camp\Mails\CampTemplateMail;
 
 /**
  * @property int $id
@@ -76,6 +79,30 @@ final class CampVisitor extends Pivot
     public function room(): BelongsTo
     {
         return $this->belongsTo(HostelRoom::class, 'room_id');
+    }
+
+    public function notify(CampNotificationType $type): void
+    {
+        $template = CampEmailTemplate::withoutGlobalScopes()
+            ->where('tenant_id', $this->camp->tenant_id)
+            ->where('key', $type->value)
+            ->first();
+
+        if ($template === null) {
+            return;
+        }
+
+        $emails = $this->visitor->guardians()->pluck('email')->filter()->all();
+
+        if ($this->visitor->email) {
+            $emails[] = $this->visitor->email;
+        }
+
+        if (empty($emails)) {
+            return;
+        }
+
+        Mail::to($emails)->queue(new CampTemplateMail($template, $this));
     }
 
     protected static function newFactory(): CampVisitorFactory

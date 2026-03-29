@@ -10,6 +10,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Grid;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
@@ -143,7 +144,7 @@ final class CampVisitorsTable
                     ->action(function ($record, WaitlistService $service) {
                         $record->update(['status' => VisitorStatus::Cancelled]);
                         $service->promote($record->camp);
-                        // Queue CampCancelledMail
+                        $record->notify(CampNotificationType::Cancelled);
                     })
                     ->visible(fn ($record) => $record->status !== VisitorStatus::Cancelled),
 

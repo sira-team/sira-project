@@ -405,13 +405,14 @@ Notification recipient is always the root visitor's email. For child visitors, r
 - Editable in the Camp panel under **E-Mail Vorlagen** (List + Edit only — no create, no delete)
 - Merge tags shown as hints in the Filament edit form
 
-### MergeTagReplacer
+### Email Resolution
 
-`Modules\Camp\Services\MergeTagReplacer` — resolves `{{ tag }}` placeholders:
+Email templates are resolved via the `CampEmailTemplate::resolve(array $data)` method, which returns `['subject' => string, 'body' => string]`. It uses Filament's `RichContentRenderer` to handle TipTap-style merge tags and Laravel's `Str::replace` for `{{ tag }}` placeholders.
 
 ```php
-$replacer = new MergeTagReplacer;
-['subject' => $subject, 'body' => $body] = $replacer->resolve($template, [
+$template = CampEmailTemplate::where('key', CampNotificationType::Waitlisted)->first();
+
+['subject' => $subject, 'body' => $body] = $template->resolve([
     'visitor_name'     => $campVisitor->visitor->name,
     'camp_name'        => $camp->name,
     'tenant_name'      => $camp->tenant->name,

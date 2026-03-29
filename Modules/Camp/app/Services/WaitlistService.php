@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Services;
 
-use Illuminate\Support\Facades\Mail;
+use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
-use Modules\Camp\Mails\CampWaitlistPromotedMail;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
 
@@ -14,18 +13,22 @@ final class WaitlistService
 {
     public function promote(Camp $camp): void
     {
-        /** @var CampVisitor $registration */
+        /** @var CampVisitor|null $registration */
         $registration = $camp->campVisitors()
             ->where('status', VisitorStatus::Waitlisted)
             ->orderBy('waitlist_position')
-            ->firstOrFail();
+            ->first();
+
+        if ($registration === null) {
+            return;
+        }
 
         $registration->update([
             'status' => VisitorStatus::Pending,
             'waitlist_position' => null,
         ]);
 
-        Mail::queue(new CampWaitlistPromotedMail($registration));
+        $registration->notify(CampNotificationType::WaitlistPromoted);
 
         $this->reorder($camp);
     }

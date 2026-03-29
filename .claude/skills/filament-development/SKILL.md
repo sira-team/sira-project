@@ -360,6 +360,38 @@ class MyPage extends Page
 
 ---
 
+## RichEditor mergeTags
+
+`mergeTags()` accepts a **static array** — never a bare closure as the first argument. To get dynamic tags from the record, use an associative array with human-readable labels returned from within a closure:
+
+```php
+// ✅ Correct — closure returns an array; associative for UI labels
+RichEditor::make('body')
+    ->mergeTags(fn (MyModel $record): array => collect($record->type->mergeTags())
+        ->mapWithKeys(fn (string $tag): array => [
+            $tag => ucwords(str_replace('_', ' ', $tag)),
+        ])
+        ->all())
+    ->toolbarButtons([
+        ['bold', 'italic', 'underline', 'strike', 'link'],
+        ['h2', 'h3'],
+        ['bulletList', 'orderedList', 'blockquote'],
+        ['undo', 'redo'],
+        ['mergeTags'],   // toolbar button to open the merge-tag picker
+    ])
+
+// ✅ Also valid — plain list, Filament uses keys as-is in content as {{ tag }}
+->mergeTags(['visitor_name', 'camp_name'])
+
+// ❌ Wrong — do not pass a bare closure without returning an array
+->mergeTags(fn ($record) => $record->tags)   // closure must return array, not Collection etc.
+```
+
+Tag keys passed to `mergeTags()` are plain strings **without** `{{ }}`. Filament wraps them automatically when inserting into content.
+Only use `h2` and `h3` in toolbar buttons — `h1` is not a valid toolbar button in Filament's RichEditor.
+
+---
+
 ## Translations — REQUIRED
 
 Every user-visible string on a Filament component **must** be wrapped in `__()`. This applies to all labels, headings, descriptions, placeholders, helper texts, hints, modal headings, empty-state text, and `Section::make` / `Tab::make` / `Fieldset::make` / `Stat::make` labels.
