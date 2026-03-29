@@ -150,7 +150,7 @@ final class CampUsersTable
         return $camp->users()
             ->get()
             ->mapWithKeys(fn (User $user): array => [
-                $user->id => $user->name.' — '.($rooms->get($user->id)->room->name ?? '—'),
+                $user->id => $user->name.' — '.($rooms->get($user->id)?->room->name),
             ])
             ->all();
     }

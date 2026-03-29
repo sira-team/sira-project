@@ -11,6 +11,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Camp\Enums\VisitorStatus;
+use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Models\HostelRoom;
 use Modules\Camp\Services\WaitlistService;
@@ -174,14 +175,14 @@ final class CampVisitorsTable
                 Action::make('swapRooms')
                     ->label(__('Swap Rooms'))
                     ->icon('heroicon-o-arrows-right-left')
-                    ->schema([
+                    ->schema(fn ($livewire): array => [
                         Select::make('first_camp_visitor_id')
                             ->label(__('First Visitor'))
-                            ->options(fn (CampVisitor $record): array => $record->camp->visitorOptionsWithRoom())
+                            ->options(fn (): array => self::visitorOptionsWithRoom($livewire->getParentRecord()))
                             ->required(),
                         Select::make('second_camp_visitor_id')
                             ->label(__('Second Visitor'))
-                            ->options(fn (CampVisitor $record): array => $record->camp->visitorOptionsWithRoom())
+                            ->options(fn (): array => self::visitorOptionsWithRoom($livewire->getParentRecord()))
                             ->required(),
                     ])
                     ->action(function (array $data): void {
@@ -191,5 +192,25 @@ final class CampVisitorsTable
                         CampVisitor::query()->where('id', $data['second_camp_visitor_id'])->update(['room_id' => $firstRoomId]);
                     }),
             ]);
+    }
+
+    private static function visitorOptionsWithRoom(Camp $camp): array
+    {
+        $rooms = CampVisitor::query()
+            ->where('camp_id', $camp->id)
+            ->whereNotNull('room_id')
+            ->with('room')
+            ->get()
+            ->keyBy('id');
+
+        return CampVisitor::query()
+            ->where('camp_id', $camp->id)
+            ->whereNotNull('room_id')
+            ->with('visitor')
+            ->get()
+            ->mapWithKeys(fn (CampVisitor $cv): array => [
+                $cv->id => $cv->visitor->name.' — '.($rooms->get($cv->id)?->room->name ?? '—'),
+            ])
+            ->all();
     }
 }
