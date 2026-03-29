@@ -22,7 +22,7 @@ final class QuizForm
     {
         return $schema
             ->components([
-                Section::make('Quiz Settings')
+                Section::make(__('Quiz Settings'))
                     ->schema([
                         TextInput::make('title')
                             ->required()
@@ -30,19 +30,19 @@ final class QuizForm
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('max_attempts')
-                                    ->label('Max Attempts')
+                                    ->label(__('Max Attempts'))
                                     ->required()
                                     ->numeric()
                                     ->default(3)
                                     ->minValue(1),
                                 TextInput::make('min_days_between_attempts')
-                                    ->label('Min Days Between Attempts')
+                                    ->label(__('Min Days Between Attempts'))
                                     ->required()
                                     ->numeric()
                                     ->default(7)
                                     ->minValue(0),
                                 TextInput::make('passing_score_percent')
-                                    ->label('Passing Score (%)')
+                                    ->label(__('Passing Score (%)'))
                                     ->required()
                                     ->numeric()
                                     ->default(70)
@@ -51,22 +51,22 @@ final class QuizForm
                             ]),
                     ]),
 
-                Section::make('Questions')
+                Section::make(__('Questions'))
                     ->schema([
                         Builder::make('questions')
-                            ->label('')
+                            ->label(__('Quiz'))
                             ->blocks([
                                 Block::make('single_choice')
-                                    ->label('Single Choice')
+                                    ->label(__('Single Choice'))
                                     ->icon(Heroicon::OutlinedCheckCircle)
                                     ->schema([
                                         Textarea::make('question_text')
-                                            ->label('Question')
+                                            ->label(__('Question'))
                                             ->required()
                                             ->rows(2)
                                             ->columnSpanFull(),
                                         Repeater::make('options')
-                                            ->label('Answer Options')
+                                            ->label(__('Answer Options'))
                                             ->schema(self::optionSchema())
                                             ->minItems(2)
                                             ->maxItems(6)
@@ -76,16 +76,16 @@ final class QuizForm
                                     ]),
 
                                 Block::make('multiple_choice')
-                                    ->label('Multiple Choice')
+                                    ->label(__('Multiple Choice'))
                                     ->icon(Heroicon::OutlinedListBullet)
                                     ->schema([
                                         Textarea::make('question_text')
-                                            ->label('Question')
+                                            ->label(__('Question'))
                                             ->required()
                                             ->rows(2)
                                             ->columnSpanFull(),
                                         Repeater::make('options')
-                                            ->label('Answer Options')
+                                            ->label(__('Answer Options'))
                                             ->schema(self::optionSchema())
                                             ->minItems(2)
                                             ->maxItems(6)
@@ -95,16 +95,16 @@ final class QuizForm
                                     ]),
 
                                 Block::make('true_or_false')
-                                    ->label('True or False')
+                                    ->label(__('True or False'))
                                     ->icon(Heroicon::OutlinedScale)
                                     ->schema([
                                         Textarea::make('question_text')
-                                            ->label('Question')
+                                            ->label(__('Question'))
                                             ->required()
                                             ->rows(2)
                                             ->columnSpanFull(),
                                         Radio::make('correct_answer')
-                                            ->label('Correct Answer')
+                                            ->label(__('Correct Answer'))
                                             ->options(['true' => 'True', 'false' => 'False'])
                                             ->default('true')
                                             ->required()
@@ -126,15 +126,15 @@ final class QuizForm
     {
         return [
             TextInput::make('text')
-                ->label('Option')
+                ->label(__('Option'))
                 ->required()
                 ->columnSpan(3),
             Toggle::make('is_correct')
-                ->label('Correct')
+                ->label(__('Correct'))
                 ->default(false)
                 ->columnSpan(1),
             TextInput::make('points')
-                ->label('Pts')
+                ->label(__('Pts'))
                 ->numeric()
                 ->default(1)
                 ->minValue(0)

@@ -18,30 +18,30 @@ final class ExpoForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Expo Name')
+                    ->label(__('Expo Name'))
                     ->required()
                     ->maxLength(255),
                 Select::make('expo_request_id')
-                    ->label('Linked Expo Request')
+                    ->label(__('Linked Expo Request'))
                     ->relationship('expoRequest', 'organisation_name')
                     ->searchable()
                     ->nullable()
                     ->preload(),
                 TextInput::make('location_name')
-                    ->label('Location Name')
+                    ->label(__('Location Name'))
                     ->required()
                     ->maxLength(255),
                 Textarea::make('location_address')
-                    ->label('Location Address')
+                    ->label(__('Location Address'))
                     ->rows(2),
                 DatePicker::make('date')
-                    ->label('Date')
+                    ->label(__('Date'))
                     ->required(),
                 Select::make('status')
                     ->options(ExpoStatus::class)
                     ->required(),
                 Textarea::make('notes')
-                    ->label('Notes')
+                    ->label(__('Notes'))
                     ->rows(3),
             ]);
     }

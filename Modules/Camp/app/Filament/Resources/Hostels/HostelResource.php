@@ -24,6 +24,8 @@ final class HostelResource extends Resource
 
     protected static bool $isScopedToTenant = false;
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Schema $schema): Schema
     {
         return HostelForm::configure($schema);

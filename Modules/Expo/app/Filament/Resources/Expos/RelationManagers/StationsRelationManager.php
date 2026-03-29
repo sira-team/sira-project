@@ -25,7 +25,7 @@ final class StationsRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('responsible_user_id')
-                    ->label('Responsible Person')
+                    ->label(__('Responsible Person'))
                     ->relationship('responsible_user', 'name')
                     ->nullable()
                     ->searchable()
@@ -41,10 +41,10 @@ final class StationsRelationManager extends RelationManager
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('responsible_user.name')
-                    ->label('Responsible Person')
+                    ->label(__('Responsible Person'))
                     ->searchable(),
                 TextColumn::make('pivot.sort_order')
-                    ->label('Sort Order')
+                    ->label(__('Sort Order'))
                     ->numeric()
                     ->sortable(),
             ])

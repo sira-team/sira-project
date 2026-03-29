@@ -17,14 +17,14 @@ final class ContractForm
     {
         return $schema->components([
             Select::make('hostel_id')
-                ->label('Hostel')
+                ->label(__('Hostel'))
                 ->options(Hostel::query()->pluck('name', 'id'))
                 ->required()
                 ->searchable(),
             TextInput::make('price_per_person_per_night')
                 ->numeric()
                 ->required()
-                ->label('Price per Person per Night (EUR)'),
+                ->label(__('Price per Person per Night (EUR)')),
             TextInput::make('contracted_beds')
                 ->numeric()
                 ->required()
@@ -32,7 +32,7 @@ final class ContractForm
             DatePicker::make('contract_date'),
             Textarea::make('notes')
                 ->rows(3)
-                ->placeholder('e.g. cancellation terms, special conditions'),
+                ->placeholder(__('e.g. cancellation terms, special conditions')),
         ]);
     }
 }

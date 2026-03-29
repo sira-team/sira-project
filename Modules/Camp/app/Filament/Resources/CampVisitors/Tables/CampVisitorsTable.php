@@ -22,19 +22,19 @@ final class CampVisitorsTable
         return $table
             ->columns([
                 TextColumn::make('visitor.name')
-                    ->label('Visitor')
+                    ->label(__('Visitor'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('visitor.gender')
                     ->sortable()
-                    ->label('Gender')
+                    ->label(__('Gender'))
                     ->badge(),
                 TextColumn::make('registered_at')
-                    ->label('Registered')
+                    ->label(__('Registered'))
                     ->dateTime('d.m.Y H:i')
                     ->sortable(),
                 TextColumn::make('room.name')
-                    ->label('Room')
+                    ->label(__('Room'))
                     ->default('—')
                     ->description(fn (CampVisitor $record): string => $record->room
                         ? CampVisitor::query()->where('camp_id', $record->camp_id)->where('room_id', $record->room_id)->count().'/'.$record->room->capacity
@@ -44,7 +44,7 @@ final class CampVisitorsTable
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('waitlist_position')
-                    ->label('Waitlist Pos')
+                    ->label(__('Waitlist Pos'))
                     ->visible(fn () => true),
             ])
             ->filters([
@@ -52,7 +52,7 @@ final class CampVisitorsTable
             ])
             ->recordActions([
                 Action::make('confirm')
-                    ->label('Confirm')
+                    ->label(__('Confirm'))
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->requiresConfirmation()
@@ -63,15 +63,15 @@ final class CampVisitorsTable
                     ->visible(fn ($record) => $record->status === VisitorStatus::Pending),
 
                 Action::make('assignRoom')
-                    ->label('Assign Room')
+                    ->label(__('Assign Room'))
                     ->icon('heroicon-o-home')
                     ->fillForm(fn (CampVisitor $record): array => ['room_id' => $record->room_id])
                     ->schema([
                         Grid::make()->columns(2)->schema([
                             Select::make('room_id')
-                                ->label('Room')
+                                ->label(__('Room'))
                                 ->options(function (CampVisitor $record): array {
-                                    $camp = $this->ownerRecord;
+                                    $camp = $record->camp;
 
                                     if (! $camp->contract) {
                                         return [];
@@ -112,7 +112,7 @@ final class CampVisitorsTable
                     ->action(fn (CampVisitor $record, array $data) => $record->update(['room_id' => $data['room_id']])),
 
                 Action::make('markPaid')
-                    ->label('Mark as Paid')
+                    ->label(__('Mark as Paid'))
                     ->icon('heroicon-o-check-circle')
                     ->color('info')
                     ->requiresConfirmation()
@@ -122,7 +122,7 @@ final class CampVisitorsTable
                     ->visible(fn ($record) => $record->payment_status === VisitorStatus::Pending),
 
                 Action::make('moveToWaitlist')
-                    ->label('Move to Waitlist')
+                    ->label(__('Move to Waitlist'))
                     ->icon('heroicon-o-list-bullet')
                     ->color('warning')
                     ->requiresConfirmation()
@@ -135,7 +135,7 @@ final class CampVisitorsTable
                     ->visible(fn ($record) => $record->status === VisitorStatus::Confirmed),
 
                 Action::make('cancel')
-                    ->label('Cancel')
+                    ->label(__('Cancel'))
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->requiresConfirmation()
@@ -147,41 +147,41 @@ final class CampVisitorsTable
                     ->visible(fn ($record) => $record->status !== VisitorStatus::Cancelled),
 
                 Action::make('viewHealth')
-                    ->label('Health Info')
+                    ->label(__('Health Info'))
                     ->icon('heroicon-o-information-circle')
                     ->modal()
                     ->modalHeading(fn (CampVisitor $record) => "Health Info: {$record->visitor->name}")
                     ->schema([
                         Textarea::make('allergies')
-                            ->label('Allergies')
+                            ->label(__('Allergies'))
                             ->disabled()
                             ->default(fn (CampVisitor $record) => $record->visitor->allergies),
                         Textarea::make('medications')
-                            ->label('Medications')
+                            ->label(__('Medications'))
                             ->disabled()
                             ->default(fn (CampVisitor $record) => $record->visitor->medications),
                         Textarea::make('medical_notes')
-                            ->label('Medical Notes')
+                            ->label(__('Medical Notes'))
                             ->disabled()
                             ->default(fn (CampVisitor $record) => $record->visitor->medical_notes),
                         Textarea::make('emergency_contact')
-                            ->label('Emergency Contact')
+                            ->label(__('Emergency Contact'))
                             ->disabled()
                             ->default(fn (CampVisitor $record) => "{$record->visitor->emergency_contact_name} / {$record->visitor->emergency_contact_phone}"),
                     ]),
             ])
             ->headerActions([
                 Action::make('swapRooms')
-                    ->label('Swap Rooms')
+                    ->label(__('Swap Rooms'))
                     ->icon('heroicon-o-arrows-right-left')
                     ->schema([
                         Select::make('first_camp_visitor_id')
-                            ->label('First Visitor')
-                            ->options(fn (): array => $this->visitorOptionsWithRoom())
+                            ->label(__('First Visitor'))
+                            ->options(fn (CampVisitor $record): array => $record->camp->visitorOptionsWithRoom())
                             ->required(),
                         Select::make('second_camp_visitor_id')
-                            ->label('Second Visitor')
-                            ->options(fn (): array => $this->visitorOptionsWithRoom())
+                            ->label(__('Second Visitor'))
+                            ->options(fn (CampVisitor $record): array => $record->camp->visitorOptionsWithRoom())
                             ->required(),
                     ])
                     ->action(function (array $data): void {

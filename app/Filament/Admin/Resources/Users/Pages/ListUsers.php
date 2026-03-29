@@ -25,15 +25,15 @@ final class ListUsers extends ListRecords
     {
         return [
             Action::make('invite')
-                ->label('Benutzer einladen')
+                ->label(__('Invite User'))
                 ->icon('heroicon-o-envelope')
                 ->schema([
                     TextInput::make('email')
-                        ->label('E-Mail-Adresse')
+                        ->label(__('Email Address'))
                         ->email()
                         ->required(),
                     TextInput::make('name')
-                        ->label('Name')
+                        ->label(__('Name'))
                         ->required(),
                 ])
                 ->action(function (array $data): void {

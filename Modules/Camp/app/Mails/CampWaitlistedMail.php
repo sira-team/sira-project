@@ -25,7 +25,7 @@ final class CampWaitlistedMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Warteliste - '.$this->registration->camp->name,
+            subject: 'Waitlisted - '.$this->registration->camp->name,
         );
     }
 

@@ -25,7 +25,7 @@ final class CampPaymentReminderMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Zahlungserinnerung - '.$this->visitor->camp->name,
+            subject: 'Payment Reminder - '.$this->visitor->camp->name,
         );
     }
 

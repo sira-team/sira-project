@@ -21,7 +21,7 @@ final class CampForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Basic Information')
+            Section::make(__('Basic Information'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name')
@@ -32,29 +32,29 @@ final class CampForm
                         ->numeric()
                         ->columnSpanFull()
                         ->required()
-                        ->label('Price per Participant (EUR)'),
+                        ->label(__('Price per Participant (EUR)')),
                     DatePicker::make('starts_at')
                         ->required(),
                     DatePicker::make('ends_at')
                         ->required()
                         ->afterOrEqual('starts_at'),
                 ]),
-            Section::make('Contract')
+            Section::make(__('Contract'))
                 ->schema([
-                    Fieldset::make('Contract')
+                    Fieldset::make(__('Contract'))
                         ->hiddenLabel()
                         ->contained(false)
                         ->relationship('contract')
                         ->schema([
                             Select::make('hostel_id')
-                                ->label('Hostel')
+                                ->label(__('Hostel'))
                                 ->options(Hostel::query()->pluck('name', 'id'))
                                 ->required()
                                 ->searchable(),
                             TextInput::make('price_per_person_per_night')
                                 ->numeric()
                                 ->required()
-                                ->label('Price per Person per Night (EUR)'),
+                                ->label(__('Price per Person per Night (EUR)')),
                             TextInput::make('contracted_beds')
                                 ->numeric()
                                 ->required()
@@ -63,10 +63,10 @@ final class CampForm
                             Textarea::make('notes')
                                 ->columnSpanFull()
                                 ->rows(3)
-                                ->placeholder('e.g. cancellation terms, special conditions'),
+                                ->placeholder(__('e.g. cancellation terms, special conditions')),
                         ]),
                 ]),
-            Section::make('Target Group & Gender')
+            Section::make(__('Target Group & Gender'))
                 ->columns(2)
                 ->schema([
                     Select::make('target_group')
@@ -83,7 +83,7 @@ final class CampForm
                         ->minValue(0)
                         ->visible(fn (string $operation) => $operation !== 'view'),
                 ]),
-            Section::make('Registration & Planning')
+            Section::make(__('Registration & Planning'))
                 ->schema([
                     DateTimePicker::make('registration_opens_at'),
                     DateTimePicker::make('registration_ends_at'),

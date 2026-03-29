@@ -380,19 +380,76 @@ Promotion is not automatic confirmation. Camp Manager manually confirms and mark
 
 ## Email Notifications
 
-All emails queued. All include tenant name in header. IBAN sourced from `Tenant`.
+All emails queued. All include tenant name in header. Bank details (`iban`, `bank_recipient`, `bank_name`, `bic`) sourced from `Tenant`.
 
-| type | trigger | key content |
-|---|---|---|
-| `registration_received` | form submission, capacity available | tenant IBAN, payment instructions |
-| `waitlisted` | form submission, camp full | waitlist position |
-| `waitlist_promoted` | cancellation triggers promotion | tenant IBAN, deadline warning |
-| `confirmed` | Camp Manager confirms | camp dates, location, room if assigned |
-| `payment_reminder` | manual button in Filament | outstanding amount, tenant IBAN |
-| `room_assigned` | room assignment saved | room name, camp dates |
-| `cancelled` | cancellation action | brief message |
+**There is no `room_assigned` notification.** Confirmed status is sufficient — rooms are not communicated separately.
 
-Notification recipient is always the root visitor's email. For child visitors, resolve `visitor->parent->email`.
+| key | `CampNotificationType` | trigger | merge tags |
+|---|---|---|---|
+| `received` | `Received` | form submission, capacity available | common + `price`, `iban`, `bank_recipient`, `bank_name`, `bic` |
+| `confirmed` | `Confirmed` | Camp Manager confirms | common + `payment_due_date` (= `registered_at + 7 days`) |
+| `waitlisted` | `Waitlisted` | form submission full / scheduler expiry | common + `waitlist_position` |
+| `waitlist_promoted` | `WaitlistPromoted` | cancellation triggers promotion | common + `price`, `iban`, `bank_recipient`, `bank_name`, `bic` |
+| `payment_reminder` | `PaymentReminder` | manual button in Filament | common + `price`, `iban`, `bank_recipient`, `bank_name`, `bic` |
+| `cancelled` | `Cancelled` | cancellation action | common |
+
+Common merge tags (available in all templates): `{{ visitor_name }}`, `{{ camp_name }}`, `{{ tenant_name }}`
+
+Notification recipient is always the root visitor's email. For child visitors, resolve `visitor->guardians()->first()->email`.
+
+### Template Model
+
+`CampEmailTemplate` — tenant-scoped, one row per `CampNotificationType` per tenant.
+
+- Auto-seeded when a tenant is created via `TenantObserver`
+- Editable in the Camp panel under **E-Mail Vorlagen** (List + Edit only — no create, no delete)
+- Merge tags shown as hints in the Filament edit form
+
+### MergeTagReplacer
+
+`Modules\Camp\Services\MergeTagReplacer` — resolves `{{ tag }}` placeholders:
+
+```php
+$replacer = new MergeTagReplacer;
+['subject' => $subject, 'body' => $body] = $replacer->resolve($template, [
+    'visitor_name'     => $campVisitor->visitor->name,
+    'camp_name'        => $camp->name,
+    'tenant_name'      => $camp->tenant->name,
+    'price'            => number_format($campVisitor->price, 2),
+    'iban'             => $camp->tenant->iban ?? '',
+    'bank_recipient'   => $camp->tenant->bank_recipient ?? '',
+    'bank_name'        => $camp->tenant->bank_name ?? '',
+    'bic'              => $camp->tenant->bic ?? '',
+    'payment_due_date' => $campVisitor->registered_at->addDays(7)->format('d.m.Y'),
+    'waitlist_position' => (string) $campVisitor->waitlist_position,
+]);
+
+Mail::to($email)->queue(new CampTemplateMail($subject, $body));
+```
+
+`CampTemplateMail` accepts pre-resolved `$resolvedSubject` and `$resolvedBody` strings and renders them via `camp::mails.template`.
+
+### Artisan Commands
+
+```bash
+php artisan camp:seed-email-templates              # seed missing templates for all tenants
+php artisan camp:seed-email-templates --force      # overwrite with defaults
+php artisan camp:seed-email-templates --tenant=1   # single tenant
+php artisan camp:expire-unpaid-registrations       # run scheduler manually
+```
+
+### Payment Expiry Scheduler
+
+`camp:expire-unpaid-registrations` runs daily at 07:00 via `CampServiceProvider::registerCommandSchedules()`.
+
+**Logic:**
+1. Loads all camps where `ends_at >= today`
+2. For each camp, skips if no contract exists
+3. Counts `pending + confirmed + paid` registrations; skips if count ≤ `contracted_beds`
+4. Finds `confirmed` visitors where `registered_at < now - 8 days`
+5. Moves each to `waitlisted`, appended to the end of the waitlist (`max(waitlist_position) + 1`)
+6. Sends the `waitlisted` email template to the visitor's guardian email
+7. No further notifications are sent
 
 ---
 
@@ -402,7 +459,7 @@ Notification recipient is always the root visitor's email. For child visitors, r
 - `ViewAny:CampVisitor`, `View:CampVisitor`, `Update:CampVisitor`
 - `ViewAny:CampExpense`, `Create:CampExpense`, `Update:CampExpense`, `Delete:CampExpense`
 - `ViewAny:CampContract`, `Create:CampContract`, `Update:CampContract`
-- `Manage:RoomAssignment` (custom permission — define in `filament-shield.php`)
+- `ViewAny:CampEmailTemplate`, `View:CampEmailTemplate`, `Update:CampEmailTemplate`
 - `Manage:Payments` (custom permission — define in `filament-shield.php`)
 
 ---

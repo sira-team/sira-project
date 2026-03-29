@@ -18,13 +18,13 @@ final class StationsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('physical_materials_count')
-                    ->label('Physical Materials')
+                    ->label(__('Physical Materials'))
                     ->counts('physicalMaterials'),
                 TextColumn::make('digital_materials_count')
-                    ->label('Digital Materials')
+                    ->label(__('Digital Materials'))
                     ->counts('digitalMaterials'),
                 TextColumn::make('sort_order')
-                    ->label('Order'),
+                    ->label(__('Order')),
             ])
             ->filters([
                 TrashedFilter::make(),

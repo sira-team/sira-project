@@ -20,23 +20,23 @@ final class ExpoRequestsTable
         return $table
             ->columns([
                 TextColumn::make('contact_name')
-                    ->label('Contact')
+                    ->label(__('Contact'))
                     ->searchable(),
                 TextColumn::make('organisation_name')
-                    ->label('Organisation')
+                    ->label(__('Organisation'))
                     ->searchable(),
                 TextColumn::make('city')
                     ->searchable(),
                 TextColumn::make('preferred_date_from')
-                    ->label('From')
+                    ->label(__('From'))
                     ->date(),
                 TextColumn::make('preferred_date_to')
-                    ->label('To')
+                    ->label(__('To'))
                     ->date(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('created_at')
-                    ->label('Submitted')
+                    ->label(__('Submitted'))
                     ->dateTime()
                     ->sortable(),
             ])

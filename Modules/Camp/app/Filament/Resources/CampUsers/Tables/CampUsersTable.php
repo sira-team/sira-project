@@ -22,30 +22,30 @@ final class CampUsersTable
             ->modifyQueryUsing(fn ($query) => $query->with(['user', 'room']))
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Name'),
+                    ->label(__('Name')),
                 TextColumn::make('user.gender')
                     ->sortable()
-                    ->label('Gender')
+                    ->label(__('Gender'))
                     ->badge(),
                 TextColumn::make('room_id')
-                    ->label('Room')
+                    ->label(__('Room'))
                     ->state(fn (CampUser $record): string => $record->room_id
-                        ? ($record->room?->name ?? '—')
+                        ? ($record->room->name ?? '—')
                         : '—'
                     )
                     ->description(fn (CampUser $record): string => $record->room_id
-                        ? CampUser::query()->where('camp_id', $record->camp_id)->where('room_id', $record->room_id)->count().'/'.($record->room?->capacity ?? '?')
+                        ? CampUser::query()->where('camp_id', $record->camp_id)->where('room_id', $record->room_id)->count().'/'.($record->room->capacity ?? '?')
                         : ''
                     )
                     ->sortable(),
             ])
             ->headerActions([
                 Action::make('addStaff')
-                    ->label('Add Staff Member')
+                    ->label(__('Add Staff Member'))
                     ->icon('heroicon-o-user-plus')
                     ->schema(fn ($livewire): array => [
                         Select::make('user_ids')
-                            ->label('Staff Members')
+                            ->label(__('Staff Members'))
                             ->options(function () use ($livewire): array {
                                 $camp = $livewire->getParentRecord();
                                 $existing = CampUser::query()->where('camp_id', $camp->id)->pluck('user_id');
@@ -66,15 +66,15 @@ final class CampUsersTable
                         }
                     }),
                 Action::make('swapRooms')
-                    ->label('Swap Rooms')
+                    ->label(__('Swap Rooms'))
                     ->icon('heroicon-o-arrows-right-left')
                     ->schema(fn ($livewire): array => [
                         Select::make('first_user_id')
-                            ->label('First Staff Member')
+                            ->label(__('First Staff Member'))
                             ->options(fn (): array => self::staffOptionsWithRoom($livewire->getParentRecord()))
                             ->required(),
                         Select::make('second_user_id')
-                            ->label('Second Staff Member')
+                            ->label(__('Second Staff Member'))
                             ->options(fn (): array => self::staffOptionsWithRoom($livewire->getParentRecord()))
                             ->required(),
                     ])
@@ -88,12 +88,12 @@ final class CampUsersTable
             ])
             ->recordActions([
                 Action::make('assignRoom')
-                    ->label('Assign Room')
+                    ->label(__('Assign Room'))
                     ->icon('heroicon-o-home')
                     ->fillForm(fn (CampUser $record): array => ['room_id' => $record->room_id])
                     ->schema(fn (CampUser $record, $livewire): array => [
                         Select::make('room_id')
-                            ->label('Room')
+                            ->label(__('Room'))
                             ->options(function () use ($record, $livewire): array {
                                 /** @var Camp $camp */
                                 $camp = $livewire->getParentRecord();
@@ -150,7 +150,7 @@ final class CampUsersTable
         return $camp->users()
             ->get()
             ->mapWithKeys(fn (User $user): array => [
-                $user->id => $user->name.' — '.($rooms->get($user->id)?->room?->name ?? '—'),
+                $user->id => $user->name.' — '.($rooms->get($user->id)->room->name ?? '—'),
             ])
             ->all();
     }

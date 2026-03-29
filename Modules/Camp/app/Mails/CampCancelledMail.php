@@ -25,7 +25,7 @@ final class CampCancelledMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Anmeldung storniert - '.$this->registration->camp->name,
+            subject: 'Registration Cancelled - '.$this->registration->camp->name,
         );
     }
 

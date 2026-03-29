@@ -24,7 +24,7 @@ final class AcademyLevelsTable
                     ->sortable(),
                 TextColumn::make('sessions_count')
                     ->counts('sessions')
-                    ->label('Sessions')
+                    ->label(__('Sessions'))
                     ->numeric(),
                 TextColumn::make('sort_order')
                     ->numeric()

@@ -25,7 +25,7 @@ final class CampWaitlistPromotedMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Warteliste - Platz verfügbar - '.$this->visitor->camp->name,
+            subject: 'Spot Available - '.$this->visitor->camp->name,
         );
     }
 

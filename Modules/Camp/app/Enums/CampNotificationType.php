@@ -7,23 +7,40 @@ namespace Modules\Camp\Enums;
 enum CampNotificationType: string
 {
     case Received = 'received';
-    case Confirmed = 'confirmed';
     case Waitlisted = 'waitlisted';
-    case WaitlistPromoted = 'waitlist_promoted';
     case PaymentReminder = 'payment_reminder';
-    case RoomAssigned = 'room_assigned';
+    case WaitlistPromoted = 'waitlist_promoted';
+    case Confirmed = 'confirmed';
     case Cancelled = 'cancelled';
 
     public function label(): string
     {
         return match ($this) {
-            self::Received => 'Received',
-            self::Confirmed => 'Confirmed',
+            self::Received => 'Registration Received',
             self::Waitlisted => 'Waitlisted',
-            self::WaitlistPromoted => 'Waitlist Promoted',
             self::PaymentReminder => 'Payment Reminder',
-            self::RoomAssigned => 'Room Assigned',
-            self::Cancelled => 'Cancelled',
+            self::WaitlistPromoted => 'Promoted from Waitlist',
+            self::Confirmed => 'Registration Confirmed',
+            self::Cancelled => 'Registration Cancelled',
+        };
+    }
+
+    /**
+     * Returns the merge tags available for this notification type.
+     * Tags are replaced in the template subject and body at send time.
+     *
+     * @return list<string>
+     */
+    public function mergeTags(): array
+    {
+        $common = ['{{ visitor_name }}', '{{ camp_name }}', '{{ tenant_name }}'];
+        $bankDetails = ['{{ iban }}', '{{ bank_recipient }}', '{{ bank_name }}', '{{ bic }}'];
+
+        return match ($this) {
+            self::Received, self::WaitlistPromoted, self::PaymentReminder => [...$common, '{{ price }}', ...$bankDetails],
+            self::Confirmed => [...$common, '{{ payment_due_date }}'],
+            self::Waitlisted => [...$common, '{{ waitlist_position }}'],
+            self::Cancelled => $common,
         };
     }
 }

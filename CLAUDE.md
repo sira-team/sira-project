@@ -752,6 +752,12 @@ These are set once per tenant in the Tenant Admin Panel. Never store IBAN on ind
 
 ---
 
+## Language
+
+- **All code must be in English.** This applies to every string, label, comment, PHPDoc, variable name, Artisan command output, and exception message in PHP files, Blade views, and configuration files. No German (or any other language) in source code — ever. End-user-facing copy (email bodies, UI labels) uses English as the source; translation is a future concern handled outside the codebase.
+
+---
+
 ## Coding Conventions
 
 - **Enums** — all status and type columns use PHP-backed string enums in `App\Enums\` or the module's `Enums\` directory

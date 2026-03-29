@@ -39,21 +39,21 @@ final class CampCostCalculatorWidget extends StatsOverviewWidget
         $covered = $camp->price_per_participant * $confirmedCount;
 
         return [
-            Stat::make('Accommodation Cost', '€'.number_format($accommodationCost, 2))
+            Stat::make(__('Accommodation Cost'), '€'.number_format($accommodationCost, 2))
                 ->description($nights.' nights'),
 
-            Stat::make('Other Expenses', '€'.number_format($totalExpenses, 2))
-                ->description('All categories'),
+            Stat::make(__('Other Expenses'), '€'.number_format($totalExpenses, 2))
+                ->description(__('All categories')),
 
-            Stat::make('Grand Total', '€'.number_format($grandTotal, 2))
-                ->description('Accommodation + Expenses')
+            Stat::make(__('Grand Total'), '€'.number_format($grandTotal, 2))
+                ->description(__('Accommodation + Expenses'))
                 ->color($grandTotal < 0 ? 'danger' : 'success'),
 
-            Stat::make('Net profit', '€'.number_format($covered - $grandTotal, 2))
-                ->description('Based on '.$confirmedCount.' confirmed'),
+            Stat::make(__('Net profit'), '€'.number_format($covered - $grandTotal, 2))
+                ->description(__('Based on ').$confirmedCount.' confirmed'),
 
-            Stat::make('Covered Participants', '€'.number_format($covered, 2))
-                ->description('Based on '.$confirmedCount.' confirmed'),
+            Stat::make(__('Covered Participants'), '€'.number_format($covered, 2))
+                ->description(__('Based on ').$confirmedCount.' confirmed'),
         ];
     }
 }

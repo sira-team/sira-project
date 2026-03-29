@@ -18,7 +18,7 @@ final class UserForm
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('email')
-                    ->label('E-Mail-Adresse')
+                    ->label(__('Email Address'))
                     ->email()
                     ->required(),
                 Select::make('roles')

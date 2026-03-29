@@ -54,9 +54,9 @@ final class TenantResource extends Resource
                     ->email()
                     ->maxLength(255)
                     ->visible(fn (string $operation) => $operation === 'create')
-                    ->helperText('Email for the first tenant admin. They will receive an invitation.'),
-                Section::make('Module Access')
-                    ->description('Enable or disable modules for this tenant.')
+                    ->helperText(__('Email for the first tenant admin. They will receive an invitation.')),
+                Section::make(__('Module Access'))
+                    ->description(__('Enable or disable modules for this tenant.'))
                     ->visible(fn (string $operation) => $operation === 'edit')
                     ->components(
                         collect(FeatureFlag::tenantFeatures())
@@ -94,7 +94,7 @@ final class TenantResource extends Resource
                     ->searchable(),
                 TextColumn::make('users_count')
                     ->counts('users')
-                    ->label('Members'),
+                    ->label(__('Members')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

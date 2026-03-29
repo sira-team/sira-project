@@ -51,7 +51,7 @@ final class AssignRolePermissions
             'expo_manager' => ['Expo', 'ExpoRequest', 'Station'],
 
             // Camp module — Modules/Camp
-            'camp_manager' => ['Camp', 'Hostel'],
+            'camp_manager' => ['Camp', 'Hostel', 'CampEmailTemplate'],
 
             // Academy module — Modules/Academy
             'academy_manager' => ['Enrollment'],

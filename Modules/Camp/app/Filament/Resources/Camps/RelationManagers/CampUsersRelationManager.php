@@ -31,10 +31,10 @@ final class CampUsersRelationManager extends RelationManager
                 TextColumn::make('name'),
                 TextColumn::make('gender')
                     ->sortable()
-                    ->label('Gender')
+                    ->label(__('Gender'))
                     ->badge(),
                 TextColumn::make('pivot.room.name')
-                    ->label('Room')
+                    ->label(__('Room'))
                     ->default('—')
                     ->description(fn ($record): string => $record->pivot->room
                         ? CampUser::query()->where('camp_id', $record->pivot->camp_id)->where('room_id', $record->pivot->room_id)->count().'/'.$record->pivot->room->capacity
@@ -51,15 +51,15 @@ final class CampUsersRelationManager extends RelationManager
                     ->preloadRecordSelect()
                     ->recordTitleAttribute('name'),
                 Action::make('swapRooms')
-                    ->label('Swap Rooms')
+                    ->label(__('Swap Rooms'))
                     ->icon('heroicon-o-arrows-right-left')
                     ->schema([
                         Select::make('first_user_id')
-                            ->label('First Staff Member')
+                            ->label(__('First Staff Member'))
                             ->options(fn (): array => $this->staffOptionsWithRoom())
                             ->required(),
                         Select::make('second_user_id')
-                            ->label('Second Staff Member')
+                            ->label(__('Second Staff Member'))
                             ->options(fn (): array => $this->staffOptionsWithRoom())
                             ->required(),
                     ])
@@ -73,12 +73,12 @@ final class CampUsersRelationManager extends RelationManager
             ])
             ->recordActions([
                 Action::make('assignRoom')
-                    ->label('Assign Room')
+                    ->label(__('Assign Room'))
                     ->icon('heroicon-o-home')
                     ->fillForm(fn ($record): array => ['room_id' => $record->pivot->room_id])
                     ->schema([
                         Select::make('room_id')
-                            ->label('Room')
+                            ->label(__('Room'))
                             ->options(function ($record): array {
                                 $camp = $this->ownerRecord;
 

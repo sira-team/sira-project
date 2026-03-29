@@ -243,7 +243,7 @@ use Filament\Actions\ViewAction;
 
 // Custom action in a table
 Action::make('confirm')
-    ->label('Confirm')
+    ->label(__('Confirm'))
     ->icon(Heroicon::Check)
     ->color('success')
     ->requiresConfirmation()
@@ -360,6 +360,26 @@ class MyPage extends Page
 
 ---
 
+## Translations — REQUIRED
+
+Every user-visible string on a Filament component **must** be wrapped in `__()`. This applies to all labels, headings, descriptions, placeholders, helper texts, hints, modal headings, empty-state text, and `Section::make` / `Tab::make` / `Fieldset::make` / `Stat::make` labels.
+
+```php
+// ✅ Correct
+TextInput::make('name')->label(__('Name')),
+Section::make(__('Basic Information'))->schema([...]),
+Stat::make(__('Confirmed'), $count),
+Action::make('confirm')->label(__('Confirm')),
+
+// ❌ Wrong — bare string
+TextInput::make('name')->label(__'Name')),
+Section::make('Basic Information')->schema([...]),
+```
+
+Add every new string to both `lang/de.json` (German) and `lang/ar.json` (Arabic).
+
+---
+
 ## DO NOT
 
 - Do NOT use `Filament\Forms\Form` as a type hint — use `Filament\Schemas\Schema`
@@ -368,3 +388,4 @@ class MyPage extends Page
 - Do NOT import action classes from `Filament\Tables\Actions` or `Filament\Forms\Actions` — use `Filament\Actions`
 - Do NOT inline large schemas in the resource class itself — always use Schema and Table classes
 - Do NOT write policies manually — always use `shield:generate`
+- Do NOT use bare strings in component labels — always wrap in `__()`

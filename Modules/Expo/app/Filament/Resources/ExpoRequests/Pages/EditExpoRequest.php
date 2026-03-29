@@ -33,26 +33,26 @@ final class EditExpoRequest extends EditRecord
     private function createExpoAction(): Action
     {
         return Action::make('createExpo')
-            ->label('Create Expo from Request')
+            ->label(__('Create Expo from Request'))
             ->icon('heroicon-o-sparkles')
             ->visible(fn () => $this->record->status === ExpoRequestStatus::Accepted)
             ->schema([
                 TextInput::make('name')
-                    ->label('Expo Name')
+                    ->label(__('Expo Name'))
                     ->required()
                     ->default(fn () => $this->record->organisation_name),
                 TextInput::make('location_name')
-                    ->label('Location Name')
+                    ->label(__('Location Name'))
                     ->required()
                     ->default(fn () => $this->record->city),
                 TextInput::make('location_address')
-                    ->label('Location Address'),
+                    ->label(__('Location Address')),
                 DatePicker::make('date')
-                    ->label('Expo Date')
+                    ->label(__('Expo Date'))
                     ->required()
                     ->default(fn () => $this->record->preferred_date_from),
                 Textarea::make('notes')
-                    ->label('Internal Notes')
+                    ->label(__('Internal Notes'))
                     ->rows(3),
             ])
             ->action(function (array $data) {
@@ -65,7 +65,7 @@ final class EditExpoRequest extends EditRecord
 
                 Notification::make()
                     ->success()
-                    ->title('Expo Created')
+                    ->title(__('Expo Created'))
                     ->body('Expo has been created successfully.')
                     ->send();
             });

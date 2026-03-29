@@ -21,22 +21,22 @@ final class CampInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Basic Information')
+            Section::make(__('Basic Information'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name'),
                     TextEntry::make('price_per_participant')
-                        ->label('Price per Participant')
+                        ->label(__('Price per Participant'))
                         ->money('EUR'),
                     TextEntry::make('starts_at')->date('d.m.Y'),
                     TextEntry::make('ends_at')->date('d.m.Y'),
                 ]),
 
-            Section::make('Hostel Contract')
+            Section::make(__('Hostel Contract'))
                 ->columns(2)
                 ->headerActions([
                     Action::make('createContract')
-                        ->label('Add Contract')
+                        ->label(__('Add Contract'))
                         ->icon(Heroicon::OutlinedPlus)
                         ->visible(fn (Camp $record) => $record->contract === null)
                         ->schema(self::contractFormFields())
@@ -46,7 +46,7 @@ final class CampInfolist
                         }),
 
                     Action::make('editContract')
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->visible(fn (Camp $record) => $record->contract !== null)
                         ->fillForm(fn (Camp $record) => $record->contract->toArray())
@@ -57,7 +57,7 @@ final class CampInfolist
                         }),
 
                     Action::make('deleteContract')
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
                         ->color('danger')
                         ->visible(fn (Camp $record) => $record->contract !== null)
@@ -69,36 +69,36 @@ final class CampInfolist
                 ])
                 ->schema([
                     TextEntry::make('contract.hostel.name')
-                        ->label('Hostel')
-                        ->placeholder('No contract yet'),
+                        ->label(__('Hostel'))
+                        ->placeholder(__('No contract yet')),
                     TextEntry::make('contract.price_per_person_per_night')
-                        ->label('Price / Person / Night')
+                        ->label(__('Price / Person / Night'))
                         ->money('EUR')
                         ->placeholder('—'),
                     TextEntry::make('contract.contracted_beds')
-                        ->label('Contracted Participants')
+                        ->label(__('Contracted Participants'))
                         ->numeric()
                         ->placeholder('—'),
                     TextEntry::make('contract.contract_date')
-                        ->label('Contract Date')
+                        ->label(__('Contract Date'))
                         ->date()
                         ->placeholder('—'),
                     TextEntry::make('contract.notes')
-                        ->label('Notes')
+                        ->label(__('Notes'))
                         ->placeholder('—')
                         ->columnSpanFull(),
                 ]),
 
-            Section::make('Target Group & Gender')
+            Section::make(__('Target Group & Gender'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('target_group')->badge(),
                     TextEntry::make('gender_policy')->badge(),
-                    TextEntry::make('age_min')->label('Min Age')->placeholder('—'),
-                    TextEntry::make('age_max')->label('Max Age')->placeholder('—'),
+                    TextEntry::make('age_min')->label(__('Min Age'))->placeholder('—'),
+                    TextEntry::make('age_max')->label(__('Max Age'))->placeholder('—'),
                 ]),
 
-            Section::make('Registration & Planning')
+            Section::make(__('Registration & Planning'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('registration_opens_at')->dateTime()->placeholder('—'),
@@ -113,23 +113,23 @@ final class CampInfolist
     {
         return [
             Select::make('hostel_id')
-                ->label('Hostel')
+                ->label(__('Hostel'))
                 ->options(Hostel::query()->pluck('name', 'id'))
                 ->required()
                 ->searchable(),
             TextInput::make('price_per_person_per_night')
-                ->label('Price per Person per Night (EUR)')
+                ->label(__('Price per Person per Night (EUR)'))
                 ->numeric()
                 ->required(),
             TextInput::make('contracted_beds')
-                ->label('Contracted Participants')
+                ->label(__('Contracted Participants'))
                 ->numeric()
                 ->required()
                 ->minValue(1),
             DatePicker::make('contract_date'),
             Textarea::make('notes')
                 ->rows(3)
-                ->placeholder('e.g. cancellation terms, special conditions'),
+                ->placeholder(__('e.g. cancellation terms, special conditions')),
         ];
     }
 }

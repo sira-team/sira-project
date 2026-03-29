@@ -18,43 +18,43 @@ final class ExpoRequestForm
         return $schema
             ->components([
                 TextInput::make('contact_name')
-                    ->label('Contact Name')
+                    ->label(__('Contact Name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('organisation_name')
-                    ->label('Organisation Name')
+                    ->label(__('Organisation Name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
-                    ->label('Email')
+                    ->label(__('Email'))
                     ->email()
                     ->required()
                     ->maxLength(255),
                 TextInput::make('phone')
-                    ->label('Phone')
+                    ->label(__('Phone'))
                     ->tel()
                     ->maxLength(255),
                 TextInput::make('city')
-                    ->label('City')
+                    ->label(__('City'))
                     ->maxLength(255),
                 DatePicker::make('preferred_date_from')
-                    ->label('Preferred Date From'),
+                    ->label(__('Preferred Date From')),
                 DatePicker::make('preferred_date_to')
-                    ->label('Preferred Date To')
+                    ->label(__('Preferred Date To'))
                     ->afterOrEqual('preferred_date_from'),
                 TextInput::make('expected_visitors')
-                    ->label('Expected Visitors')
+                    ->label(__('Expected Visitors'))
                     ->numeric()
                     ->minValue(1),
                 Select::make('status')
                     ->options(ExpoRequestStatus::class)
                     ->required(),
                 Textarea::make('message')
-                    ->label('Message / Additional Info')
+                    ->label(__('Message / Additional Info'))
                     ->rows(3)
                     ->maxLength(1000),
                 Textarea::make('internal_notes')
-                    ->label('Internal Notes')
+                    ->label(__('Internal Notes'))
                     ->rows(3),
             ]);
     }

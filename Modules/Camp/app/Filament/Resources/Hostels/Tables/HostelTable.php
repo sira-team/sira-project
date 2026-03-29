@@ -21,7 +21,7 @@ final class HostelTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('rooms_count')
-                    ->label('Rooms')
+                    ->label(__('Rooms'))
                     ->counts('rooms'),
                 TextColumn::make('created_at')
                     ->dateTime()

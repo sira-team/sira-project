@@ -22,14 +22,14 @@ final class ExposTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('location_name')
-                    ->label('Location')
+                    ->label(__('Location'))
                     ->searchable(),
                 TextColumn::make('date')
                     ->date(),
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('stations_count')
-                    ->label('Stations')
+                    ->label(__('Stations'))
                     ->counts('stations'),
             ])
             ->filters([

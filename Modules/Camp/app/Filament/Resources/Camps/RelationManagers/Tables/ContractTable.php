@@ -17,11 +17,11 @@ final class ContractTable
         return $table
             ->columns([
                 TextColumn::make('hostel.name')
-                    ->label('Hostel')
+                    ->label(__('Hostel'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price_per_person_per_night')
-                    ->label('Price/Person/Night')
+                    ->label(__('Price/Person/Night'))
                     ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 TextColumn::make('contracted_beds')

@@ -20,14 +20,14 @@ final class ManageUsers extends ManageRecords
     {
         return [
             Action::make('assign-feature')
-                ->label('Feature zuweisen')
+                ->label(__('Assign Feature'))
                 ->schema(function (Schema $schema) {
                     return $schema->schema([
                         Select::make('user')
-                            ->label('Benutzer')
+                            ->label(__('User'))
                             ->options(UserResource::getEloquentQuery()->pluck('name', 'id')),
                         Select::make('feature')
-                            ->label('Feature')
+                            ->label(__('Feature'))
                             ->options([
                                 FeatureFlag::GlobalAdmin->value => FeatureFlag::GlobalAdmin->label(),
                                 FeatureFlag::AcademyManager->value => FeatureFlag::AcademyManager->label(),

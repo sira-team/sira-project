@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Camp\Console\Commands\ExpireUnpaidRegistrationsCommand;
+use Modules\Camp\Console\Commands\SeedCampEmailTemplatesCommand;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -84,7 +87,10 @@ final class CampServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            SeedCampEmailTemplatesCommand::class,
+            ExpireUnpaidRegistrationsCommand::class,
+        ]);
     }
 
     /**
@@ -92,10 +98,10 @@ final class CampServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->command('camp:expire-unpaid-registrations')->dailyAt('07:00');
+        });
     }
 
     /**

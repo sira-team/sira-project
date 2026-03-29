@@ -25,7 +25,7 @@ final class CampConfirmedMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Anmeldung bestätigt - '.$this->visitor->camp->name,
+            subject: 'Registration Confirmed - '.$this->visitor->camp->name,
         );
     }
 

@@ -20,22 +20,22 @@ final class StationForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Station Name')
+                    ->label(__('Station Name'))
                     ->required()
                     ->maxLength(255),
                 Textarea::make('description')
-                    ->label('Description')
+                    ->label(__('Description'))
                     ->rows(3),
-                Section::make('Physical Materials')
+                Section::make(__('Physical Materials'))
                     ->collapsible()
                     ->schema([
                         Repeater::make('physicalMaterials')
-                            ->label('Materials')
+                            ->label(__('Materials'))
                             ->relationship('physicalMaterials')
                             ->schema([
                                 FileUpload::make('image')
                                     ->image()
-                                    ->label('Image')
+                                    ->label(__('Image'))
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(5 * 1024), // 5MB
                                 Select::make('type')
@@ -48,17 +48,17 @@ final class StationForm
                             ])
                             ->columnSpan('full'),
                     ]),
-                Section::make('Digital Materials')
+                Section::make(__('Digital Materials'))
                     ->collapsible()
                     ->schema([
                         Repeater::make('digitalMaterials')
-                            ->label('Materials')
+                            ->label(__('Materials'))
                             ->relationship('digitalMaterials')
                             ->schema([
                                 TextInput::make('title')
                                     ->required(),
                                 FileUpload::make('file_path')
-                                    ->label('File')
+                                    ->label(__('File'))
                                     ->disk('private')
                                     ->acceptedFileTypes(['application/pdf', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                                     ->maxSize(20 * 1024) // 20MB

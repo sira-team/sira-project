@@ -10,12 +10,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampExpensesRelationManager;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampUsersRelationManager;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampVisitorsRelationManager;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
@@ -31,6 +29,8 @@ final class CampResource extends Resource
 
     protected static ?string $navigationLabel = 'Camps';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return CampForm::configure($schema);
@@ -41,9 +41,9 @@ final class CampResource extends Resource
         return CampInfolist::configure($schema);
     }
 
-    public static function getRecordTitle(?Model $record): string|Htmlable|null
+    public static function getRecordTitle(?Model $record): string
     {
-        return $record->name;
+        return $record instanceof Camp ? $record->name : __('Camp');
     }
 
     public static function table(Table $table): Table
@@ -66,7 +66,6 @@ final class CampResource extends Resource
     {
         return [
             CampExpensesRelationManager::class,
-            CampVisitorsRelationManager::class,
             CampUsersRelationManager::class,
         ];
     }

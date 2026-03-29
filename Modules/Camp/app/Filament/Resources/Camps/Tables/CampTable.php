@@ -24,21 +24,21 @@ final class CampTable
                 TextColumn::make('contract.hostel.name')
                     ->badge()
                     ->color(Color::Blue)
-                    ->label('Hostel')
+                    ->label(__('Hostel'))
                     ->url(fn (Camp $record) => ViewHostel::getUrl(['record' => $record->contract->hostel]))
                     ->sortable(),
                 TextColumn::make('starts_at')
-                    ->label('Dates')
+                    ->label(__('Dates'))
                     ->formatStateUsing(fn ($record) => $record->starts_at->format('d.m.Y').' – '.$record->ends_at->format('d.m.Y'))
                     ->sortable(),
                 TextColumn::make('capacity')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('confirmedRegistrationsCount')
-                    ->label('Confirmed')
+                    ->label(__('Confirmed'))
                     ->counts('visitors'),
                 TextColumn::make('registration_is_open')
-                    ->label('Open')
+                    ->label(__('Open'))
                     ->formatStateUsing(fn (bool $state) => $state ? 'Yes' : 'No'),
             ])
             ->filters([

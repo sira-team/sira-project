@@ -24,10 +24,10 @@ final class CampExpenseForm
                 ->maxLength(255),
             TextInput::make('amount')
                 ->required()
-                ->label('Amount (EUR)'),
+                ->label(__('Amount (EUR)')),
             Textarea::make('description')
                 ->rows(3)
-                ->helperText('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"'),
+                ->helperText(__('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"')),
             Hidden::make('user_id')->default(auth()->id()),
         ]);
     }

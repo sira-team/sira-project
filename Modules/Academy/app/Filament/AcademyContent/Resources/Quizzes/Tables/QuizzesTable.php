@@ -19,7 +19,7 @@ final class QuizzesTable
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('questions_count')
-                    ->label('Questions')
+                    ->label(__('Questions'))
                     ->counts('questions')
                     ->numeric(),
                 TextColumn::make('max_attempts')

@@ -22,53 +22,53 @@ final class StationInfolist
                 Grid::make(['sm' => 1])
                     ->columns(1)
                     ->schema([
-                        Section::make('Station Details')
+                        Section::make(__('Station Details'))
                             ->schema([
                                 TextEntry::make('name')
-                                    ->label('Station Name'),
+                                    ->label(__('Station Name')),
                                 TextEntry::make('description')
-                                    ->label('Description'),
+                                    ->label(__('Description')),
                             ]),
-                        Section::make('Digital Materials')
-                            ->description('Digital files available for download.')
+                        Section::make(__('Digital Materials'))
+                            ->description(__('Digital files available for download.'))
                             ->schema([
                                 RepeatableEntry::make('digitalMaterials')
                                     ->schema([
                                         TextEntry::make('title')
-                                            ->label('Title')
+                                            ->label(__('Title'))
                                             ->url(fn ($record) => url("expo/stations/{$record->station_id}/materials/{$record->id}/download"))
                                             ->openUrlInNewTab(),
                                         TextEntry::make('file_type')
-                                            ->label('File Type')
+                                            ->label(__('File Type'))
                                             ->formatStateUsing(fn (string $state): string => DigitalMaterialType::from($state)->name),
                                         TextEntry::make('language')
-                                            ->label('Language'),
+                                            ->label(__('Language')),
                                         TextEntry::make('file_size_kb')
-                                            ->label('File Size (KB)'),
+                                            ->label(__('File Size (KB)')),
                                         TextEntry::make('uploadedByUser.name')
-                                            ->label('Uploaded By'),
+                                            ->label(__('Uploaded By')),
                                     ])
                                     ->columns(5),
                             ]),
                     ]),
-                Section::make('Physical Materials')
-                    ->description('Focus on the physical media used for the station.')
+                Section::make(__('Physical Materials'))
+                    ->description(__('Focus on the physical media used for the station.'))
                     ->schema([
                         RepeatableEntry::make('physicalMaterials')
                             ->schema([
                                 TextEntry::make('type')
-                                    ->label('Type')
+                                    ->label(__('Type'))
                                     ->formatStateUsing(fn (PhysicalMaterialType $state): string => $state->name),
                                 TextEntry::make('name')
-                                    ->label('Name'),
+                                    ->label(__('Name')),
                                 TextEntry::make('notes')
-                                    ->label('Notes')
-                                    ->placeholder('No notes'),
+                                    ->label(__('Notes'))
+                                    ->placeholder(__('No notes')),
                                 ImageEntry::make('image')
                                     ->imageWidth(200)
                                     ->imageHeight('auto')
                                     ->openUrlInNewTab()
-                                    ->label('Image'),
+                                    ->label(__('Image')),
                             ])
                             ->columns(3),
                     ]),

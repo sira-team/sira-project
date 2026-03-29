@@ -32,11 +32,11 @@ final class UserResource extends Resource
         return $schema
             ->components([
                 TextEntry::make('tenant.name')
-                    ->label('Tenant')
+                    ->label(__('Tenant'))
                     ->placeholder('-'),
                 TextEntry::make('name'),
                 TextEntry::make('email')
-                    ->label('Email address'),
+                    ->label(__('Email address')),
                 TextEntry::make('email_verified_at')
                     ->dateTime()
                     ->placeholder('-'),
@@ -66,10 +66,10 @@ final class UserResource extends Resource
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('tenant.name')
-                    ->label('Tenant')
+                    ->label(__('Tenant'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('Email address'))
                     ->searchable(),
                 self::featureToggle(FeatureFlag::AcademyManager),
                 self::featureToggle(FeatureFlag::GlobalAdmin),
