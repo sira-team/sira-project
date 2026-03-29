@@ -9,6 +9,7 @@ use Filament\Resources\Pages\Concerns\InteractsWithParentRecord;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Filament\Resources\CampVisitors\CampVisitorResource;
 use Modules\Camp\Filament\Resources\Concerns\HasCampSubNavigation;
@@ -30,9 +31,16 @@ final class ListCampVisitors extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(__('All')),
-            'confirmed' => Tab::make(__('Confirmed'))
-                ->modifyQueryUsing(fn ($query) => $query->where('status', VisitorStatus::Confirmed)),
+            VisitorStatus::Pending->value => Tab::make(__('Pending'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', VisitorStatus::Pending)),
+            VisitorStatus::Waitlisted->value => Tab::make(__('Waitlisted'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', VisitorStatus::Waitlisted)),
+            VisitorStatus::Confirmed->value => Tab::make(__('Confirmed'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', VisitorStatus::Confirmed)),
+            VisitorStatus::Paid->value => Tab::make(__('Paid'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', VisitorStatus::Paid)),
+            VisitorStatus::Cancelled->value => Tab::make(__('Cancelled'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', VisitorStatus::Cancelled)),
         ];
     }
 
