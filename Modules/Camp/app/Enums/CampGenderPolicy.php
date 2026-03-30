@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Modules\Camp\Enums;
 
 use App\Enums\Gender;
+use Filament\Support\Contracts\HasLabel;
 
-enum CampGenderPolicy: string
+enum CampGenderPolicy: string implements HasLabel
 {
     case All = 'all';
     case Male = 'male';
     case Female = 'female';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
-            self::All => 'all',
-            self::Male => 'male',
-            self::Female => 'female',
+            self::All => __('All'),
+            self::Male => __('Male'),
+            self::Female => __('Female'),
         };
     }
 

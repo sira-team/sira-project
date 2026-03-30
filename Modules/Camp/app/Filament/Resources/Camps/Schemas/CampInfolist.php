@@ -11,8 +11,11 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Modules\Camp\Enums\CampGenderPolicy;
+use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\Hostel;
 
@@ -101,8 +104,23 @@ final class CampInfolist
             Section::make(__('Registration & Planning'))
                 ->columns(2)
                 ->schema([
-                    TextEntry::make('registration_opens_at')->dateTime()->placeholder('—'),
-                    TextEntry::make('registration_ends_at')->dateTime()->placeholder('—'),
+                    TextEntry::make('registration_opens_at')
+                        ->dateTime('d.m.Y h:i')
+                        ->placeholder('—'),
+                    TextEntry::make('registration_ends_at')
+                        ->dateTime('d.m.Y h:i')
+                        ->placeholder('—'),
+                    TextEntry::make('max_visitors_all')
+                        ->label(__('Visitor capacity'))
+                        ->visible(fn (Get $get): bool => $get('target_group') === CampTargetGroup::Family),
+                    TextEntry::make('max_visitors_male')
+                        ->label(__('Male visitor capacity'))
+                        ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
+                        ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Female),
+                    TextEntry::make('max_visitors_female')
+                        ->label(__('Female visitor capacity'))
+                        ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
+                        ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Male),
                 ]),
 
         ]);

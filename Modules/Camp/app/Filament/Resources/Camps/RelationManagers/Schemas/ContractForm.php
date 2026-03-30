@@ -26,10 +26,14 @@ final class ContractForm
                 ->required()
                 ->label(__('Price per Person per Night (EUR)')),
             TextInput::make('contracted_beds')
+                ->label(__('Contracted Participants'))
                 ->numeric()
                 ->required()
                 ->minValue(1),
-            DatePicker::make('contract_date'),
+            DatePicker::make('contract_date')
+                ->label(__('Contract Date')),
+            DatePicker::make('cancellation_deadline_at')
+                ->label(__('Cancellation Deadline')),
             Textarea::make('notes')
                 ->rows(3)
                 ->placeholder(__('e.g. cancellation terms, special conditions')),

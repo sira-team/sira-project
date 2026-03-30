@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreignId('hostel_id')->constrained()->cascadeOnDelete();
             $table->decimal('price_per_person_per_night', 8, 2);
             $table->boolean('includes_catering')->default(false);
-            $table->integer('contracted_beds')->default(0);
+            $table->unsignedInteger('contracted_beds')->default(0);
             $table->date('contract_date')->nullable();
+            $table->date('cancellation_deadline_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

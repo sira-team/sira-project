@@ -20,9 +20,6 @@ final class AcademyLevelsTable
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('duration_months')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('sessions_count')
                     ->counts('sessions')
                     ->label(__('Sessions'))

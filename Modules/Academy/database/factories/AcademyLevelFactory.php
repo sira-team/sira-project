@@ -25,7 +25,6 @@ final class AcademyLevelFactory extends Factory
             'title' => 'Level '.fake()->numberBetween(1, 10),
             'description' => fake()->sentence(),
             'sort_order' => fake()->numberBetween(1, 20),
-            'duration_months' => fake()->numberBetween(3, 24),
         ];
     }
 }

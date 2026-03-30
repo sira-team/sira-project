@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('expo_id')->constrained()->cascadeOnDelete();
             $table->foreignId('station_id')->constrained()->cascadeOnDelete();
             $table->foreignId('responsible_user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->integer('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
 
             $table->unique(['expo_id', 'station_id']);

@@ -13,7 +13,6 @@ use Modules\Academy\Database\Factories\AcademyLevelFactory;
  * @property int $id
  * @property string $title
  * @property string|null $description
- * @property int $duration_months
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -39,14 +38,12 @@ final class AcademyLevel extends Model
     protected $fillable = [
         'title',
         'description',
-        'duration_months',
         'sort_order',
     ];
 
     public function casts(): array
     {
         return [
-            'duration_months' => 'integer',
             'sort_order' => 'integer',
         ];
     }

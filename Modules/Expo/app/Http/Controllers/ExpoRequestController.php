@@ -29,7 +29,6 @@ final class ExpoRequestController extends Controller
             'city' => 'nullable|string|max:255',
             'preferred_date_from' => 'nullable|date',
             'preferred_date_to' => 'nullable|date|after_or_equal:preferred_date_from',
-            'expected_visitors' => 'nullable|integer|min:1',
             'message' => 'nullable|string|max:1000',
         ]);
 

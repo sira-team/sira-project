@@ -11,6 +11,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
@@ -70,23 +71,53 @@ final class CampForm
                 ->columns(2)
                 ->schema([
                     Select::make('target_group')
+                        ->label(__('Target group'))
                         ->options(CampTargetGroup::class)
                         ->live(),
                     Select::make('gender_policy')
+                        ->reactive()
+                        ->label(__('Gender'))
                         ->options(CampGenderPolicy::class),
                     TextInput::make('age_min')
+                        ->label(__('Min Age'))
                         ->numeric()
                         ->minValue(0)
                         ->visible(fn (string $operation) => $operation !== 'view'),
                     TextInput::make('age_max')
+                        ->label(__('Max Age'))
                         ->numeric()
                         ->minValue(0)
                         ->visible(fn (string $operation) => $operation !== 'view'),
                 ]),
             Section::make(__('Registration & Planning'))
                 ->schema([
-                    DateTimePicker::make('registration_opens_at'),
-                    DateTimePicker::make('registration_ends_at'),
+                    DateTimePicker::make('registration_opens_at')
+                        ->label(__('Registration opens at')),
+                    DateTimePicker::make('registration_ends_at')
+                        ->label(__('Registration ends at')),
+                    TextInput::make('max_visitors_all')
+                        ->label(__('Visitor capacity'))
+                        ->numeric()
+                        ->minValue(1)
+                        ->required()
+                        ->live()
+                        ->visible(fn (Get $get): bool => $get('target_group') === CampTargetGroup::Family),
+                    TextInput::make('max_visitors_male')
+                        ->label(__('Male visitor capacity'))
+                        ->numeric()
+                        ->minValue(1)
+                        ->required()
+                        ->live()
+                        ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
+                        ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Female),
+                    TextInput::make('max_visitors_female')
+                        ->label(__('Female visitor capacity'))
+                        ->numeric()
+                        ->minValue(1)
+                        ->required()
+                        ->live()
+                        ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
+                        ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Male),
                 ])->columns(2),
         ]);
     }

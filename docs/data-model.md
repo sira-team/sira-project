@@ -270,7 +270,6 @@ Submitted via public form by a mosque or organisation.
 | city | string | |
 | preferred_date_from | date | nullable |
 | preferred_date_to | date | nullable |
-| expected_visitors | integer | nullable |
 | message | text | nullable |
 | status | enum | new, in_review, accepted, declined, completed |
 | internal_notes | text | nullable |
@@ -362,7 +361,6 @@ Unique constraint on `(expo_id, station_id)` — a station cannot be assigned to
 | title | string | |
 | description | text | |
 | sort_order | integer | |
-| duration_months | integer | |
 
 ---
 

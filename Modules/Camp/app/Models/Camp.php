@@ -105,6 +105,9 @@ final class Camp extends Model
         'registration_opens_at',
         'registration_ends_at',
         'price_per_participant',
+        'max_visitors_male',
+        'max_visitors_female',
+        'max_visitors_all',
     ];
 
     public function contract(): HasOne

@@ -19,9 +19,6 @@ vielen Dank für Ihre Expo-Anfrage. Wir haben Ihre Informationen erhalten und we
 @if($expoRequest->preferred_date_from)
 - **Bevorzugtes Datum:** {{ $expoRequest->preferred_date_from->format('d.m.Y') }} @if($expoRequest->preferred_date_to)bis {{ $expoRequest->preferred_date_to->format('d.m.Y') }}@endif
 @endif
-@if($expoRequest->expected_visitors)
-- **Erwartete Besucher:** {{ $expoRequest->expected_visitors }}
-@endif
 
 Kontakt: {{ $expoRequest->tenant->email }}
 

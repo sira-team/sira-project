@@ -22,12 +22,15 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('internal_notes')->nullable();
             $table->string('target_group');
-            $table->integer('age_min')->nullable();
-            $table->integer('age_max')->nullable();
+            $table->unsignedInteger('age_min')->nullable();
+            $table->unsignedInteger('age_max')->nullable();
             $table->enum('gender_policy', ['all', 'male', 'female']);
             $table->dateTime('registration_opens_at')->nullable();
             $table->dateTime('registration_ends_at')->nullable();
             $table->decimal('price_per_participant', 8, 2)->default(0);
+            $table->unsignedInteger('max_visitors_male')->nullable();
+            $table->unsignedInteger('max_visitors_female')->nullable();
+            $table->unsignedInteger('max_visitors_all')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -57,6 +57,7 @@ final class CampContract extends Model
         'includes_catering',
         'contracted_beds',
         'contract_date',
+        'cancellation_deadline_at',
         'notes',
     ];
 
@@ -81,6 +82,7 @@ final class CampContract extends Model
             'price_per_person_per_night' => 'decimal:2',
             'includes_catering' => 'boolean',
             'contract_date' => 'date',
+            'cancellation_deadline_at' => 'date',
         ];
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->default(0);
             $table->text('special_wishes')->nullable();
             $table->foreignId('room_id')->nullable()->constrained('hostel_rooms')->nullOnDelete();
-            $table->integer('waitlist_position')->nullable();
+            $table->unsignedInteger('waitlist_position')->nullable();
             $table->timestamp('registered_at');
             $table->timestamps();
         });

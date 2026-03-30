@@ -19,9 +19,6 @@ final class AcademyLevelForm
                 Textarea::make('description')
                     ->default(null)
                     ->columnSpanFull(),
-                TextInput::make('duration_months')
-                    ->required()
-                    ->numeric(),
                 TextInput::make('sort_order')
                     ->required()
                     ->numeric()

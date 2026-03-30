@@ -42,10 +42,6 @@ final class ExpoRequestForm
                 DatePicker::make('preferred_date_to')
                     ->label(__('Preferred Date To'))
                     ->afterOrEqual('preferred_date_from'),
-                TextInput::make('expected_visitors')
-                    ->label(__('Expected Visitors'))
-                    ->numeric()
-                    ->minValue(1),
                 Select::make('status')
                     ->options(ExpoRequestStatus::class)
                     ->required(),

@@ -20,7 +20,6 @@ final class AcademyContentSeeder extends Seeder
                 ['title' => $levelData['title']],
                 [
                     'description' => $levelData['description'],
-                    'duration_months' => $levelData['duration_months'],
                     'sort_order' => $levelData['sort_order'],
                 ]
             );
@@ -66,7 +65,6 @@ final class AcademyContentSeeder extends Seeder
             [
                 'title' => 'Level 1 – Makkische Periode',
                 'description' => 'Das Leben des Propheten Muhammad ﷺ von der Geburt bis zur Hidschra.',
-                'duration_months' => 12,
                 'sort_order' => 1,
                 'sessions' => [
                     [
@@ -136,7 +134,6 @@ final class AcademyContentSeeder extends Seeder
             [
                 'title' => 'Level 2 – Madinesische Periode',
                 'description' => 'Von der Hidschra bis zu den Schlachten und der Festigung der islamischen Gemeinschaft.',
-                'duration_months' => 12,
                 'sort_order' => 2,
                 'sessions' => [
                     [
@@ -198,7 +195,6 @@ final class AcademyContentSeeder extends Seeder
             [
                 'title' => 'Level 3 – Vollendung und Vermächtnis',
                 'description' => 'Die Vollendung der Mission: Mekka-Öffnung, Abschiedspilgerfahrt und das Erbe des Propheten ﷺ.',
-                'duration_months' => 12,
                 'sort_order' => 3,
                 'sessions' => [
                     [

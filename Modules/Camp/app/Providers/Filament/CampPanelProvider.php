@@ -6,6 +6,7 @@ namespace Modules\Camp\Providers\Filament;
 
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
+use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -73,7 +74,10 @@ final class CampPanelProvider extends PanelProvider
                 SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
-            ->resourceEditPageRedirect('view');
+            ->resourceEditPageRedirect('view')
+            ->plugins([
+                FilamentLanguageSwitcherPlugin::make()->locales(['en', 'ar', 'de']),
+            ]);
     }
 
     public function getNavigationLabel(): string

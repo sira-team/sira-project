@@ -31,7 +31,7 @@ enum CampNotificationType: string
      */
     public function mergeTags(): array
     {
-        $common = ['visitor_name', 'camp_name', 'tenant_name'];
+        $common = ['visitor_name', 'camp_name', 'tenant_name', 'room_name'];
         $bankDetails = ['iban', 'bank_recipient', 'bank_name', 'bic'];
 
         return match ($this) {

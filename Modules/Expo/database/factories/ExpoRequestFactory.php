@@ -32,7 +32,6 @@ final class ExpoRequestFactory extends Factory
             'city' => fake()->city(),
             'preferred_date_from' => fake()->dateTimeBetween('+1 month', '+3 months')->format('Y-m-d'),
             'preferred_date_to' => fake()->dateTimeBetween('+4 months', '+6 months')->format('Y-m-d'),
-            'expected_visitors' => fake()->numberBetween(50, 500),
             'message' => fake()->sentence(),
             'status' => ExpoRequestStatus::New,
         ];

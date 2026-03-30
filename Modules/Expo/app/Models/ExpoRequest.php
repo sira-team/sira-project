@@ -23,7 +23,6 @@ use Modules\Expo\Enums\ExpoRequestStatus;
  * @property string|null $city
  * @property Carbon|null $preferred_date_from
  * @property Carbon|null $preferred_date_to
- * @property int|null $expected_visitors
  * @property string|null $message
  * @property string|null $internal_notes
  * @property Carbon|null $created_at
@@ -71,7 +70,6 @@ final class ExpoRequest extends Model
         'city',
         'preferred_date_from',
         'preferred_date_to',
-        'expected_visitors',
         'message',
         'internal_notes',
     ];

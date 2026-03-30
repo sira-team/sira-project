@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('station_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('file_path');
-            $table->string('file_type'); // pdf, pptx, docx
-            $table->integer('file_size_kb');
             $table->foreignId('uploaded_by')->constrained('users')->cascadeOnDelete();
             $table->string('language')->default('de');
             $table->timestamps();

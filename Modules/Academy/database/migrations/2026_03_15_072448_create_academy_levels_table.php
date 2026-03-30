@@ -14,8 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->integer('duration_months');
-            $table->integer('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });
     }

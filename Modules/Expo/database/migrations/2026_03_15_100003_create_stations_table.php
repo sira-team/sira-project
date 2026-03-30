@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

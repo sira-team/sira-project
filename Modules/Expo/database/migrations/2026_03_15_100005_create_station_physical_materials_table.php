@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('notes')->nullable();
             $table->string('image')->nullable();
-            $table->integer('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
 
             $table->index('station_id');

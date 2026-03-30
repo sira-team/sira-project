@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->date('preferred_date_from')->nullable();
             $table->date('preferred_date_to')->nullable();
-            $table->integer('expected_visitors')->nullable();
             $table->text('message')->nullable();
             $table->text('internal_notes')->nullable();
             $table->timestamps();

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->integer('max_attempts')->default(3);
-            $table->integer('min_days_between_attempts')->default(7);
+            $table->unsignedInteger('min_days_between_attempts')->default(7);
             $table->integer('passing_score_percent')->default(70);
             $table->timestamps();
         });
