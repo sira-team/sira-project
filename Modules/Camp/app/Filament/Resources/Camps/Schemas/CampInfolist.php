@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\Camps\Schemas;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
-use Modules\Camp\Models\Hostel;
 
 final class CampInfolist
 {
@@ -99,29 +94,5 @@ final class CampInfolist
                 ]),
 
         ]);
-    }
-
-    /** @return array<int, mixed> */
-    private static function contractFormFields(): array
-    {
-        return [
-            Select::make('hostel_id')
-                ->label(__('Hostel'))
-                ->options(Hostel::query()->pluck('name', 'id'))
-                ->required()
-                ->searchable(),
-            TextInput::make('price_per_person_per_night')
-                ->label(__('Price per Person per Night (EUR)'))
-                ->numeric()
-                ->required(),
-            TextInput::make('contracted_beds')
-                ->label(__('Contracted Participants'))
-                ->numeric()
-                ->required()
-                ->minValue(1),
-            DatePicker::make('contract_date'),
-            Textarea::make('notes')
-                ->rows(3),
-        ];
     }
 }
