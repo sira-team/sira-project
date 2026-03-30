@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Filament\Resources\Camps\Schemas;
 
-use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -13,10 +12,8 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
-use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\Hostel;
 
 final class CampInfolist
@@ -31,48 +28,20 @@ final class CampInfolist
                     TextEntry::make('price_per_participant')
                         ->label(__('Price per Participant'))
                         ->money('EUR'),
-                    TextEntry::make('starts_at')->date('d.m.Y'),
-                    TextEntry::make('ends_at')->date('d.m.Y'),
+                    TextEntry::make('starts_at')
+                        ->label(__('Starts at'))
+                        ->date('d.m.Y'),
+                    TextEntry::make('ends_at')
+                        ->label(__('Ends at'))
+                        ->date('d.m.Y'),
                 ]),
 
             Section::make(__('Hostel Contract'))
                 ->columns(2)
-                ->headerActions([
-                    Action::make('createContract')
-                        ->label(__('Add Contract'))
-                        ->icon(Heroicon::OutlinedPlus)
-                        ->visible(fn (Camp $record) => $record->contract === null)
-                        ->schema(self::contractFormFields())
-                        ->action(function (array $data, Camp $record) {
-                            $record->contract()->create($data);
-                            $record->load('contract.hostel');
-                        }),
-
-                    Action::make('editContract')
-                        ->label(__('Edit'))
-                        ->icon(Heroicon::OutlinedPencilSquare)
-                        ->visible(fn (Camp $record) => $record->contract !== null)
-                        ->fillForm(fn (Camp $record) => $record->contract->toArray())
-                        ->schema(self::contractFormFields())
-                        ->action(function (array $data, Camp $record) {
-                            $record->contract->update($data);
-                            $record->load('contract.hostel');
-                        }),
-
-                    Action::make('deleteContract')
-                        ->label(__('Delete'))
-                        ->icon(Heroicon::OutlinedTrash)
-                        ->color('danger')
-                        ->visible(fn (Camp $record) => $record->contract !== null)
-                        ->requiresConfirmation()
-                        ->action(function (Camp $record) {
-                            $record->contract->delete();
-                            $record->unsetRelation('contract');
-                        }),
-                ])
                 ->schema([
                     TextEntry::make('contract.hostel.name')
                         ->label(__('Hostel'))
+                        ->columnSpanFull()
                         ->placeholder(__('No contract yet')),
                     TextEntry::make('contract.price_per_person_per_night')
                         ->label(__('Price / Person / Night'))
@@ -84,7 +53,11 @@ final class CampInfolist
                         ->placeholder('—'),
                     TextEntry::make('contract.contract_date')
                         ->label(__('Contract Date'))
-                        ->date()
+                        ->date('d.m.Y')
+                        ->placeholder('—'),
+                    TextEntry::make('contract.cancellation_deadline_at')
+                        ->label(__('Cancellation Deadline'))
+                        ->date('d.m.Y')
                         ->placeholder('—'),
                     TextEntry::make('contract.notes')
                         ->label(__('Notes'))
@@ -95,8 +68,8 @@ final class CampInfolist
             Section::make(__('Target Group & Gender'))
                 ->columns(2)
                 ->schema([
-                    TextEntry::make('target_group')->badge(),
-                    TextEntry::make('gender_policy')->badge(),
+                    TextEntry::make('target_group')->label(__('Target group'))->badge(),
+                    TextEntry::make('gender_policy')->label(__('Gender policy'))->badge(),
                     TextEntry::make('age_min')->label(__('Min Age'))->placeholder('—'),
                     TextEntry::make('age_max')->label(__('Max Age'))->placeholder('—'),
                 ]),
@@ -105,9 +78,11 @@ final class CampInfolist
                 ->columns(2)
                 ->schema([
                     TextEntry::make('registration_opens_at')
+                        ->label(__('Registration opens at'))
                         ->dateTime('d.m.Y h:i')
                         ->placeholder('—'),
                     TextEntry::make('registration_ends_at')
+                        ->label(__('Registration ends at'))
                         ->dateTime('d.m.Y h:i')
                         ->placeholder('—'),
                     TextEntry::make('max_visitors_all')
@@ -146,8 +121,7 @@ final class CampInfolist
                 ->minValue(1),
             DatePicker::make('contract_date'),
             Textarea::make('notes')
-                ->rows(3)
-                ->placeholder(__('e.g. cancellation terms, special conditions')),
+                ->rows(3),
         ];
     }
 }

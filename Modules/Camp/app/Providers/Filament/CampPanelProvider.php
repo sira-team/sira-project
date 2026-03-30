@@ -39,7 +39,7 @@ final class CampPanelProvider extends PanelProvider
             ->login()
             ->brandName($this->getNavigationLabel())
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Indigo,
             ])
             ->topNavigation()
             ->tenantMenu(false)

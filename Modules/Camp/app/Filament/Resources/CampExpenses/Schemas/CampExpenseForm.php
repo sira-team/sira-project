@@ -26,8 +26,7 @@ final class CampExpenseForm
                 ->required()
                 ->label(__('Amount (EUR)')),
             Textarea::make('description')
-                ->rows(3)
-                ->helperText(__('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"')),
+                ->rows(3),
             Hidden::make('user_id')->default(auth()->id()),
         ]);
     }

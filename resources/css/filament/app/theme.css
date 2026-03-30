@@ -6,3 +6,7 @@
 @source '../../../../vendor/guava/filament-icon-picker/resources/**/*';
 @source '../../../../vendor/bezhansalleh/filament-panel-switch/resources/views/**/*.blade.php';
 @source '../../../../resources/views/vendor/filament-panel-switch/**/*.blade.php';
+
+fieldset {
+    padding: 0! important;
+}

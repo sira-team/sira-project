@@ -13,6 +13,8 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Models\Hostel;
@@ -35,8 +37,10 @@ final class CampForm
                         ->required()
                         ->label(__('Price per Participant (EUR)')),
                     DatePicker::make('starts_at')
+                        ->label(__('Starts at'))
                         ->required(),
                     DatePicker::make('ends_at')
+                        ->label(__('Ends at'))
                         ->required()
                         ->afterOrEqual('starts_at'),
                 ]),
@@ -51,20 +55,29 @@ final class CampForm
                                 ->label(__('Hostel'))
                                 ->options(Hostel::query()->pluck('name', 'id'))
                                 ->required()
+                                ->columnSpanFull()
                                 ->searchable(),
                             TextInput::make('price_per_person_per_night')
+                                ->label(__('Price per Person per Night (EUR)'))
                                 ->numeric()
                                 ->required()
                                 ->label(__('Price per Person per Night (EUR)')),
                             TextInput::make('contracted_beds')
+                                ->label(__('Contracted Participants'))
+                                ->hintIcon(Heroicon::OutlinedInformationCircle)
+                                ->hintColor(Color::Gray)
+                                ->hintIconTooltip(trans('camps.form.contracted_beds_hint'))
                                 ->numeric()
                                 ->required()
                                 ->minValue(1),
-                            DatePicker::make('contract_date'),
+                            DatePicker::make('contract_date')
+                                ->label(__('Contract Date')),
+                            DatePicker::make('cancellation_deadline_at')
+                                ->label(__('Cancellation Deadline')),
                             Textarea::make('notes')
+                                ->label(__('Notes'))
                                 ->columnSpanFull()
-                                ->rows(3)
-                                ->placeholder(__('e.g. cancellation terms, special conditions')),
+                                ->rows(3),
                         ]),
                 ]),
             Section::make(__('Target Group & Gender'))
