@@ -19,6 +19,7 @@ final class CampUsersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->modifyQueryUsing(fn ($query) => $query->with(['user', 'room']))
             ->columns([
                 TextColumn::make('user.name')

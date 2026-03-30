@@ -41,10 +41,6 @@ final class CampEmailTemplateFactory extends Factory
                 'subject' => 'Spot Available – {{ camp_name }}',
                 'body' => '<p>Dear {{ visitor_name }},</p><p>a spot at <strong>{{ camp_name }}</strong> has become available for you! Please transfer the participation fee of <strong>{{ price }} EUR</strong> promptly to secure your place:</p><p><strong>Recipient:</strong> {{ bank_recipient }}<br><strong>Bank:</strong> {{ bank_name }}<br><strong>IBAN:</strong> {{ iban }}<br><strong>BIC:</strong> {{ bic }}</p><p>Kind regards,<br>{{ tenant_name }}</p>',
             ],
-            CampNotificationType::PaymentReminder->value => [
-                'subject' => 'Payment Reminder – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>this is a reminder to transfer the outstanding amount of <strong>{{ price }} EUR</strong> for <strong>{{ camp_name }}</strong>:</p><p><strong>Recipient:</strong> {{ bank_recipient }}<br><strong>Bank:</strong> {{ bank_name }}<br><strong>IBAN:</strong> {{ iban }}<br><strong>BIC:</strong> {{ bic }}</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
             CampNotificationType::Cancelled->value => [
                 'subject' => 'Registration Cancelled – {{ camp_name }}',
                 'body' => '<p>Dear {{ visitor_name }},</p><p>your registration for <strong>{{ camp_name }}</strong> has been cancelled.</p><p>If you have any questions, please do not hesitate to contact us.</p><p>Kind regards,<br>{{ tenant_name }}</p>',

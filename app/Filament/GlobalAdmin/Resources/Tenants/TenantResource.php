@@ -79,6 +79,7 @@ final class TenantResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

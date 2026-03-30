@@ -54,7 +54,6 @@ final class ExpireUnpaidRegistrationsCommand extends Command
             ->whereIn('status', [
                 VisitorStatus::Pending->value,
                 VisitorStatus::Confirmed->value,
-                VisitorStatus::Paid->value,
             ])
             ->count();
 

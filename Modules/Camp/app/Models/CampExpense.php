@@ -70,6 +70,15 @@ final class CampExpense extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        self::creating(function (CampExpense $expense) {
+            $expense->user_id = $expense->user_id ?? auth()->id();
+        });
+    }
+
     protected static function newFactory(): CampExpenseFactory
     {
         return CampExpenseFactory::new();

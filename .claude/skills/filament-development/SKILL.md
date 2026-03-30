@@ -177,6 +177,7 @@ class CampTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -421,3 +422,4 @@ Add every new string to both `lang/de.json` (German) and `lang/ar.json` (Arabic)
 - Do NOT inline large schemas in the resource class itself — always use Schema and Table classes
 - Do NOT write policies manually — always use `shield:generate`
 - Do NOT use bare strings in component labels — always wrap in `__()`
+- ALWAYS add `->deferFilters(false)` as the first method on every table — filters must apply instantly without a button click

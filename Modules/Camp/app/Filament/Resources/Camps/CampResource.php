@@ -13,7 +13,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
 use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampExpensesRelationManager;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampUsersRelationManager;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
@@ -66,7 +65,6 @@ final class CampResource extends Resource
     {
         return [
             CampExpensesRelationManager::class,
-            CampUsersRelationManager::class,
         ];
     }
 

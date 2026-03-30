@@ -136,7 +136,7 @@ final class CampSeeder extends Seeder
 
         $entries = [
             ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2010-01-01'],
-            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Paid, 'date_of_birth' => '2015-05-15'],
+            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2015-05-15'],
             ['name' => 'Omar Benali', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2012-08-01'],
             ['name' => 'Safiya Öztürk', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2018-03-15'],
             ['name' => 'Hamza Khalil', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Pending, 'date_of_birth' => '2018-09-20'],

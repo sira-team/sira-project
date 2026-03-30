@@ -12,17 +12,15 @@ enum VisitorStatus: string implements HasColor, HasLabel
     case Pending = 'pending';
     case Waitlisted = 'waitlisted';
     case Confirmed = 'confirmed';
-    case Paid = 'paid';
     case Cancelled = 'cancelled';
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Waitlisted => 'Waitlisted',
-            self::Confirmed => 'Confirmed',
-            self::Paid => 'Paid',
-            self::Cancelled => 'Cancelled',
+            self::Pending => __('Pending'),
+            self::Waitlisted => __('Waitlisted'),
+            self::Confirmed => __('Confirmed'),
+            self::Cancelled => __('Cancelled'),
         };
     }
 
@@ -31,8 +29,7 @@ enum VisitorStatus: string implements HasColor, HasLabel
         return match ($this) {
             self::Pending => 'warning',
             self::Waitlisted => 'info',
-            self::Confirmed => 'primary',
-            self::Paid => 'success',
+            self::Confirmed => 'success',
             self::Cancelled => 'danger',
         };
     }

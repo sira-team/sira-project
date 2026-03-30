@@ -36,6 +36,7 @@ final class StationsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')

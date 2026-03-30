@@ -54,11 +54,4 @@ final class CampVisitorFactory extends Factory
             'status' => VisitorStatus::Cancelled,
         ]);
     }
-
-    public function paid(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => VisitorStatus::Paid,
-        ]);
-    }
 }

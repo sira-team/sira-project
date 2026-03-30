@@ -15,6 +15,7 @@ final class ContractTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->columns([
                 TextColumn::make('hostel.name')
                     ->label(__('Hostel'))

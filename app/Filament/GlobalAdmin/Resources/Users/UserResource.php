@@ -61,6 +61,7 @@ final class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')

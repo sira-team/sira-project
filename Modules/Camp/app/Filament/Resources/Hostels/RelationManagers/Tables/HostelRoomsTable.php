@@ -15,6 +15,7 @@ final class HostelRoomsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
                     ->searchable()

@@ -8,7 +8,6 @@ enum CampNotificationType: string
 {
     case Received = 'received';
     case Waitlisted = 'waitlisted';
-    case PaymentReminder = 'payment_reminder';
     case WaitlistPromoted = 'waitlist_promoted';
     case Confirmed = 'confirmed';
     case Cancelled = 'cancelled';
@@ -18,7 +17,6 @@ enum CampNotificationType: string
         return match ($this) {
             self::Received => 'Registration Received',
             self::Waitlisted => 'Waitlisted',
-            self::PaymentReminder => 'Payment Reminder',
             self::WaitlistPromoted => 'Promoted from Waitlist',
             self::Confirmed => 'Registration Confirmed',
             self::Cancelled => 'Registration Cancelled',
@@ -37,7 +35,7 @@ enum CampNotificationType: string
         $bankDetails = ['iban', 'bank_recipient', 'bank_name', 'bic'];
 
         return match ($this) {
-            self::Received, self::WaitlistPromoted, self::PaymentReminder => [...$common, 'price', ...$bankDetails],
+            self::Received, self::WaitlistPromoted => [...$common, 'price', ...$bankDetails],
             self::Confirmed => [...$common, 'payment_due_date'],
             self::Waitlisted => [...$common, 'waitlist_position'],
             self::Cancelled => $common,
