@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Providers\Filament;
 
+use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
@@ -37,11 +38,11 @@ final class ExpoPanelProvider extends PanelProvider
             ->id(self::ID)
             ->path('expo')
             ->login()
-            ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->tenant(Tenant::class, 'slug')
+            ->brandName(fn () => SiraApp::getTenant()->name)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
@@ -72,6 +73,7 @@ final class ExpoPanelProvider extends PanelProvider
                 SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);

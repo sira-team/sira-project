@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Academy\Providers\Filament;
 
+use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
@@ -38,6 +39,7 @@ final class AcademyPanelProvider extends PanelProvider
             ->path('academy')
             ->colors(['primary' => Color::Indigo])
             ->tenant(Tenant::class, slugAttribute: 'slug')
+            ->brandName(fn () => SiraApp::getTenant()->name)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(
@@ -70,6 +72,7 @@ final class AcademyPanelProvider extends PanelProvider
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
             ->authMiddleware([Authenticate::class])
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);

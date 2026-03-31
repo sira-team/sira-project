@@ -63,6 +63,7 @@ final class GlobalAdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 'user.feature:'.self::ID,
             ])
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);

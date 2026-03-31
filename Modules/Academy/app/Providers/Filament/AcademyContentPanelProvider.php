@@ -79,6 +79,7 @@ final class AcademyContentPanelProvider extends PanelProvider
                 CheckAcademyContentManagement::class,
                 'user.feature:'.self::ID,
             ], isPersistent: true)
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);

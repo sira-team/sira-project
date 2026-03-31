@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Facade\SiraApp;
 use App\Filament\Admin\Pages\EditTenant;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -49,6 +50,7 @@ final class TenantAdminPanelProvider extends PanelProvider
             ->tenantSwitcher(false)
             ->tenantMenu(false)
             ->tenantProfile(EditTenant::class)
+            ->brandName(fn () => SiraApp::getTenant()?->name)
             ->navigationItems([
                 NavigationItem::make('tenant')
                     ->label(__('Tenant'))
@@ -91,6 +93,7 @@ final class TenantAdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);

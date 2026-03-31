@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Providers\Filament;
 
+use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
@@ -37,15 +38,15 @@ final class CampPanelProvider extends PanelProvider
             ->id(self::ID)
             ->path('camp')
             ->login()
-            ->brandName($this->getNavigationLabel())
             ->colors([
                 'primary' => Color::Indigo,
             ])
             ->topNavigation()
-            ->tenantMenu(false)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->tenant(Tenant::class, slugAttribute: 'slug')
+            ->tenantMenu(false)
+            ->brandName(fn () => SiraApp::getTenant()->name)
             ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\\Resources'))
             ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\\Pages'))
             ->pages([
@@ -75,6 +76,7 @@ final class CampPanelProvider extends PanelProvider
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
             ->resourceEditPageRedirect('view')
+            ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);
