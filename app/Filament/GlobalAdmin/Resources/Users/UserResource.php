@@ -112,6 +112,21 @@ final class UserResource extends Resource
         ];
     }
 
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Users');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return self::getPluralModelLabel();
+    }
+
     private static function featureToggle(FeatureFlag $flag): ToggleColumn
     {
         return ToggleColumn::make($flag->value)

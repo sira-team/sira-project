@@ -130,4 +130,19 @@ final class TenantResource extends Resource
             'edit' => Pages\EditTenant::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return self::getPluralModelLabel();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Tenant');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Tenants');
+    }
 }
