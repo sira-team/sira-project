@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,6 +28,7 @@ use Modules\Camp\Database\Factories\HostelFactory;
  * @property-read int|null $rooms_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CampContract> $contracts
  * @property-read int|null $contracts_count
+ * @property-read int $total_capacity
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Hostel newQuery()
@@ -62,6 +64,13 @@ final class Hostel extends Model
         'website',
         'notes',
     ];
+
+    public function totalCapacity(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rooms()->sum('capacity'),
+        );
+    }
 
     public function rooms(): HasMany
     {

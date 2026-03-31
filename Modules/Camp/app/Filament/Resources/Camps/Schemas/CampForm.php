@@ -9,6 +9,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -17,6 +18,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\Hostel;
 
 final class CampForm
@@ -87,6 +89,7 @@ final class CampForm
                     Select::make('target_group')
                         ->label(__('Target group'))
                         ->options(CampTargetGroup::class)
+                        ->reactive()
                         ->live(),
                     Select::make('gender_policy')
                         ->reactive()
@@ -113,6 +116,8 @@ final class CampForm
                         ->label(__('Visitor capacity'))
                         ->numeric()
                         ->minValue(1)
+                        ->maxValue(fn (Camp $record) => $record->contract->hostel->total_capacity)
+                        ->columnSpanFull()
                         ->required()
                         ->live()
                         ->visible(fn (Get $get): bool => $get('target_group') === CampTargetGroup::Family),
@@ -120,6 +125,7 @@ final class CampForm
                         ->label(__('Male visitor capacity'))
                         ->numeric()
                         ->minValue(1)
+                        ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_female'))
                         ->required()
                         ->live()
                         ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
@@ -128,10 +134,28 @@ final class CampForm
                         ->label(__('Female visitor capacity'))
                         ->numeric()
                         ->minValue(1)
+                        ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_male'))
                         ->required()
                         ->live()
                         ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
                         ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Male),
+                    TextEntry::make('info')
+                        ->label(__('Info'))
+                        ->columnSpanFull()
+                        ->live()
+                        ->reactive()
+                        ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
+                            trans('camps.form.capacity_all', ['total' => $record->contract->hostel->total_capacity]) :
+                            trans('camps.form.capacity_gendered', ['total' => $record->contract->hostel->total_capacity, 'male' => $get('max_visitors_male'), 'female' => $get('max_visitors_female')])
+                        ),
+                    TextEntry::make('capacity_left')
+                        ->label(__('Capacity left'))
+                        ->live()
+                        ->reactive()
+                        ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
+                            $record->contract->hostel->total_capacity - $get('max_visitors_all') :
+                            $record->contract->hostel->total_capacity - $get('max_visitors_male') - $get('max_visitors_female')
+                        ),
                 ])->columns(2),
         ]);
     }

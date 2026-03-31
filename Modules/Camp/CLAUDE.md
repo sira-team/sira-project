@@ -338,7 +338,7 @@ One submission → one root `Visitor` → one `CampVisitor` record.
 
 ---
 
-### Mode: `mixed`
+### Mode: `family`
 
 Radio: **myself** or **my child**.
 

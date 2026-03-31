@@ -159,7 +159,7 @@ Created per tenant by a Camp Manager or Tenant Admin.
 | ends_at               | date | |
 | capacity              | integer | total participant registrations allowed |
 | price                 | decimal | price per participant in EUR |
-| target_group          | enum | juniors, adults, mixed |
+| target_group          | enum | children, teenagers, adults, family |
 | age_min               | integer | nullable |
 | age_max               | integer | nullable |
 | gender_policy         | enum | mixed, separated, brothers_only, sisters_only |
