@@ -87,9 +87,6 @@ The actual person attending a camp. Belongs to a Visitor.
 | is_self | boolean | true when visitor registers themselves |
 | allergies | text | nullable |
 | medications | text | nullable |
-| medical_notes | text | nullable |
-| emergency_contact_name | string | nullable |
-| emergency_contact_phone | string | nullable |
 
 When `is_self = true` the participant IS the visitor.
 When `is_self = false` the participant is a dependent or someone else the visitor is registering.

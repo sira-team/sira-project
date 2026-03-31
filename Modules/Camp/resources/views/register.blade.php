@@ -116,24 +116,6 @@
                                         <label class="block text-sm font-medium text-gray-700">Medications</label>
                                         <input type="text" name="participants[0][medications]" class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('participants.0.medications') }}">
                                     </div>
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">Medical Notes</label>
-                                        <textarea name="participants[0][medical_notes]" rows="2" class="mt-1 block w-full rounded border-gray-300 shadow-sm" placeholder="Anything else we should know?">{{ old('participants.0.medical_notes') }}</textarea>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">Emergency Contact Name</label>
-                                        <input type="text" name="participants[0][emergency_contact_name]" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('participants.0.emergency_contact_name') }}">
-                                        @error('participants.0.emergency_contact_name')
-                                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone</label>
-                                        <input type="tel" name="participants[0][emergency_contact_phone]" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('participants.0.emergency_contact_phone') }}">
-                                        @error('participants.0.emergency_contact_phone')
-                                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
                                 </div>
                             </div>
                         </div>

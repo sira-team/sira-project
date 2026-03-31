@@ -166,7 +166,6 @@ final class CampSeeder extends Seeder
                 'camp_id' => $camp->id,
                 'visitor_id' => $visitor->id,
                 'status' => $data['status'],
-                'price' => $camp->price_per_participant,
                 'registered_at' => now(),
                 'waitlist_position' => $isWaitlisted ? $waitlistPosition++ : null,
             ]);

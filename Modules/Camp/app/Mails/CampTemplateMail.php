@@ -60,7 +60,6 @@ final class CampTemplateMail extends Mailable implements ShouldQueue
             'visitor_name' => $this->visitor->visitor->name,
             'camp_name' => $camp->name,
             'tenant_name' => $tenant->name,
-            'price' => number_format((float) $this->visitor->price, 2),
             'iban' => $tenant->iban ?? '',
             'bank_recipient' => $tenant->bank_recipient ?? '',
             'bank_name' => $tenant->bank_name ?? '',

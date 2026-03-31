@@ -73,9 +73,6 @@ There is no separate Participant model. All participant data lives directly on t
 - `gender` (enum: `male`, `female` — nullable)
 - `allergies` (nullable text)
 - `medications` (nullable text)
-- `medical_notes` (nullable text)
-- `emergency_contact_name` (nullable)
-- `emergency_contact_phone` (nullable)
 - `timestamps`
 
 ---
@@ -169,7 +166,7 @@ Table: `camp_visitor`. Pivot between `Visitor` and `Camp`.
 - `visitor_id` (FK → visitors)
 - `status` (enum: `pending`, `waitlisted`, `confirmed`, `paid`, `cancelled`)
 - `price` (decimal, EUR — actual price charged; may differ from camp default for sibling discounts)
-- `special_wishes` (nullable text — e.g. preferred roommates)
+- `wishes` (nullable text — e.g. preferred roommates)
 - `room_id` (nullable FK → `hostel_rooms`)
 - `waitlist_position` (nullable integer)
 - `registered_at` (timestamp)
@@ -281,7 +278,7 @@ Relation manager on Camp showing all `camp_visitor` records.
 - Assign room (modal, rooms filtered by linked hostel; gender policy `male`/`female` restricts available rooms)
 - Move to waitlist
 - Cancel (triggers waitlist promotion, send cancellation email)
-- View health info (modal: allergies, medications, medical_notes, emergency contact)
+- View health info (modal: allergies, medications)
 
 **Bulk actions:** confirm selected, mark selected as paid, export CSV
 
@@ -323,7 +320,7 @@ Visitor is always a parent registering one or more children.
 
 **Parent fields (once):** guardian name, email, phone (optional)
 
-**Child repeater (one or more):** relationship (father/mother/uncle/aunt), full name, date of birth, gender, allergies, medications, medical_notes, emergency contact name + phone
+**Child repeater (one or more):** relationship (father/mother/uncle/aunt), full name, date of birth, gender, allergies, medications
 
 **Terms acceptance (required, once)**
 
@@ -335,7 +332,7 @@ Each child → own `Visitor` (no email). Each child is linked to the guardian vi
 
 Single visitor registering themselves.
 
-**Fields:** full name, date of birth, gender, email, phone, allergies, medications, medical_notes, emergency contact name + phone, terms
+**Fields:** full name, date of birth, gender, email, phone, allergies, medications, terms
 
 One submission → one root `Visitor` → one `CampVisitor` record.
 

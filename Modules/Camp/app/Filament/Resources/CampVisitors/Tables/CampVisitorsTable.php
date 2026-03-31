@@ -98,9 +98,7 @@ final class CampVisitorsTable
                     ->color('info')
                     ->requiresConfirmation()
                     ->action(function (CampVisitor $record, WaitlistService $service): void {
-                        $record->update(['status' => VisitorStatus::Pending, 'waitlist_position' => null]);
-                        $record->notify(CampNotificationType::WaitlistPromoted);
-                        $service->reorder($record->camp);
+                        TransitionCampVisitor::run($record, VisitorStatus::Pending, CampNotificationType::WaitlistPromoted);
                     })
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Waitlisted->value),
 
@@ -159,14 +157,8 @@ final class CampVisitorsTable
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(function (CampVisitor $record, WaitlistService $service): void {
-                        $wasWaitlisted = $record->status === VisitorStatus::Waitlisted;
+                    ->action(function (CampVisitor $record): void {
                         TransitionCampVisitor::run($record, VisitorStatus::Cancelled, CampNotificationType::Cancelled);
-                        if ($wasWaitlisted) {
-                            $service->reorder($record->camp);
-                        } else {
-                            $service->promote($record->camp);
-                        }
                     })
                     ->visible(fn ($livewire): bool => in_array($livewire->activeTab ?? 'all', [
                         VisitorStatus::Pending->value,
@@ -189,14 +181,6 @@ final class CampVisitorsTable
                             ->label(__('Medications'))
                             ->disabled()
                             ->default(fn (CampVisitor $record) => $record->visitor->medications),
-                        Textarea::make('medical_notes')
-                            ->label(__('Medical Notes'))
-                            ->disabled()
-                            ->default(fn (CampVisitor $record) => $record->visitor->medical_notes),
-                        Textarea::make('emergency_contact')
-                            ->label(__('Emergency Contact'))
-                            ->disabled()
-                            ->default(fn (CampVisitor $record) => $record->visitor->emergency_contact_name.' / '.$record->visitor->emergency_contact_phone),
                     ])
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') !== 'all'),
             ])
@@ -217,16 +201,8 @@ final class CampVisitorsTable
                         ->icon('heroicon-o-x-mark')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->action(function (Collection $records, WaitlistService $service): void {
-                            /** @var CampVisitor $first */
-                            $first = $records->first();
-                            $camp = $first->camp;
-                            $activeCount = $records->reject(fn (CampVisitor $r) => $r->status === VisitorStatus::Waitlisted)->count();
+                        ->action(function (Collection $records): void {
                             $records->each(fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Cancelled, CampNotificationType::Cancelled));
-                            for ($i = 0; $i < $activeCount; $i++) {
-                                $service->promote($camp);
-                            }
-                            $service->reorder($camp);
                         })
                         ->visible(fn ($livewire): bool => in_array($livewire->activeTab ?? 'all', [
                             VisitorStatus::Pending->value,

@@ -28,7 +28,6 @@ final class CampVisitorFactory extends Factory
             'camp_id' => Camp::factory(),
             'visitor_id' => Visitor::factory(),
             'status' => VisitorStatus::Pending,
-            'price' => fake()->randomFloat(2, 80, 200),
             'registered_at' => now(),
         ];
     }

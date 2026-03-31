@@ -22,9 +22,6 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->text('allergies')->nullable();
             $table->text('medications')->nullable();
-            $table->text('medical_notes')->nullable();
-            $table->string('emergency_contact_name')->nullable();
-            $table->string('emergency_contact_phone')->nullable();
             $table->timestamps();
         });
     }

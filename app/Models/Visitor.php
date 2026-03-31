@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Modules\Camp\Enums\VisitorStatus;
 
 /**
  * @property int $id
@@ -22,9 +23,6 @@ use Illuminate\Support\Carbon;
  * @property Gender|null $gender
  * @property string|null $allergies
  * @property string|null $medications
- * @property string|null $medical_notes
- * @property string|null $emergency_contact_name
- * @property string|null $emergency_contact_phone
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Visitor> $guardians
@@ -70,10 +68,12 @@ final class Visitor extends Model
         'gender',
         'allergies',
         'medications',
-        'medical_notes',
-        'emergency_contact_name',
-        'emergency_contact_phone',
     ];
+
+    public static function participatingStatuses(): array
+    {
+        return [VisitorStatus::Pending->value, VisitorStatus::Confirmed->value];
+    }
 
     /**
      * The adults who are responsible for this visitor (child).

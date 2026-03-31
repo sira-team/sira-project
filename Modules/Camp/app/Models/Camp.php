@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampFactory;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
-use Modules\Camp\Enums\VisitorStatus;
 
 /**
  * @property int $id
@@ -52,7 +51,12 @@ use Modules\Camp\Enums\VisitorStatus;
  * @property-read Collection<int, User> $supportStaff
  * @property-read int|null $support_staff_count
  * @property-read int $nights
- * @property-read int $confirmedVisitorsCount
+ * @property-read Collection<int, User> $users
+ * @property-read int|null $users_count
+ * @property-read CampVisitor|null $pivot
+ * @property int|null $max_visitors_male
+ * @property int|null $max_visitors_female
+ * @property int|null $max_visitors_all
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
@@ -60,12 +64,6 @@ use Modules\Camp\Enums\VisitorStatus;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp withoutTrashed()
- *
- * @property-read int $confirmed_visitors_count
- * @property-read Collection<int, User> $users
- * @property-read int|null $users_count
- * @property-read CampVisitor|null $pivot
- *
  * @method static \Modules\Camp\Database\Factories\CampFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMax($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereAgeMin($value)
@@ -115,6 +113,14 @@ final class Camp extends Model
         return $this->hasOne(CampContract::class);
     }
 
+    public function visitors(): BelongsToMany
+    {
+        return $this->belongsToMany(Visitor::class, 'camp_visitor')
+            ->withPivot('id', 'status', 'price', 'wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->using(CampVisitor::class)
+            ->withTimestamps();
+    }
+
     public function campVisitors(): HasMany
     {
         return $this->hasMany(CampVisitor::class);
@@ -130,22 +136,14 @@ final class Camp extends Model
             ->withPivot('id', 'room_id');
     }
 
-    public function visitors(): BelongsToMany
+    public function campUsers(): HasMany
     {
-        return $this->belongsToMany(Visitor::class, 'camp_visitor')
-            ->withPivot('id', 'status', 'price', 'special_wishes', 'room_id', 'waitlist_position', 'registered_at')
-            ->using(CampVisitor::class)
-            ->withTimestamps();
+        return $this->hasMany(CampUser::class);
     }
 
     public function expenses(): HasMany
     {
         return $this->hasMany(CampExpense::class);
-    }
-
-    public function supportStaff(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'camp_user');
     }
 
     public function getNightsAttribute(): int
@@ -158,13 +156,6 @@ final class Camp extends Model
         return Attribute::make(
             get: fn () => $this->registration_opens_at?->isPast() && $this->registration_ends_at?->isFuture(),
         );
-    }
-
-    public function getConfirmedVisitorsCountAttribute(): int
-    {
-        return $this->visitors()
-            ->wherePivot('status', VisitorStatus::Confirmed)
-            ->count();
     }
 
     protected static function newFactory(): CampFactory

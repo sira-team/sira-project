@@ -100,7 +100,7 @@ final class CampServiceProvider extends ServiceProvider
     {
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
-            $schedule->command('camp:expire-unpaid-registrations')->dailyAt('07:00');
+            $schedule->command('camp:expire-unpaid-registrations')->dailyAt('04:00');
         });
     }
 

@@ -19,8 +19,7 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property int $camp_id
  * @property int $visitor_id
  * @property VisitorStatus $status
- * @property float $price
- * @property string|null $special_wishes
+ * @property string|null $wishes
  * @property int|null $room_id
  * @property int|null $waitlist_position
  * @property Carbon $registered_at
@@ -52,14 +51,15 @@ final class CampVisitor extends Pivot
 {
     use HasFactory;
 
+    public $incrementing = true;
+
     protected $table = 'camp_visitor';
 
     protected $fillable = [
         'camp_id',
         'visitor_id',
         'status',
-        'price',
-        'special_wishes',
+        'wishes',
         'room_id',
         'waitlist_position',
         'registered_at',
@@ -94,7 +94,6 @@ final class CampVisitor extends Pivot
     {
         return [
             'status' => VisitorStatus::class,
-            'price' => 'decimal:2',
             'registered_at' => 'datetime',
         ];
     }
