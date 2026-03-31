@@ -6,6 +6,7 @@ namespace Modules\Academy\Providers\Filament;
 
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
+use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -68,6 +69,9 @@ final class AcademyPanelProvider extends PanelProvider
                 SyncShieldTenant::class,
                 'tenant.feature:'.self::ID,
             ], isPersistent: true)
-            ->authMiddleware([Authenticate::class]);
+            ->authMiddleware([Authenticate::class])
+            ->plugins([
+                FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
+            ]);
     }
 }

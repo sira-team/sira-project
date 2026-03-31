@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Academy\Providers\Filament;
 
+use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -77,6 +78,9 @@ final class AcademyContentPanelProvider extends PanelProvider
                 Authenticate::class,
                 CheckAcademyContentManagement::class,
                 'user.feature:'.self::ID,
-            ], isPersistent: true);
+            ], isPersistent: true)
+            ->plugins([
+                FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
+            ]);
     }
 }
