@@ -19,15 +19,19 @@ final class UsersTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label(__('Email'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('roles.name')
+                    ->label(__('Roles'))
                     ->badge()
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])

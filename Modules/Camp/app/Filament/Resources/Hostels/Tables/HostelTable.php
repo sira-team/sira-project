@@ -16,15 +16,18 @@ final class HostelTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('city')
+                    ->label(__('City'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('rooms_count')
                     ->label(__('Rooms'))
                     ->counts('rooms'),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])

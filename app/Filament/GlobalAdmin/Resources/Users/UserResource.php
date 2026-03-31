@@ -34,25 +34,32 @@ final class UserResource extends Resource
                 TextEntry::make('tenant.name')
                     ->label(__('Tenant'))
                     ->placeholder('-'),
-                TextEntry::make('name'),
+                TextEntry::make('name')
+                    ->label(__('Name')),
                 TextEntry::make('email')
                     ->label(__('Email address')),
                 TextEntry::make('email_verified_at')
+                    ->label(__('Email Verified At'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('two_factor_secret')
+                    ->label(__('Two-Factor Secret'))
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('two_factor_recovery_codes')
+                    ->label(__('Two-Factor Recovery Codes'))
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('two_factor_confirmed_at')
+                    ->label(__('Two-Factor Confirmed At'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->placeholder('-'),
             ]);
@@ -65,6 +72,7 @@ final class UserResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('tenant.name')
                     ->label(__('Tenant'))
@@ -75,10 +83,12 @@ final class UserResource extends Resource
                 self::featureToggle(FeatureFlag::AcademyManager),
                 self::featureToggle(FeatureFlag::GlobalAdmin),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

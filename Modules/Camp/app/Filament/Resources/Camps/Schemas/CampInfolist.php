@@ -19,7 +19,8 @@ final class CampInfolist
             Section::make(__('Basic Information'))
                 ->columns(2)
                 ->schema([
-                    TextEntry::make('name'),
+                    TextEntry::make('name')
+                        ->label(__('Name')),
                     TextEntry::make('price_per_participant')
                         ->label(__('Price per Participant'))
                         ->money('EUR'),

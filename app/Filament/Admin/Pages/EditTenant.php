@@ -20,7 +20,7 @@ final class EditTenant extends EditTenantProfile
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('name'),
+            TextInput::make('name')->label(__('Name')),
             TextInput::make('email')->email()->label(__('Email')),
             TextInput::make('bank_recipient')->label(__('Bank Recipient Name')),
             TextInput::make('bank_name')->label(__('Bank Name')),

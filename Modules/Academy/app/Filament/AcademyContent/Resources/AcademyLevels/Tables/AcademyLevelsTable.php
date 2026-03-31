@@ -18,6 +18,7 @@ final class AcademyLevelsTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('title')
+                    ->label(__('Title'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('sessions_count')
@@ -25,6 +26,7 @@ final class AcademyLevelsTable
                     ->label(__('Sessions'))
                     ->numeric(),
                 TextColumn::make('sort_order')
+                    ->label(__('Sort Order'))
                     ->numeric()
                     ->sortable(),
             ])

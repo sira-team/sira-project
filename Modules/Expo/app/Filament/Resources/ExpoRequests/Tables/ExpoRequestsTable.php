@@ -27,6 +27,7 @@ final class ExpoRequestsTable
                     ->label(__('Organisation'))
                     ->searchable(),
                 TextColumn::make('city')
+                    ->label(__('City'))
                     ->searchable(),
                 TextColumn::make('preferred_date_from')
                     ->label(__('From'))
@@ -35,6 +36,7 @@ final class ExpoRequestsTable
                     ->label(__('To'))
                     ->date(),
                 TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge(),
                 TextColumn::make('created_at')
                     ->label(__('Submitted'))

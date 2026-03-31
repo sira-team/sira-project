@@ -19,11 +19,14 @@ final class CampExpensesTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('category')
+                    ->label(__('Category'))
                     ->badge(),
                 TextColumn::make('title')
+                    ->label(__('Title'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('amount')
+                    ->label(__('Amount (EUR)'))
                     ->numeric(decimalPlaces: 2)
                     ->sortable()
                     ->summarize(Sum::make()->numeric(decimalPlaces: 2)),

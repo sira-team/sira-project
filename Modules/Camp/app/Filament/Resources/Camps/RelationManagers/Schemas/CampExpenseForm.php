@@ -16,15 +16,18 @@ final class CampExpenseForm
     {
         return $schema->components([
             Select::make('category')
+                ->label(__('Category'))
                 ->options(CampExpenseCategory::class)
                 ->required(),
             TextInput::make('title')
+                ->label(__('Title'))
                 ->required()
                 ->maxLength(255),
             TextInput::make('amount')
                 ->required()
                 ->label(__('Amount (EUR)')),
             Textarea::make('description')
+                ->label(__('Description'))
                 ->rows(3)
                 ->helperText(__('e.g. "Prediction: Busmiete" or "5 Volunteers × €25"')),
         ]);

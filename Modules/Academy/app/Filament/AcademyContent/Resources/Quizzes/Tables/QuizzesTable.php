@@ -18,15 +18,18 @@ final class QuizzesTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('title')
+                    ->label(__('Title'))
                     ->searchable(),
                 TextColumn::make('questions_count')
                     ->label(__('Questions'))
                     ->counts('questions')
                     ->numeric(),
                 TextColumn::make('max_attempts')
+                    ->label(__('Max Attempts'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('passing_score_percent')
+                    ->label(__('Passing Score (%)'))
                     ->numeric()
                     ->sortable()
                     ->suffix('%'),

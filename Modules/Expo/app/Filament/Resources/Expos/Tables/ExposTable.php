@@ -21,13 +21,16 @@ final class ExposTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('location_name')
                     ->label(__('Location'))
                     ->searchable(),
                 TextColumn::make('date')
+                    ->label(__('Date'))
                     ->date(),
                 TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge(),
                 TextColumn::make('stations_count')
                     ->label(__('Stations'))

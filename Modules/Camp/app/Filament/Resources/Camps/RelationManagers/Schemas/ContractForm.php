@@ -35,6 +35,7 @@ final class ContractForm
             DatePicker::make('cancellation_deadline_at')
                 ->label(__('Cancellation Deadline')),
             Textarea::make('notes')
+                ->label(__('Notes'))
                 ->rows(3),
         ]);
     }

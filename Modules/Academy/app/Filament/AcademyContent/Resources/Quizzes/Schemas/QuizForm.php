@@ -25,6 +25,7 @@ final class QuizForm
                 Section::make(__('Quiz Settings'))
                     ->schema([
                         TextInput::make('title')
+                            ->label(__('Title'))
                             ->required()
                             ->columnSpanFull(),
                         Grid::make(3)

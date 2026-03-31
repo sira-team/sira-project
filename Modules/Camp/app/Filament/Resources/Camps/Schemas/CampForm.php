@@ -28,6 +28,7 @@ final class CampForm
                 ->columns(2)
                 ->schema([
                     TextInput::make('name')
+                        ->label(__('Name'))
                         ->required()
                         ->columnSpanFull()
                         ->maxLength(255),

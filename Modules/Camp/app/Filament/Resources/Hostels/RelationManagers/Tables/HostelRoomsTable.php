@@ -18,11 +18,14 @@ final class HostelRoomsTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('floor')
+                    ->label(__('Floor'))
                     ->sortable(),
                 TextColumn::make('capacity')
+                    ->label(__('Capacity'))
                     ->numeric()
                     ->sortable(),
             ])

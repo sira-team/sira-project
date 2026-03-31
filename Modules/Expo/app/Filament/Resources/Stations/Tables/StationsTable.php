@@ -17,6 +17,7 @@ final class StationsTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Station Name'))
                     ->searchable(),
                 TextColumn::make('physical_materials_count')
                     ->label(__('Physical Materials'))

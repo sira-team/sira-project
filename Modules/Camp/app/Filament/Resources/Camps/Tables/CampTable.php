@@ -20,6 +20,7 @@ final class CampTable
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('contract.hostel.name')
@@ -33,6 +34,7 @@ final class CampTable
                     ->formatStateUsing(fn ($record) => $record->starts_at->format('d.m.Y').' – '.$record->ends_at->format('d.m.Y'))
                     ->sortable(),
                 TextColumn::make('capacity')
+                    ->label(__('Capacity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('confirmedRegistrationsCount')

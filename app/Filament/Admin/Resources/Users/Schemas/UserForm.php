@@ -16,12 +16,14 @@ final class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->required(),
                 TextInput::make('email')
                     ->label(__('Email Address'))
                     ->email()
                     ->required(),
                 Select::make('roles')
+                    ->label(__('Roles'))
                     ->relationship('roles', 'name')
                     ->saveRelationshipsUsing(function (User $record, mixed $state) {
                         $record->roles()->syncWithPivotValues($state, [

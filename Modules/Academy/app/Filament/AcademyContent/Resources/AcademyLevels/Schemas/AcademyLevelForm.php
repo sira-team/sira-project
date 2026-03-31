@@ -15,11 +15,14 @@ final class AcademyLevelForm
         return $schema
             ->components([
                 TextInput::make('title')
+                    ->label(__('Title'))
                     ->required(),
                 Textarea::make('description')
+                    ->label(__('Description'))
                     ->default(null)
                     ->columnSpanFull(),
                 TextInput::make('sort_order')
+                    ->label(__('Sort Order'))
                     ->required()
                     ->numeric()
                     ->default(0),

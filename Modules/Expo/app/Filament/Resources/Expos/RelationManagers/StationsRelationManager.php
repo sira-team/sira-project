@@ -40,6 +40,7 @@ final class StationsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Station Name'))
                     ->searchable(),
                 TextColumn::make('responsible_user.name')
                     ->label(__('Responsible Person'))

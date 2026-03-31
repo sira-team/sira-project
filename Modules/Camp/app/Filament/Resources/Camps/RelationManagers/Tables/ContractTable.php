@@ -26,6 +26,7 @@ final class ContractTable
                     ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 TextColumn::make('contracted_beds')
+                    ->label(__('Contracted Participants'))
                     ->numeric()
                     ->sortable(),
             ])

@@ -39,11 +39,14 @@ final class StationForm
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(5 * 1024), // 5MB
                                 Select::make('type')
+                                    ->label(__('Type'))
                                     ->options(PhysicalMaterialType::class)
                                     ->required(),
                                 TextInput::make('name')
+                                    ->label(__('Name'))
                                     ->required(),
                                 Textarea::make('notes')
+                                    ->label(__('Notes'))
                                     ->rows(2),
                             ])
                             ->columnSpan('full'),
@@ -56,6 +59,7 @@ final class StationForm
                             ->relationship('digitalMaterials')
                             ->schema([
                                 TextInput::make('title')
+                                    ->label(__('Title'))
                                     ->required(),
                                 FileUpload::make('file_path')
                                     ->label(__('File'))
@@ -64,6 +68,7 @@ final class StationForm
                                     ->maxSize(20 * 1024) // 20MB
                                     ->required(),
                                 Select::make('language')
+                                    ->label(__('Language'))
                                     ->options([
                                         'de' => 'Deutsch',
                                         'en' => 'English',

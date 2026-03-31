@@ -36,21 +36,27 @@ final class TenantResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('slug')
+                    ->label(__('Slug'))
                     ->required()
                     ->unique(Tenant::class, 'slug', ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('city')
+                    ->label(__('City'))
                     ->maxLength(255),
                 Select::make('country')
+                    ->label(__('Country'))
                     ->options(Country::class)
                     ->default(Country::Germany->value),
                 TextInput::make('email')
+                    ->label(__('Email'))
                     ->email()
                     ->maxLength(255),
                 TextInput::make('owner_email')
+                    ->label(__('Owner Email'))
                     ->email()
                     ->maxLength(255)
                     ->visible(fn (string $operation) => $operation === 'create')
@@ -81,22 +87,27 @@ final class TenantResource extends Resource
         return $table
             ->deferFilters(false)
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('name')->label(__('Name'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label(__('Slug'))
                     ->sortable(),
                 TextColumn::make('city')
+                    ->label(__('City'))
                     ->sortable(),
                 TextColumn::make('country')
+                    ->label(__('Country'))
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label(__('Email'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('users_count')
                     ->counts('users')
                     ->label(__('Members')),
                 TextColumn::make('created_at')
+                    ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
             ])

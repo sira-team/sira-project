@@ -43,6 +43,7 @@ final class ExpoRequestForm
                     ->label(__('Preferred Date To'))
                     ->afterOrEqual('preferred_date_from'),
                 Select::make('status')
+                    ->label(__('Status'))
                     ->options(ExpoRequestStatus::class)
                     ->required(),
                 Textarea::make('message')

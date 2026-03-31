@@ -38,6 +38,7 @@ final class ExpoForm
                     ->label(__('Date'))
                     ->required(),
                 Select::make('status')
+                    ->label(__('Status'))
                     ->options(ExpoStatus::class)
                     ->required(),
                 Textarea::make('notes')
