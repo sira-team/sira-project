@@ -39,7 +39,7 @@ final class AcademyPanelProvider extends PanelProvider
             ->path('academy')
             ->colors(['primary' => Color::Indigo])
             ->tenant(Tenant::class, slugAttribute: 'slug')
-            ->brandName(fn () => SiraApp::getTenant()->name)
+            ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(

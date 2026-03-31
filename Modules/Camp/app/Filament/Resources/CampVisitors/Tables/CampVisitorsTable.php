@@ -62,7 +62,13 @@ final class CampVisitorsTable
                 TextColumn::make('registered_at')
                     ->label(__('Registered'))
                     ->dateTime('d.m.Y H:i')
+                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') !== VisitorStatus::Confirmed->value)
                     ->sortable(),
+                TextColumn::make('wishes')
+                    ->label(__('Wishes'))
+                    ->columnSpan(2)
+                    ->placeholder('—')
+                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
                 TextColumn::make('waitlist_position')
                     ->label(__('Waitlist Pos'))
                     ->placeholder('—')

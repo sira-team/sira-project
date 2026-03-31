@@ -46,7 +46,7 @@ final class CampPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/app/theme.css')
             ->tenant(Tenant::class, slugAttribute: 'slug')
             ->tenantMenu(false)
-            ->brandName(fn () => SiraApp::getTenant()->name)
+            ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\\Resources'))
             ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\\Pages'))
             ->pages([

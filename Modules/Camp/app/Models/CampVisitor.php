@@ -35,7 +35,6 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCampId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereRegisteredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereStatus($value)

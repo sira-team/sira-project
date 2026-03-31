@@ -116,7 +116,7 @@ final class Camp extends Model
     public function visitors(): BelongsToMany
     {
         return $this->belongsToMany(Visitor::class, 'camp_visitor')
-            ->withPivot('id', 'status', 'price', 'wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->withPivot('id', 'status', 'wishes', 'room_id', 'waitlist_position', 'registered_at')
             ->using(CampVisitor::class)
             ->withTimestamps();
     }

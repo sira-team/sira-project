@@ -42,7 +42,7 @@ final class ExpoPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->tenant(Tenant::class, 'slug')
-            ->brandName(fn () => SiraApp::getTenant()->name)
+            ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
