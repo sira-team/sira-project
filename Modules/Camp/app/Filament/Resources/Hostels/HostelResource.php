@@ -18,7 +18,7 @@ final class HostelResource extends Resource
 {
     protected static ?string $model = Hostel::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingLibrary;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHomeModern;
 
     protected static ?string $navigationLabel = 'Hostels';
 
@@ -51,5 +51,10 @@ final class HostelResource extends Resource
             'view' => Pages\ViewHostel::route('/{record}'),
             'edit' => Pages\EditHostel::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Hostels');
     }
 }

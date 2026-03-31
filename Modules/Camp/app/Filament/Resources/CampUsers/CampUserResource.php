@@ -41,4 +41,14 @@ final class CampUserResource extends Resource
             'index' => ListCampUsers::route('/'),
         ];
     }
+
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Users');
+    }
 }

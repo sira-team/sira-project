@@ -12,6 +12,11 @@ final class ListCamps extends ListRecords
 {
     protected static string $resource = CampResource::class;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('Camps');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

@@ -12,7 +12,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
-use Modules\Camp\Filament\Resources\Camps\RelationManagers\CampExpensesRelationManager;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
@@ -63,9 +62,7 @@ final class CampResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            CampExpensesRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -76,5 +73,20 @@ final class CampResource extends Resource
             'edit' => Pages\EditCamp::route('/{record}/edit'),
             'view' => Pages\ViewCamp::route('/{record}'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Camp');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Camps');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Camps');
     }
 }

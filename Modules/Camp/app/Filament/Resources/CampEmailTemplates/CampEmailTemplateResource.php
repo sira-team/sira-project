@@ -52,4 +52,9 @@ final class CampEmailTemplateResource extends Resource
             'edit' => Pages\EditCampEmailTemplate::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Email Templates');
+    }
 }

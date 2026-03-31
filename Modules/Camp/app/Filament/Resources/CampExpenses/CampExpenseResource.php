@@ -48,4 +48,14 @@ final class CampExpenseResource extends Resource
             'index' => ListCampExpenses::route('/'),
         ];
     }
+
+    public static function getModelLabel(): string
+    {
+        return __('Expense');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Expenses');
+    }
 }
