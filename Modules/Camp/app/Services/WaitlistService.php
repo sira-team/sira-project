@@ -90,6 +90,6 @@ final class WaitlistService
 
     public function capacityReached(Camp $camp, Visitor $visitor): bool
     {
-        return $this->getCapacityForGender($camp, $visitor->gender) > 0;
+        return $this->getCapacityForGender($camp, $visitor->gender) <= 0;
     }
 }

@@ -66,6 +66,7 @@ final class CampTemplateMail extends Mailable implements ShouldQueue
             'bic' => $tenant->bic ?? '',
             'payment_due_date' => $this->visitor->registered_at->addDays(7)->format('d.m.Y'),
             'waitlist_position' => (string) ($this->visitor->waitlist_position ?? ''),
+            'price' => $this->visitor->camp->price_per_participant,
         ]);
     }
 }
