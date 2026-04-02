@@ -21,6 +21,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereUserId($value)
  *
+ * @property int $id
+ * @property-read Camp|null $camp
+ * @property-read User $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampUser whereId($value)
+ *
  * @mixin \Eloquent
  */
 final class CampUser extends Pivot

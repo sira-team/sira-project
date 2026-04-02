@@ -10,9 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('camp_email_templates', function (Blueprint $table) {
+        Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
+            $table->string('scope');
             $table->string('key');
             $table->string('subject');
             $table->longText('body');
@@ -24,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('camp_email_templates');
+        Schema::dropIfExists('email_templates');
     }
 };

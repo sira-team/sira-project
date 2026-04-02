@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Modules\Camp\Filament\Resources\CampEmailTemplates;
+namespace Modules\Camp\Filament\Resources\EmailTemplates;
 
+use App\Enums\FeatureFlag;
+use App\Models\EmailTemplate;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Modules\Camp\Filament\Resources\CampEmailTemplates\Schemas\CampEmailTemplateForm;
-use Modules\Camp\Filament\Resources\CampEmailTemplates\Tables\CampEmailTemplatesTable;
-use Modules\Camp\Models\CampEmailTemplate;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Camp\Filament\Resources\EmailTemplates\Schemas\EmailTemplateForm;
+use Modules\Camp\Filament\Resources\EmailTemplates\Tables\EmailTemplatesTable;
 
-final class CampEmailTemplateResource extends Resource
+final class EmailTemplateResource extends Resource
 {
-    protected static ?string $model = CampEmailTemplate::class;
+    protected static ?string $model = EmailTemplate::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
@@ -30,14 +32,19 @@ final class CampEmailTemplateResource extends Resource
         return false;
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('scope', FeatureFlag::CampPanel->value);
+    }
+
     public static function form(Schema $schema): Schema
     {
-        return CampEmailTemplateForm::configure($schema);
+        return EmailTemplateForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return CampEmailTemplatesTable::configure($table);
+        return EmailTemplatesTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -48,8 +55,8 @@ final class CampEmailTemplateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCampEmailTemplates::route('/'),
-            'edit' => Pages\EditCampEmailTemplate::route('/{record}/edit'),
+            'index' => Pages\ListEmailTemplates::route('/'),
+            'edit' => Pages\EditEmailTemplate::route('/{record}/edit'),
         ];
     }
 

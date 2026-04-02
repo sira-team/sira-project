@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Jobs\Setup\AssignRolePermissions;
+use App\Jobs\Setup\SeedEmailTemplates;
 use App\Models\Tenant;
-use Modules\Camp\Database\Factories\CampEmailTemplateFactory;
-use Modules\Camp\Models\CampEmailTemplate;
 use Spatie\Permission\Models\Role;
 
 final class TenantObserver
@@ -27,12 +26,6 @@ final class TenantObserver
         }
 
         dispatch_sync(new AssignRolePermissions($tenant));
-
-        foreach (CampEmailTemplateFactory::defaults() as $key => $content) {
-            CampEmailTemplate::withoutGlobalScopes()->firstOrCreate(
-                ['tenant_id' => $tenant->id, 'key' => $key],
-                ['subject' => $content['subject'], 'body' => $content['body']]
-            );
-        }
+        dispatch_sync(new SeedEmailTemplates($tenant));
     }
 }

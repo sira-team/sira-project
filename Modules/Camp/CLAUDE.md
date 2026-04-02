@@ -381,7 +381,7 @@ All emails queued. All include tenant name in header. Bank details (`iban`, `ban
 
 **There is no `room_assigned` notification.** Confirmed status is sufficient — rooms are not communicated separately.
 
-| key | `CampNotificationType` | trigger | merge tags |
+| key | `NotificationType` | trigger | merge tags |
 |---|---|---|---|
 | `received` | `Received` | form submission, capacity available | common + `price`, `iban`, `bank_recipient`, `bank_name`, `bic` |
 | `confirmed` | `Confirmed` | Camp Manager confirms | common + `payment_due_date` (= `registered_at + 7 days`) |
@@ -396,7 +396,7 @@ Notification recipient is always the root visitor's email. For child visitors, r
 
 ### Template Model
 
-`CampEmailTemplate` — tenant-scoped, one row per `CampNotificationType` per tenant.
+`CampEmailTemplate` — tenant-scoped, one row per `NotificationType` per tenant.
 
 - Auto-seeded when a tenant is created via `TenantObserver`
 - Editable in the Camp panel under **E-Mail Vorlagen** (List + Edit only — no create, no delete)
@@ -407,7 +407,7 @@ Notification recipient is always the root visitor's email. For child visitors, r
 Email templates are resolved via the `CampEmailTemplate::resolve(array $data)` method, which returns `['subject' => string, 'body' => string]`. It uses Filament's `RichContentRenderer` to handle TipTap-style merge tags and Laravel's `Str::replace` for `{{ tag }}` placeholders.
 
 ```php
-$campVisitor->notify(CampNotificationType::Confirmed);
+$campVisitor->notify(NotificationType::CampConfirmed);
 ```
 
 The `CampVisitor::notify()` method triggers a `CampStatusNotification`, which is a Laravel Notification. The recipient is resolved via the `Visitor` model's `routeNotificationForMail()` method, which includes both the visitor and their guardians.

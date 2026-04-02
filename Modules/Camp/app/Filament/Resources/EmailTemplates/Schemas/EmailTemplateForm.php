@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Modules\Camp\Filament\Resources\CampEmailTemplates\Schemas;
+namespace Modules\Camp\Filament\Resources\EmailTemplates\Schemas;
 
+use App\Models\EmailTemplate;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Modules\Camp\Models\CampEmailTemplate;
 
-final class CampEmailTemplateForm
+final class EmailTemplateForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -24,7 +24,7 @@ final class CampEmailTemplateForm
                 ->label(__('Content'))
                 ->required()
                 ->columnSpanFull()
-                ->mergeTags(fn (CampEmailTemplate $record): array => collect($record->key->mergeTags())
+                ->mergeTags(fn (EmailTemplate $record): array => collect($record->key->mergeTags())
                     ->mapWithKeys(fn (string $tag): array => [
                         $tag => ucwords(str_replace('_', ' ', $tag)),
                     ])

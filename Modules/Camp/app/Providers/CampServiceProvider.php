@@ -8,7 +8,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Camp\Console\Commands\ExpireUnpaidRegistrationsCommand;
-use Modules\Camp\Console\Commands\SeedCampEmailTemplatesCommand;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -88,7 +87,6 @@ final class CampServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
-            SeedCampEmailTemplatesCommand::class,
             ExpireUnpaidRegistrationsCommand::class,
         ]);
     }

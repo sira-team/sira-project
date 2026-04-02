@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\CampVisitors\Tables;
 
 use App\Enums\Gender;
+use App\Enums\NotificationType;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -21,7 +22,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Modules\Camp\Actions\TransitionCampVisitor;
-use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampVisitor;
@@ -95,7 +95,7 @@ final class CampVisitorsTable
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Confirmed, CampNotificationType::Confirmed))
+                    ->action(fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Confirmed, NotificationType::CampConfirmed))
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Pending->value),
 
                 Action::make('promote')
@@ -104,7 +104,7 @@ final class CampVisitorsTable
                     ->color('info')
                     ->requiresConfirmation()
                     ->action(function (CampVisitor $record, WaitlistService $service): void {
-                        TransitionCampVisitor::run($record, VisitorStatus::Pending, CampNotificationType::WaitlistPromoted);
+                        TransitionCampVisitor::run($record, VisitorStatus::Pending, NotificationType::CampWaitlistPromoted);
                     })
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Waitlisted->value),
 
@@ -164,7 +164,7 @@ final class CampVisitorsTable
                     ->color('danger')
                     ->requiresConfirmation()
                     ->action(function (CampVisitor $record): void {
-                        TransitionCampVisitor::run($record, VisitorStatus::Cancelled, CampNotificationType::Cancelled);
+                        TransitionCampVisitor::run($record, VisitorStatus::Cancelled, NotificationType::CampCancelled);
                     })
                     ->visible(fn ($livewire): bool => in_array($livewire->activeTab ?? 'all', [
                         VisitorStatus::Pending->value,
@@ -198,7 +198,7 @@ final class CampVisitorsTable
                         ->color('success')
                         ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each(
-                            fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Confirmed, CampNotificationType::Confirmed)
+                            fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Confirmed, NotificationType::CampConfirmed)
                         ))
                         ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Pending->value),
 
@@ -208,7 +208,7 @@ final class CampVisitorsTable
                         ->color('danger')
                         ->requiresConfirmation()
                         ->action(function (Collection $records): void {
-                            $records->each(fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Cancelled, CampNotificationType::Cancelled));
+                            $records->each(fn (CampVisitor $record) => TransitionCampVisitor::run($record, VisitorStatus::Cancelled, NotificationType::CampCancelled));
                         })
                         ->visible(fn ($livewire): bool => in_array($livewire->activeTab ?? 'all', [
                             VisitorStatus::Pending->value,

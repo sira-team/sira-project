@@ -1,5 +1,5 @@
 <x-mail::message>
-# Expo-Anfrage bestätigt
+# Expo-Anfrage erhalten
 
 Hallo {{ $expoRequest->contact_name }},
 

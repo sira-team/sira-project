@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Models;
 
+use App\Enums\NotificationType;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampVisitorFactory;
-use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Notifications\CampStatusNotification;
 
@@ -43,6 +43,7 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWaitlistPosition($value)
  * @method static \Modules\Camp\Database\Factories\CampVisitorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereSpecialWishes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWishes($value)
  *
  * @mixin \Eloquent
  */
@@ -79,7 +80,7 @@ final class CampVisitor extends Pivot
         return $this->belongsTo(HostelRoom::class, 'room_id');
     }
 
-    public function notify(CampNotificationType $type): void
+    public function notify(NotificationType $type): void
     {
         $this->visitor->notify(new CampStatusNotification($type, $this));
     }

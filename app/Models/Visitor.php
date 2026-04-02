@@ -51,6 +51,9 @@ use Modules\Camp\Enums\VisitorStatus;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedicalNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedications($value)
  *
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ *
  * @mixin \Eloquent
  */
 final class Visitor extends Model
