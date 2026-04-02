@@ -58,8 +58,7 @@ final class CampEmailTemplatesTable
                         TextInput::make('email')
                             ->required()
                             ->label(__('Override Email'))
-                            ->email()
-                            ->visible(fn (Get $get): bool => (bool) $get('debugging')),
+                            ->email(),
                     ])
                     ->action(function (array $data, CampEmailTemplate $record): void {
                         $campVisitor = CampVisitor::with(['visitor', 'camp.tenant', 'visitor.guardians'])->findOrFail($data['camp_visitor_id']);
