@@ -31,6 +31,8 @@ final class AcademyContentPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
+        $modulePath = base_path("Modules{$separator}Academy{$separator}app");
+        $moduleNamespace = 'Modules\\Academy\\';
 
         return $panel
             ->id(self::ID)
@@ -41,27 +43,27 @@ final class AcademyContentPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(
-                in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Resources"),
-                for: module('Academy', true)->appNamespace('Filament\AcademyContent\Resources'),
+                in: "{$modulePath}{$separator}Filament{$separator}AcademyContent{$separator}Resources",
+                for: "{$moduleNamespace}Filament\AcademyContent\Resources",
             )
             ->discoverPages(
-                in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Pages"),
-                for: module('Academy', true)->appNamespace('Filament\AcademyContent\Pages'),
+                in: "{$modulePath}{$separator}Filament{$separator}AcademyContent{$separator}Pages",
+                for: "{$moduleNamespace}Filament\AcademyContent\Pages",
             )
             ->pages([
                 Dashboard::class,
             ])
             ->discoverWidgets(
-                in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Widgets"),
-                for: module('Academy', true)->appNamespace('Filament\AcademyContent\Widgets'),
+                in: "{$modulePath}{$separator}Filament{$separator}AcademyContent{$separator}Widgets",
+                for: "{$moduleNamespace}Filament\AcademyContent\Widgets",
             )
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
             ->discoverClusters(
-                in: module('Academy', true)->appPath("Filament{$separator}AcademyContent{$separator}Clusters"),
-                for: module('Academy', true)->appNamespace('Filament\AcademyContent\Clusters'),
+                in: "{$modulePath}{$separator}Filament{$separator}AcademyContent{$separator}Clusters",
+                for: "{$moduleNamespace}Filament\AcademyContent\Clusters",
             )
             ->middleware([
                 EncryptCookies::class,

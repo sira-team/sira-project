@@ -33,6 +33,8 @@ final class CampPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
+        $modulePath = base_path("Modules{$separator}Camp{$separator}app");
+        $moduleNamespace = 'Modules\\Camp\\';
 
         return $panel
             ->id(self::ID)
@@ -47,12 +49,12 @@ final class CampPanelProvider extends PanelProvider
             ->tenant(Tenant::class, slugAttribute: 'slug')
             ->tenantMenu(false)
             ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
-            ->discoverResources(in: module('Camp', true)->appPath("Filament{$separator}Resources"), for: module('Camp', true)->appNamespace('Filament\\Resources'))
-            ->discoverPages(in: module('Camp', true)->appPath("Filament{$separator}Pages"), for: module('Camp', true)->appNamespace('Filament\\Pages'))
+            ->discoverResources(in: "{$modulePath}{$separator}Filament{$separator}Resources", for: "{$moduleNamespace}Filament\\Resources")
+            ->discoverPages(in: "{$modulePath}{$separator}Filament{$separator}Pages", for: "{$moduleNamespace}Filament\\Pages")
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: module('Camp', true)->appPath("Filament{$separator}Widgets"), for: module('Camp', true)->appNamespace('Filament\\Widgets'))
+            ->discoverWidgets(in: "{$modulePath}{$separator}Filament{$separator}Widgets", for: "{$moduleNamespace}Filament\\Widgets")
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,

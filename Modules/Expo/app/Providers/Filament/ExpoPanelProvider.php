@@ -33,6 +33,8 @@ final class ExpoPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $separator = DIRECTORY_SEPARATOR;
+        $modulePath = base_path("Modules{$separator}Expo{$separator}app");
+        $moduleNamespace = 'Modules\\Expo\\';
 
         return $panel
             ->id(self::ID)
@@ -45,12 +47,12 @@ final class ExpoPanelProvider extends PanelProvider
             ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
-            ->discoverResources(in: module('Expo', true)->appPath("Filament{$separator}Resources"), for: module('Expo', true)->appNamespace('Filament\Resources'))
-            ->discoverPages(in: module('Expo', true)->appPath("Filament{$separator}Pages"), for: module('Expo', true)->appNamespace('Filament\Pages'))
+            ->discoverResources(in: "{$modulePath}{$separator}Filament{$separator}Resources", for: "{$moduleNamespace}Filament\Resources")
+            ->discoverPages(in: "{$modulePath}{$separator}Filament{$separator}Pages", for: "{$moduleNamespace}Filament\Pages")
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: module('Expo', true)->appPath("Filament{$separator}Widgets"), for: module('Expo', true)->appNamespace('Filament\Widgets'))
+            ->discoverWidgets(in: "{$modulePath}{$separator}Filament{$separator}Widgets", for: "{$moduleNamespace}Filament\Widgets")
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,

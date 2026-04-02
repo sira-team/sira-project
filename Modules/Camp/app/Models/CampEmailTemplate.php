@@ -40,7 +40,7 @@ final class CampEmailTemplate extends Model
     ];
 
     /**
-     * @param  array<string, string>  $data
+     * @param  array<string, mixed>  $data
      * @return array{subject: string, body: string}
      */
     public function resolve(array $data): array

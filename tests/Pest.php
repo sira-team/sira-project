@@ -16,6 +16,7 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
     ->in('Unit', 'Feature', '../Modules/*/tests/Unit', '../Modules/*/tests/Feature');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
