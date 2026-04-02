@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\FeatureFlag;
 use App\Enums\NotificationType;
+use App\Jobs\Setup\SeedEmailTemplates;
 use App\Models\EmailTemplate;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,13 +20,10 @@ final class EmailTemplateFactory extends Factory
 
     public function definition(): array
     {
-        $campCases = array_filter(
-            NotificationType::cases(),
-            fn (NotificationType $type): bool => str_starts_with($type->value, 'camp-')
+        $type = fake()->randomElement(
+            array_filter(NotificationType::cases(), fn (NotificationType $t): bool => $t->isCampNotification())
         );
-
-        $type = fake()->randomElement($campCases);
-        $defaults = EmailTemplate::defaults()[$type->value];
+        $defaults = SeedEmailTemplates::defaults()[$type->value];
 
         return [
             'tenant_id' => Tenant::factory(),

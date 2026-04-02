@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
+use App\Enums\NotificationType;
+use App\Models\EmailTemplate;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -25,15 +27,37 @@ final class UserInvitation extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        ['subject' => $subject] = $this->resolve();
+
         return new Envelope(
-            subject: "Einladung zu {$this->tenant->name}",
+            subject: $subject,
         );
     }
 
     public function content(): Content
     {
+        ['body' => $body] = $this->resolve();
+
         return new Content(
             markdown: 'emails.user-invitation',
+            with: ['body' => $body],
         );
+    }
+
+    /**
+     * @return array{subject: string, body: string}
+     */
+    private function resolve(): array
+    {
+        $template = EmailTemplate::withoutGlobalScopes()
+            ->where('tenant_id', $this->tenant->id)
+            ->where('key', NotificationType::UserInvited->value)
+            ->firstOrFail();
+
+        return $template->resolve([
+            'user_name' => $this->user->name,
+            'tenant_name' => $this->tenant->name,
+            'setup_url' => $this->setupUrl,
+        ]);
     }
 }

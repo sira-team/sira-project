@@ -57,42 +57,6 @@ final class EmailTemplate extends Model
     ];
 
     /**
-     * Default content per notification type, used when seeding a new tenant.
-     *
-     * @return array<string, array{scope: string, subject: string, body: string}>
-     */
-    public static function defaults(): array
-    {
-        return [
-            NotificationType::CampReceived->value => [
-                'scope' => FeatureFlag::CampPanel->value,
-                'subject' => 'Registration Received – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>your registration for <strong>{{ camp_name }}</strong> has been received. Please transfer the participation fee of <strong>{{ price }} EUR</strong> to the following account to secure your spot:</p><p><strong>Recipient:</strong> {{ bank_recipient }}<br><strong>Bank:</strong> {{ bank_name }}<br><strong>IBAN:</strong> {{ iban }}<br><strong>BIC:</strong> {{ bic }}</p><p>Your registration will be confirmed once payment is received.</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
-            NotificationType::CampConfirmed->value => [
-                'scope' => FeatureFlag::CampPanel->value,
-                'subject' => 'Registration Confirmed – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>your registration for <strong>{{ camp_name }}</strong> has been confirmed.</p><p>Please note: payment must be received by <strong>{{ payment_due_date }}</strong>, otherwise your spot will be released.</p><p>We look forward to seeing you!</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
-            NotificationType::CampWaitlisted->value => [
-                'scope' => FeatureFlag::CampPanel->value,
-                'subject' => 'Waitlisted – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>unfortunately <strong>{{ camp_name }}</strong> is currently fully booked. You are in position <strong>{{ waitlist_position }}</strong> on the waitlist.</p><p>Please do <strong>not</strong> transfer any payment yet — we will contact you as soon as a spot becomes available.</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
-            NotificationType::CampWaitlistPromoted->value => [
-                'scope' => FeatureFlag::CampPanel->value,
-                'subject' => 'Spot Available – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>a spot at <strong>{{ camp_name }}</strong> has become available for you! Please transfer the participation fee of <strong>{{ price }} EUR</strong> promptly to secure your place:</p><p><strong>Recipient:</strong> {{ bank_recipient }}<br><strong>Bank:</strong> {{ bank_name }}<br><strong>IBAN:</strong> {{ iban }}<br><strong>BIC:</strong> {{ bic }}</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
-            NotificationType::CampCancelled->value => [
-                'scope' => FeatureFlag::CampPanel->value,
-                'subject' => 'Registration Cancelled – {{ camp_name }}',
-                'body' => '<p>Dear {{ visitor_name }},</p><p>your registration for <strong>{{ camp_name }}</strong> has been cancelled.</p><p>If you have any questions, please do not hesitate to contact us.</p><p>Kind regards,<br>{{ tenant_name }}</p>',
-            ],
-        ];
-    }
-
-    /**
      * @param  array<string, mixed>  $data
      * @return array{subject: string, body: string}
      */

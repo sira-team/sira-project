@@ -19,7 +19,7 @@
     };
 @endphp
 
-<{{ $tag }} class="{{ $tagClasses }}">
+<{{ $tag }} class="{!! $tagClasses !!}">
     @foreach ($panels as $id => $url)
         @php
             $isCurrentPanel = $id === $currentPanel->getId();

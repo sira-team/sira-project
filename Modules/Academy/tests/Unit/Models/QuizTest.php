@@ -7,9 +7,9 @@ use Modules\Academy\Models\Quiz;
 describe('Quiz model', function () {
     it('has default values', function () {
         $quiz = Quiz::factory()->create();
-        expect($quiz->max_attempts)->toBe(3);
-        expect($quiz->min_days_between_attempts)->toBe(7);
-        expect($quiz->passing_score_percent)->toBe(70);
+        expect($quiz->max_attempts)->toBe(3)
+            ->and($quiz->min_days_between_attempts)->toBe(7)
+            ->and($quiz->passing_score_percent)->toBe(70);
     });
 
     it('can have custom attempt and passing score settings', function () {
@@ -18,8 +18,9 @@ describe('Quiz model', function () {
             'min_days_between_attempts' => 14,
             'passing_score_percent' => 80,
         ]);
-        expect($quiz->max_attempts)->toBe(5);
-        expect($quiz->min_days_between_attempts)->toBe(14);
-        expect($quiz->passing_score_percent)->toBe(80);
+
+        expect($quiz->max_attempts)->toBe(5)
+            ->and($quiz->min_days_between_attempts)->toBe(14)
+            ->and($quiz->passing_score_percent)->toBe(80);
     });
 });

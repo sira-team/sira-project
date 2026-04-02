@@ -25,7 +25,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class GlobalAdminPanelProvider extends PanelProvider
 {
-    public const ID = 'global-admin';
+    public const string ID = 'global-admin';
 
     public function panel(Panel $panel): Panel
     {

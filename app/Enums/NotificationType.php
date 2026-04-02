@@ -27,10 +27,12 @@ enum NotificationType: string
         };
     }
 
+    public function isCampNotification(): bool
+    {
+        return str_starts_with($this->value, 'camp-');
+    }
+
     /**
-     * Returns the merge tags available for this notification type.
-     * Tags are replaced in the template subject and body at send time.
-     *
      * @return list<string>
      */
     public function mergeTags(): array
@@ -43,7 +45,8 @@ enum NotificationType: string
             self::CampConfirmed => [...$common, 'payment_due_date'],
             self::CampWaitlisted => [...$common, 'waitlist_position'],
             self::CampCancelled => $common,
-            self::ExpoRequestReceived, self::UserInvited => [],
+            self::ExpoRequestReceived => ['contact_name', 'organisation_name', 'tenant_name'],
+            self::UserInvited => ['user_name', 'tenant_name', 'setup_url'],
         };
     }
 }

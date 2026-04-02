@@ -133,9 +133,9 @@ final class CampVisitorsTable
                                     $options = HostelRoom::query()
                                         ->availableForVisitors($camp)
                                         ->get()
-                                        ->filter(fn (HostelRoom $room): bool => $occupancy->get($room->id, 0) < $room->capacity)
+                                        ->filter(fn (HostelRoom $room): bool => $occupancy->get($room->id) < $room->capacity)
                                         ->mapWithKeys(fn (HostelRoom $room): array => [
-                                            $room->id => "{$room->name} · Floor {$room->floor} · {$occupancy->get($room->id, 0)}/{$room->capacity}",
+                                            $room->id => "{$room->name} · Floor {$room->floor} · {$occupancy->get($room->id)}/{$room->capacity}",
                                         ])
                                         ->all();
 
@@ -145,7 +145,7 @@ final class CampVisitorsTable
                                         } else {
                                             $current = HostelRoom::find($record->room_id);
                                             if ($current) {
-                                                $options[$record->room_id] = "{$current->name} · Floor {$current->floor} · {$occupancy->get($current->id, 0)}/{$current->capacity} (current)";
+                                                $options[$record->room_id] = "{$current->name} · Floor {$current->floor} · {$occupancy->get($current->id)}/{$current->capacity} (current)";
                                             }
                                         }
                                     }

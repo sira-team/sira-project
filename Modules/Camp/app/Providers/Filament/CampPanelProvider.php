@@ -28,7 +28,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class CampPanelProvider extends PanelProvider
 {
-    public const ID = 'camp';
+    public const string ID = 'camp';
 
     public function panel(Panel $panel): Panel
     {

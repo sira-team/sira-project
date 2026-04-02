@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Expo\Mails;
 
+use App\Enums\NotificationType;
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -21,18 +23,41 @@ final class ExpoRequestReceivedMail extends Mailable
     public function envelope(): Envelope
     {
         $tenant = $this->expoRequest->tenant;
+        ['subject' => $subject] = $this->resolve();
 
         return new Envelope(
             to: [$this->expoRequest->email],
             replyTo: [new Address($tenant->email, $tenant->name)],
-            subject: 'Expo-Anfrage erhalten — '.$tenant->name,
+            subject: $subject,
         );
     }
 
     public function content(): Content
     {
+        ['body' => $body] = $this->resolve();
+
         return new Content(
-            view: 'expo::mails.request-received',
+            markdown: 'expo::mails.request-received',
+            with: ['body' => $body],
         );
+    }
+
+    /**
+     * @return array{subject: string, body: string}
+     */
+    private function resolve(): array
+    {
+        $tenant = $this->expoRequest->tenant;
+
+        $template = EmailTemplate::withoutGlobalScopes()
+            ->where('tenant_id', $tenant->id)
+            ->where('key', NotificationType::ExpoRequestReceived->value)
+            ->firstOrFail();
+
+        return $template->resolve([
+            'contact_name' => $this->expoRequest->contact_name,
+            'organisation_name' => $this->expoRequest->organisation_name,
+            'tenant_name' => $tenant->name,
+        ]);
     }
 }
