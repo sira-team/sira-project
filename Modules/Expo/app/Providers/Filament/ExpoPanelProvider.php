@@ -8,6 +8,7 @@ use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -40,9 +41,8 @@ final class ExpoPanelProvider extends PanelProvider
             ->id(self::ID)
             ->path('expo')
             ->login()
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+            ->colors(['primary' => Color::Emerald])
+            ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->tenant(Tenant::class, 'slug')
             ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->maxContentWidth(Width::Full)

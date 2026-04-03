@@ -8,6 +8,7 @@ use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -39,7 +40,9 @@ final class AcademyPanelProvider extends PanelProvider
         return $panel
             ->id(self::ID)
             ->path('academy')
-            ->colors(['primary' => Color::Indigo])
+            ->login()
+            ->colors(['primary' => Color::Fuchsia])
+            ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->tenant(Tenant::class, slugAttribute: 'slug')
             ->brandName(fn () => SiraApp::getTenant()->name ?? config('app.name'))
             ->maxContentWidth(Width::Full)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Academy\Providers\Filament;
 
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -37,9 +38,9 @@ final class AcademyContentPanelProvider extends PanelProvider
         return $panel
             ->id(self::ID)
             ->path('academy-content')
-            ->colors([
-                'primary' => Color::Teal,
-            ])
+            ->login()
+            ->colors(['primary' => Color::Teal])
+            ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(

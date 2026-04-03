@@ -8,6 +8,7 @@ use App\Facade\SiraApp;
 use App\Models\Tenant;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -40,9 +41,8 @@ final class CampPanelProvider extends PanelProvider
             ->id(self::ID)
             ->path('camp')
             ->login()
-            ->colors([
-                'primary' => Color::Indigo,
-            ])
+            ->colors(['primary' => Color::Teal])
+            ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->topNavigation()
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
