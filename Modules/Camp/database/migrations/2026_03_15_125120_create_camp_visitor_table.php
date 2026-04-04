@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('wishes')->nullable();
             $table->foreignId('room_id')->nullable()->constrained('hostel_rooms')->nullOnDelete();
             $table->unsignedInteger('waitlist_position')->nullable();
+            $table->timestamp('checked_in_at')->nullable();
             $table->timestamp('registered_at');
             $table->timestamps();
         });

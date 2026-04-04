@@ -15,11 +15,12 @@ use Filament\Schemas\Components\Grid;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Modules\Camp\Actions\TransitionCampVisitor;
 use Modules\Camp\Enums\VisitorStatus;
@@ -33,10 +34,12 @@ final class CampVisitorsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->filtersLayout(FiltersLayout::AboveContent)
             ->deferFilters(false)
             ->columns([
                 TextColumn::make('room.name')
                     ->label(__('Room'))
+                    ->searchable()
                     ->default('—')
                     ->description(fn (CampVisitor $record): string => $record->room
                         ? CampVisitor::query()->where('camp_id', $record->camp_id)->where('room_id', $record->room_id)->count().'/'.$record->room->capacity
@@ -52,9 +55,8 @@ final class CampVisitorsTable
                     ->sortable()
                     ->label(__('Gender'))
                     ->badge(),
-                TextColumn::make('visitor.date_of_birth')
-                    ->label(__('Age'))
-                    ->formatStateUsing(fn (Carbon $state): string => (string) $state->age),
+                TextColumn::make('visitor.age')
+                    ->label(__('Age')),
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
@@ -68,6 +70,10 @@ final class CampVisitorsTable
                     ->label(__('Wishes'))
                     ->columnSpan(2)
                     ->placeholder('—')
+                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
+                ToggleColumn::make('is_checked_in')
+                    ->label(__('Checked In'))
+                    ->updateStateUsing(fn (CampVisitor $record, bool $state): bool => $record->update(['checked_in_at' => $state ? now() : null]) || $state)
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
                 TextColumn::make('waitlist_position')
                     ->label(__('Waitlist Pos'))
@@ -88,6 +94,12 @@ final class CampVisitorsTable
                     ->nullable()
                     ->trueLabel(__('Assigned'))
                     ->falseLabel(__('Unassigned')),
+                TernaryFilter::make('checked_in_at')
+                    ->hidden(fn ($livewire): bool => ($livewire->activeTab ?? 'all') !== VisitorStatus::Confirmed->value)
+                    ->label(__('Check-In'))
+                    ->nullable()
+                    ->trueLabel(__('Checked In'))
+                    ->falseLabel(__('Not Checked In')),
             ])
             ->recordActions([
                 Action::make('confirm')

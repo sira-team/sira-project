@@ -6,13 +6,17 @@ namespace App\Models;
 
 use App\Enums\Gender;
 use Database\Factories\VisitorFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Enums\VisitorStatus;
+use Modules\Camp\Models\Camp;
 
 /**
  * @property int $id
@@ -89,6 +93,29 @@ final class Visitor extends Model
     }
 
     /**
+     * Direct relation to the pivot records where this visitor is the child.
+     */
+    public function parentRelations(): HasMany
+    {
+        return $this->hasMany(VisitorChild::class, 'child_id');
+    }
+
+    /**
+     * The first guardian of this visitor, resolved through the pivot.
+     */
+    public function guardian(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            self::class,
+            VisitorChild::class,
+            'child_id',
+            'id',
+            'id',
+            'parent_id',
+        );
+    }
+
+    /**
      * The child visitors this visitor is responsible for.
      */
     public function children(): BelongsToMany
@@ -110,6 +137,16 @@ final class Visitor extends Model
         }
 
         return array_unique($emails);
+    }
+
+    public function age(): Attribute
+    {
+        return Attribute::get(fn () => $this->date_of_birth->age);
+    }
+
+    public function camps(): BelongsToMany
+    {
+        return $this->belongsToMany(Camp::class, 'camp_visitor');
     }
 
     protected function casts(): array
