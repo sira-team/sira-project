@@ -11,12 +11,12 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampForm;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampInfolist;
 use Modules\Camp\Filament\Resources\Camps\Tables\CampTable;
 use Modules\Camp\Filament\Resources\CampUsers\Pages\ListCampUsers;
 use Modules\Camp\Filament\Resources\CampVisitors\Pages\ListCampVisitors;
+use Modules\Camp\Filament\Resources\Expenses\Pages\ListExpenses;
 use Modules\Camp\Models\Camp;
 
 final class CampResource extends Resource
@@ -54,7 +54,7 @@ final class CampResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewCamp::class,
             Pages\EditCamp::class,
-            ListCampExpenses::class,
+            ListExpenses::class,
             ListCampVisitors::class,
             ListCampUsers::class,
         ]);

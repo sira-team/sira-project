@@ -9,14 +9,14 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Visitor;
 use Illuminate\Database\Seeder;
-use Modules\Camp\Enums\CampExpenseCategory;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Enums\ExpenseCategory;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Models\CampContract;
-use Modules\Camp\Models\CampExpense;
 use Modules\Camp\Models\CampVisitor;
+use Modules\Camp\Models\Expense;
 use Modules\Camp\Models\Hostel;
 
 final class CampSeeder extends Seeder
@@ -90,25 +90,25 @@ final class CampSeeder extends Seeder
     {
         $expenses = [
             [
-                'category' => CampExpenseCategory::Transport,
+                'category' => ExpenseCategory::Transport,
                 'title' => 'Mietwagen 9-Sitzer (×2)',
                 'description' => '2 Fahrzeuge × 3 Tage × €70/Tag',
                 'amount' => 420.00,
             ],
             [
-                'category' => CampExpenseCategory::Materials,
+                'category' => ExpenseCategory::Materials,
                 'title' => 'Bastelmaterial und Druckkosten',
                 'description' => 'Papier, Stifte, Drucken Programmhefte',
                 'amount' => 85.00,
             ],
             [
-                'category' => CampExpenseCategory::Activities,
+                'category' => ExpenseCategory::Activities,
                 'title' => 'Lagerfeuer-Set (Holz + Grillgut)',
                 'description' => null,
                 'amount' => 60.00,
             ],
             [
-                'category' => CampExpenseCategory::Other,
+                'category' => ExpenseCategory::Other,
                 'title' => 'Erste-Hilfe-Set Nachfüllung',
                 'description' => null,
                 'amount' => 25.00,
@@ -116,7 +116,7 @@ final class CampSeeder extends Seeder
         ];
 
         foreach ($expenses as $expense) {
-            CampExpense::firstOrCreate(
+            Expense::firstOrCreate(
                 ['camp_id' => $camp->id, 'title' => $expense['title']],
                 [
                     'user_id' => $user->id,

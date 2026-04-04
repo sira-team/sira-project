@@ -56,7 +56,7 @@ There is no separate Participant model. All participant data lives directly on t
 | Camp         | camps               |
 | CampVisitor  | camp_visitor        |
 | CampUser     | camp_user           |
-| CampExpense  | camp_expenses       |
+| Expense      | camp_expenses       |
 
 ---
 
@@ -118,7 +118,7 @@ Table: `camp_contracts`. Tenant-scoped via `camp_id`. One contract per camp.
     
 > **Capacity lives here, not on `Camp`.** When checking whether a new registration fits, compare confirmed + pending `camp_visitor` records against `contracted_beds`. If no contract exists yet, capacity is unconstrained.
 
-> **Catering note:** many hostels offer catering and non-catering packages at different prices. `includes_catering` reflects which was contracted. If catering is not included, food costs are expected as a `CampExpense` with category `catering`.
+> **Catering note:** many hostels offer catering and non-catering packages at different prices. `includes_catering` reflects which was contracted. If catering is not included, food costs are expected as a `Expense` with category `catering`.
 
 ---
 
@@ -147,7 +147,7 @@ Table: `camps`. Tenant-scoped, soft deletes.
 **Relationships:**
 - `Camp::contract()` — `hasOne(CampContract::class)`
 - `Camp::visitors()` — `belongsToMany(Visitor::class, 'camp_visitor')->withPivot(...)`
-- `Camp::expenses()` — `hasMany(CampExpense::class)`
+- `Camp::expenses()` — `hasMany(Expense::class)`
 - `Camp::supportStaff()` — `belongsToMany(User::class, 'camp_user')`
 
 **Two participant numbers — never consolidate:**
@@ -190,7 +190,7 @@ Table: `camp_user`. Pivot between `Camp` and `User` (internal users).
 - `user_id` (FK → users)
 ---
 
-### CampExpense
+### Expense
 
 Table: `camp_expenses`. Tenant-scoped via `camp_id`.
 
@@ -198,14 +198,14 @@ Table: `camp_expenses`. Tenant-scoped via `camp_id`.
 - `id`
 - `camp_id` (FK → camps)
 - `user_id` (FK → users — who submitted / paid this expense)
-- `category` (enum: `CampExpenseCategory`)
+- `category` (enum: `ExpenseCategory`)
 - `title`
 - `description` (nullable text)
 - `amount` (decimal, EUR)
 - `receipt_image` (nullable string — path on private storage disk)
 - `timestamps`
 
-**CampExpenseCategory enum values:**
+**ExpenseCategory enum values:**
 - `accommodation`
 - `catering`
 - `materials`
@@ -254,7 +254,7 @@ A camp without a contract can be created. The cost calculator will show a notice
 
 ---
 
-### CampExpense Resource
+### Expense Resource
 
 Relation manager within Camp resource.
 
@@ -448,7 +448,7 @@ php artisan camp:expire-unpaid-registrations       # run scheduler manually
 
 - `ViewAny:Camp`, `View:Camp`, `Create:Camp`, `Update:Camp`, `Delete:Camp`
 - `ViewAny:CampVisitor`, `View:CampVisitor`, `Update:CampVisitor`
-- `ViewAny:CampExpense`, `Create:CampExpense`, `Update:CampExpense`, `Delete:CampExpense`
+- `ViewAny:Expense`, `Create:Expense`, `Update:Expense`, `Delete:Expense`
 - `ViewAny:CampContract`, `Create:CampContract`, `Update:CampContract`
 - `ViewAny:CampEmailTemplate`, `View:CampEmailTemplate`, `Update:CampEmailTemplate`
 - `Manage:Payments` (custom permission — define in `filament-shield.php`)

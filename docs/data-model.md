@@ -186,12 +186,12 @@ Costs associated with a camp. Used for cost planning and post-camp tracking.
 |---|---|---|
 | id | bigint | |
 | camp_id | FK camps | |
-| category | enum | see CampExpenseCategory enum below |
+| category | enum | see ExpenseCategory enum below |
 | title | string | e.g. "Sprit für 5 Volunteers", "Prediction: Busmiete" |
 | description | text | nullable |
 | amount | decimal | in EUR |
 
-**CampExpenseCategory enum:**
+**ExpenseCategory enum:**
 - `uebernachtung` — JH accommodation costs
 - `verpflegung` — food and drinks
 - `material` — consumables: paper, pens, crafts, items used up during camp
@@ -483,20 +483,20 @@ Camp panel is always accessible — no flag.
 
 ## Summary — Global vs Tenant Ownership
 
-| model | global or tenant | managed by |
-|---|---|---|
-| Tenant | — | super_admin |
-| User | tenant | tenant_admin |
-| Visitor | neither (public) | self |
-| Participant | neither (public) | visitor |
-| Jugendherberge | global | super_admin |
-| JugendherbergeRoom | global | super_admin |
-| JugendherbergeContract | tenant (via camp) | camp_manager |
-| Camp | tenant | camp_manager |
-| CampExpense | tenant (via camp) | camp_manager |
-| CampRegistration | tenant (via camp) | visitor (public) |
-| CampRoomAssignment | tenant (via camp) | camp_manager |
-| Expo | tenant | expo_manager |
-| ExpoRequest | tenant | public |
-| Station | tenant | expo_manager |
+| model                         | global or tenant | managed by |
+|-------------------------------|---|---|
+| Tenant                        | — | super_admin |
+| User                          | tenant | tenant_admin |
+| Visitor                       | neither (public) | self |
+| Participant                   | neither (public) | visitor |
+| Jugendherberge                | global | super_admin |
+| JugendherbergeRoom            | global | super_admin |
+| JugendherbergeContract        | tenant (via camp) | camp_manager |
+| Camp                          | tenant | camp_manager |
+| Expense                       | tenant (via camp) | camp_manager |
+| CampRegistration              | tenant (via camp) | visitor (public) |
+| CampRoomAssignment            | tenant (via camp) | camp_manager |
+| Expo                          | tenant | expo_manager |
+| ExpoRequest                   | tenant | public |
+| Station                       | tenant | expo_manager |
 | AcademyLevel / Session / Quiz | global | academy content managers |

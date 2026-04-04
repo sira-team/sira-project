@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Modules\Camp\Filament\Resources\CampExpenses\Pages;
+namespace Modules\Camp\Filament\Resources\Expenses\Pages;
 
 use BackedEnum;
 use Filament\Resources\Pages\Concerns\InteractsWithParentRecord;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Icons\Heroicon;
-use Modules\Camp\Filament\Resources\CampExpenses\CampExpenseResource;
 use Modules\Camp\Filament\Resources\Concerns\HasCampSubNavigation;
+use Modules\Camp\Filament\Resources\Expenses\ExpenseResource;
 
-final class ListCampExpenses extends ListRecords
+final class ListExpenses extends ListRecords
 {
     use HasCampSubNavigation;
     use InteractsWithParentRecord;
 
-    protected static string $resource = CampExpenseResource::class;
+    protected static string $resource = ExpenseResource::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 

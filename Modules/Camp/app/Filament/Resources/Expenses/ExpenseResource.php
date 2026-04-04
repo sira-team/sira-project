@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Modules\Camp\Filament\Resources\CampExpenses;
+namespace Modules\Camp\Filament\Resources\Expenses;
 
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Modules\Camp\Filament\Resources\CampExpenses\Pages\ListCampExpenses;
-use Modules\Camp\Filament\Resources\CampExpenses\Schemas\CampExpenseForm;
-use Modules\Camp\Filament\Resources\CampExpenses\Tables\CampExpensesTable;
 use Modules\Camp\Filament\Resources\Camps\CampResource;
-use Modules\Camp\Models\CampExpense;
+use Modules\Camp\Filament\Resources\Expenses\Pages\ListExpenses;
+use Modules\Camp\Filament\Resources\Expenses\Schemas\ExpenseForm;
+use Modules\Camp\Filament\Resources\Expenses\Tables\ExpensesTable;
+use Modules\Camp\Models\Expense;
 
-final class CampExpenseResource extends Resource
+final class ExpenseResource extends Resource
 {
-    protected static ?string $model = CampExpense::class;
+    protected static ?string $model = Expense::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
@@ -29,12 +29,12 @@ final class CampExpenseResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return CampExpenseForm::configure($schema);
+        return ExpenseForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return CampExpensesTable::configure($table);
+        return ExpensesTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -45,7 +45,7 @@ final class CampExpenseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListCampExpenses::route('/'),
+            'index' => ListExpenses::route('/'),
         ];
     }
 

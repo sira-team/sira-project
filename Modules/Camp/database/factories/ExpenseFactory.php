@@ -6,16 +6,16 @@ namespace Modules\Camp\Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Camp\Enums\CampExpenseCategory;
+use Modules\Camp\Enums\ExpenseCategory;
 use Modules\Camp\Models\Camp;
-use Modules\Camp\Models\CampExpense;
+use Modules\Camp\Models\Expense;
 
 /**
- * @extends Factory<CampExpense>
+ * @extends Factory<Expense>
  */
-final class CampExpenseFactory extends Factory
+final class ExpenseFactory extends Factory
 {
-    protected $model = CampExpense::class;
+    protected $model = Expense::class;
 
     /**
      * Define the model's default state.
@@ -27,7 +27,7 @@ final class CampExpenseFactory extends Factory
         return [
             'camp_id' => Camp::factory(),
             'user_id' => User::factory(),
-            'category' => fake()->randomElement(CampExpenseCategory::cases()),
+            'category' => fake()->randomElement(ExpenseCategory::cases()),
             'title' => fake()->sentence(3),
             'description' => fake()->sentence(),
             'amount' => fake()->randomFloat(2, 50, 1000),

@@ -40,7 +40,7 @@ Modules/Camp/app/Filament/Resources/
     ├── Tables/
     │   └── CampTable.php         ← table class
     ├── RelationManagers/
-    │   ├── CampExpensesRelationManager.php
+    │   ├── ExpensesRelationManager.php
     │   └── CampRegistrationsRelationManager.php
     └── Actions/
         └── ConfirmRegistrationAction.php  ← reusable action (optional)
@@ -49,11 +49,11 @@ Modules/Camp/app/Filament/Resources/
 For relation managers, co-locate their schemas and tables inside the resource:
 ```
 RelationManagers/
-├── CampExpensesRelationManager.php
+├── ExpensesRelationManager.php
 ├── Schemas/
-│   └── CampExpenseForm.php
+│   └── ExpenseForm.php
 └── Tables/
-    └── CampExpensesTable.php
+    └── ExpensesTable.php
 ```
 
 ---
@@ -91,7 +91,7 @@ class CampResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CampExpensesRelationManager::class,
+            ExpensesRelationManager::class,
             CampRegistrationsRelationManager::class,
         ];
     }
@@ -211,20 +211,20 @@ class CampTable
 
 namespace Modules\Camp\Filament\Resources\Camps\RelationManagers;
 
-use Filament\Resources\RelationManagers\RelationManager;use Filament\Schemas\Schema;use Filament\Tables\Table;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\CampExpenseForm;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\CampExpensesTable;
+use Filament\Resources\RelationManagers\RelationManager;use Filament\Schemas\Schema;use Filament\Tables\Table;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Schemas\ExpenseForm;use Modules\Camp\Filament\Resources\Camps\RelationManagers\Tables\ExpensesTable;
 
-class CampExpensesRelationManager extends RelationManager
+class ExpensesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'campExpenses';
+    protected static string $relationship = 'expenses';
 
     public function form(Schema $schema): Schema
     {
-        return CampExpenseForm::configure($schema);
+        return ExpenseForm::configure($schema);
     }
 
     public function table(Table $table): Table
     {
-        return CampExpensesTable::configure($table);
+        return ExpensesTable::configure($table);
     }
 }
 ```

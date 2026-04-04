@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Camp\Filament\Resources\CampExpenses\Tables;
+namespace Modules\Camp\Filament\Resources\Expenses\Tables;
 
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -11,7 +11,7 @@ use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-final class CampExpensesTable
+final class ExpensesTable
 {
     public static function configure(Table $table): Table
     {

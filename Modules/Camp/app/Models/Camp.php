@@ -46,7 +46,7 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property-read int|null $camp_visitors_count
  * @property-read Collection<int, Visitor> $visitors
  * @property-read int|null $visitors_count
- * @property-read Collection<int, CampExpense> $expenses
+ * @property-read Collection<int, Expense> $expenses
  * @property-read int|null $expenses_count
  * @property-read Collection<int, User> $supportStaff
  * @property-read int|null $support_staff_count
@@ -150,7 +150,7 @@ final class Camp extends Model
 
     public function expenses(): HasMany
     {
-        return $this->hasMany(CampExpense::class);
+        return $this->hasMany(Expense::class);
     }
 
     public function getNightsAttribute(): int
