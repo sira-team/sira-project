@@ -96,6 +96,8 @@ final class ListCampVisitors extends ListRecords
         return [
             ExportAction::make('export')
                 ->label(__('Export'))
+                ->icon(Heroicon::OutlinedArrowDownOnSquare)
+                ->color('primary')
                 ->exporter(CampVisitorExporter::class)
                 ->modifyQueryUsing(fn () => CampVisitor::query()
                     ->where('camp_id', $this->parentRecord->id)
@@ -113,7 +115,9 @@ final class ListCampVisitors extends ListRecords
                     default => true,
                 }),
             ExportAction::make('exportWithGuardians')
-                ->label(__('Export (with guardians)'))
+                ->icon(Heroicon::OutlinedArrowDownOnSquare)
+                ->color('primary')
+                ->label(__('Export'))
                 ->exporter(CampVisitorWithGuardianExporter::class)
                 ->modifyQueryUsing(fn () => CampVisitor::query()
                     ->where('camp_id', $this->parentRecord->id)
