@@ -6,12 +6,12 @@ namespace Modules\Camp\Http\Controllers;
 
 use App\Enums\Gender;
 use App\Enums\GuardianRelationship;
+use App\Enums\NotificationType;
 use App\Models\Tenant;
 use App\Models\Visitor;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
 use Modules\Camp\Services\CampRegistrationService;
@@ -75,7 +75,7 @@ final class CampVisitorController
             $child->guardians()->attach($guardian, ['relationship' => $guardian->gender === Gender::Male ? GuardianRelationship::Father : GuardianRelationship::Mother]);
 
             $registration = $registrationService->registerVisitor($camp, $child, $participantData['wishes']);
-            $registration->notify($registration->status === VisitorStatus::Pending ? CampNotificationType::Received : CampNotificationType::Waitlisted);
+            $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
         }
 
         return redirect()->route('camp.register.show', [$tenant->slug, $camp])->with('success', 'Registration submitted successfully!');

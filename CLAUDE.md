@@ -765,6 +765,7 @@ These are set once per tenant in the Tenant Admin Panel. Never store IBAN on ind
 - **Traits** — `BelongsToTenant` handles `tenant_id` scoping on all tenant models
 - **Soft deletes** — all major tenant models use `SoftDeletes`
 - **Mail** — all mailable classes are queued, all emails log to the relevant notification log table, tenant name rendered in every email header
+- **Mail Reply-To** — mailables sent to external parties (visitors, expo requesters) must set `replyTo: [new Address($tenant->email, $tenant->name)]` so replies reach the correct tenant. Do not set `replyTo` on internal system emails (user invitations, tenant onboarding).
 - **Files** — never served via public URL, always through authenticated download routes using private storage disk
 - **Shield policies** — never write policies manually. Always generate via `shield:generate`. If a resource needs a custom permission, define it in `config/filament-shield.php` under `custom_permissions`.
 

@@ -7,10 +7,7 @@ use App\Models\User;
 
 function createTenant(array $attributes = []): Tenant
 {
-    $tenant = Tenant::factory()->create($attributes);
-
-    // TenantObserver seeds roles — trust it ran
-    return $tenant;
+    return Tenant::factory()->create($attributes);
 }
 
 function createUserForTenant(Tenant $tenant, string $role = 'member'): User

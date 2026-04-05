@@ -2,34 +2,32 @@
 
 declare(strict_types=1);
 
-namespace App\Mail;
+namespace Modules\Expo\Mails;
 
 use App\Enums\NotificationType;
 use App\Models\EmailTemplate;
-use App\Models\Tenant;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Modules\Expo\Models\ExpoRequest;
 
-final class UserInvitation extends Mailable implements ShouldQueue
+final class ExpoRequestReceivedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(
-        public readonly User $user,
-        public readonly Tenant $tenant,
-        public readonly string $setupUrl,
-    ) {}
+    public function __construct(public readonly ExpoRequest $expoRequest) {}
 
     public function envelope(): Envelope
     {
+        $tenant = $this->expoRequest->tenant;
         ['subject' => $subject] = $this->resolve();
 
         return new Envelope(
+            to: [$this->expoRequest->email],
+            replyTo: [new Address($tenant->email, $tenant->name)],
             subject: $subject,
         );
     }
@@ -39,7 +37,7 @@ final class UserInvitation extends Mailable implements ShouldQueue
         ['body' => $body] = $this->resolve();
 
         return new Content(
-            markdown: 'emails.user-invitation',
+            markdown: 'expo::mails.request-received',
             with: ['body' => $body],
         );
     }
@@ -49,15 +47,17 @@ final class UserInvitation extends Mailable implements ShouldQueue
      */
     private function resolve(): array
     {
+        $tenant = $this->expoRequest->tenant;
+
         $template = EmailTemplate::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->where('key', NotificationType::UserInvited->value)
+            ->where('tenant_id', $tenant->id)
+            ->where('key', NotificationType::ExpoRequestReceived->value)
             ->firstOrFail();
 
         return $template->resolve([
-            'user_name' => $this->user->name,
-            'tenant_name' => $this->tenant->name,
-            'setup_url' => $this->setupUrl,
+            'contact_name' => $this->expoRequest->contact_name,
+            'organisation_name' => $this->expoRequest->organisation_name,
+            'tenant_name' => $tenant->name,
         ]);
     }
 }

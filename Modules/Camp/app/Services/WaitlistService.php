@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Modules\Camp\Services;
 
 use App\Enums\Gender;
+use App\Enums\NotificationType;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Camp\Actions\TransitionCampVisitor;
-use Modules\Camp\Enums\CampNotificationType;
 use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
@@ -27,7 +27,7 @@ final class WaitlistService
             ->whereDate('registered_at', '<=', today()->subDays(7))
             ->get();
 
-        $expired->each(fn (CampVisitor $visitor) => TransitionCampVisitor::dispatch($visitor, VisitorStatus::Waitlisted, CampNotificationType::Waitlisted));
+        $expired->each(fn (CampVisitor $visitor) => TransitionCampVisitor::run($visitor, VisitorStatus::Waitlisted, NotificationType::CampWaitlisted));
 
         return $expired->count();
     }
@@ -47,7 +47,7 @@ final class WaitlistService
 
         if ($camp->target_group === CampTargetGroup::Family) {
             $capacity = $this->getCapacityForGender($camp, Gender::Male);
-            $waiting->take(max(0, $capacity))->each(fn (CampVisitor $visitor) => TransitionCampVisitor::run($visitor, VisitorStatus::Pending, CampNotificationType::WaitlistPromoted));
+            $waiting->take(max(0, $capacity))->each(fn (CampVisitor $visitor) => TransitionCampVisitor::run($visitor, VisitorStatus::Pending, NotificationType::CampWaitlistPromoted));
 
             return;
         }
@@ -57,7 +57,7 @@ final class WaitlistService
             $waiting
                 ->filter(fn (CampVisitor $campVisitor) => $campVisitor->visitor->gender === $gender)
                 ->take(max(0, $capacity))
-                ->each(fn (CampVisitor $visitor) => TransitionCampVisitor::run($visitor, VisitorStatus::Pending, CampNotificationType::WaitlistPromoted));
+                ->each(fn (CampVisitor $visitor) => TransitionCampVisitor::run($visitor, VisitorStatus::Pending, NotificationType::CampWaitlistPromoted));
         }
     }
 

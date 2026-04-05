@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,17 +26,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class GlobalAdminPanelProvider extends PanelProvider
 {
-    public const ID = 'global-admin';
+    public const string ID = 'global-admin';
 
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->id(self::ID)
             ->path('/global-admin')
-            ->colors([
-                'primary' => Color::Amber,
-            ])
             ->login()
+            ->colors(['primary' => Color::Rose])
+            ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: app_path('Filament/GlobalAdmin/Resources'), for: 'App\\Filament\\GlobalAdmin\\Resources')

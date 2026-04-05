@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.54.1.
+ * Generated for Laravel 12.55.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -15937,6 +15937,18 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Determine if the current request is asking for Markdown.
+         *
+         * @return bool
+         * @static
+         */
+        public static function wantsMarkdown()
+        {
+            /** @var \Illuminate\Http\Request $instance */
+            return $instance->wantsMarkdown();
+        }
+
+        /**
          * Determines whether the current requests accepts a given content type.
          *
          * @param string|array $contentTypes
@@ -15984,6 +15996,18 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Http\Request $instance */
             return $instance->acceptsJson();
+        }
+
+        /**
+         * Determines whether a request accepts Markdown.
+         *
+         * @return bool
+         * @static
+         */
+        public static function acceptsMarkdown()
+        {
+            /** @var \Illuminate\Http\Request $instance */
+            return $instance->acceptsMarkdown();
         }
 
         /**
@@ -23428,41 +23452,6 @@ namespace Illuminate\Support\Facades {
             }
     }
 
-namespace AnourValar\EloquentSerialize\Facades {
-    /**
-     */
-    class EloquentSerializeFacade {
-        /**
-         * Pack
-         *
-         * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $builder
-         * @return string
-         * @throws \RuntimeException
-         * @static
-         */
-        public static function serialize($builder)
-        {
-            /** @var \AnourValar\EloquentSerialize\Service $instance */
-            return $instance->serialize($builder);
-        }
-
-        /**
-         * Unpack
-         *
-         * @param mixed $package
-         * @throws \LogicException
-         * @return \Illuminate\Database\Eloquent\Builder
-         * @static
-         */
-        public static function unserialize($package)
-        {
-            /** @var \AnourValar\EloquentSerialize\Service $instance */
-            return $instance->unserialize($package);
-        }
-
-            }
-    }
-
 namespace Barryvdh\Debugbar\Facades {
     /**
      * @method static void alert(mixed $message)
@@ -23476,7 +23465,7 @@ namespace Barryvdh\Debugbar\Facades {
      * @method static void warning(mixed $message)
      * @see \Barryvdh\Debugbar\LaravelDebugbar
      */
-    class Debugbar extends \DebugBar\DebugBar {
+    class Debugbar {
         /**
          * Returns the HTTP driver
          *
@@ -24055,6 +24044,394 @@ namespace Barryvdh\Debugbar\Facades {
             }
     }
 
+namespace BezhanSalleh\PanelSwitch\Facades {
+    /**
+     * @see \BezhanSalleh\PanelSwitch\PanelSwitch
+     */
+    class PanelSwitch {
+        /**
+         * @static
+         */
+        public static function make()
+        {
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::make();
+        }
+
+        /**
+         * @static
+         */
+        public static function boot()
+        {
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::boot();
+        }
+
+        /**
+         * @static
+         */
+        public static function modalHeading($modalHeading)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->modalHeading($modalHeading);
+        }
+
+        /**
+         * @static
+         */
+        public static function icons($icons, $asImage = false)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->icons($icons, $asImage);
+        }
+
+        /**
+         * @static
+         */
+        public static function darkIcons($darkIcons)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->darkIcons($darkIcons);
+        }
+
+        /**
+         * @static
+         */
+        public static function iconSize($size = null)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->iconSize($size);
+        }
+
+        /**
+         * @static
+         */
+        public static function labels($labels)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->labels($labels);
+        }
+
+        /**
+         * @static
+         */
+        public static function modalWidth($width = null)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->modalWidth($width);
+        }
+
+        /**
+         * @static
+         */
+        public static function panels($panels = null)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->panels($panels);
+        }
+
+        /**
+         * @static
+         */
+        public static function renderHook($hook)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->renderHook($hook);
+        }
+
+        /**
+         * @static
+         */
+        public static function slideOver($condition = true)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->slideOver($condition);
+        }
+
+        /**
+         * @static
+         */
+        public static function simple($condition = true)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->simple($condition);
+        }
+
+        /**
+         * @static
+         */
+        public static function sort($order = 'asc')
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->sort($order);
+        }
+
+        /**
+         * @static
+         */
+        public static function getModalHeading()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getModalHeading();
+        }
+
+        /**
+         * @static
+         */
+        public static function getIcons()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getIcons();
+        }
+
+        /**
+         * @static
+         */
+        public static function getDarkIcons()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getDarkIcons();
+        }
+
+        /**
+         * @static
+         */
+        public static function getIconSize()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getIconSize();
+        }
+
+        /**
+         * @static
+         */
+        public static function getLabels()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getLabels();
+        }
+
+        /**
+         * @static
+         */
+        public static function getModalWidth()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getModalWidth();
+        }
+
+        /**
+         * @static
+         */
+        public static function isAbleToSwitchPanels()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->isAbleToSwitchPanels();
+        }
+
+        /**
+         * @static
+         */
+        public static function isModalSlideOver()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->isModalSlideOver();
+        }
+
+        /**
+         * @static
+         */
+        public static function isSimple()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->isSimple();
+        }
+
+        /**
+         * @static
+         */
+        public static function isVisible()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->isVisible();
+        }
+
+        /**
+         * @static
+         */
+        public static function getSortOrder()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getSortOrder();
+        }
+
+        /**
+         * @static
+         */
+        public static function getPanels()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getPanels();
+        }
+
+        /**
+         * @static
+         */
+        public static function getCurrentPanel()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getCurrentPanel();
+        }
+
+        /**
+         * @static
+         */
+        public static function getRenderHook()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getRenderHook();
+        }
+
+        /**
+         * @static
+         */
+        public static function getRenderIconAsImage()
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->getRenderIconAsImage();
+        }
+
+        /**
+         * Apply the callback if the given "value" is (or resolves to) truthy.
+         *
+         * @template TWhenParameter
+         * @template TWhenReturnType
+         * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
+         * @return $this|TWhenReturnType
+         * @static
+         */
+        public static function when($value = null, $callback = null, $default = null)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->when($value, $callback, $default);
+        }
+
+        /**
+         * Apply the callback if the given "value" is (or resolves to) falsy.
+         *
+         * @template TUnlessParameter
+         * @template TUnlessReturnType
+         * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
+         * @return $this|TUnlessReturnType
+         * @static
+         */
+        public static function unless($value = null, $callback = null, $default = null)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->unless($value, $callback, $default);
+        }
+
+        /**
+         * @static
+         */
+        public static function configureUsing($modifyUsing, $during = null, $isImportant = false)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::configureUsing($modifyUsing, $during, $isImportant);
+        }
+
+        /**
+         * @static
+         */
+        public static function configure()
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->configure();
+        }
+
+        /**
+         * @template T
+         * @param T  | callable(): T  $value
+         * @param array<string, mixed> $namedInjections
+         * @param array<string, mixed> $typedInjections
+         * @return T
+         * @static
+         */
+        public static function evaluate($value, $namedInjections = [], $typedInjections = [])
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->evaluate($value, $namedInjections, $typedInjections);
+        }
+
+        /**
+         * @static
+         */
+        public static function macro($name, $macro)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::macro($name, $macro);
+        }
+
+        /**
+         * @static
+         */
+        public static function mixin($mixin, $replace = true)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::mixin($mixin, $replace);
+        }
+
+        /**
+         * @static
+         */
+        public static function flushMacros()
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::flushMacros();
+        }
+
+        /**
+         * @static
+         */
+        public static function hasMacro($name)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            return \BezhanSalleh\PanelSwitch\PanelSwitch::hasMacro($name);
+        }
+
+        /**
+         * Call the given Closure with this instance then return the instance.
+         *
+         * @param (callable($this): mixed)|null $callback
+         * @return ($callback is null ? \Illuminate\Support\HigherOrderTapProxy : $this)
+         * @static
+         */
+        public static function tap($callback = null)
+        {
+            //Method inherited from \Filament\Support\Components\Component 
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->tap($callback);
+        }
+
+        /**
+         * @throws InvalidArgumentException
+         * @static
+         */
+        public static function areUserProvidedPanelsValid($panelIds)
+        {
+            /** @var \BezhanSalleh\PanelSwitch\PanelSwitch $instance */
+            return $instance->areUserProvidedPanelsValid($panelIds);
+        }
+
+            }
+    }
+
 namespace BezhanSalleh\FilamentShield\Facades {
     /**
      * @see \BezhanSalleh\FilamentShield\FilamentShield
@@ -24416,7 +24793,7 @@ namespace Laravel\Pennant {
      * @method static void activate(string|array $feature, mixed $value = true)
      * @method static void deactivate(string|array $feature)
      * @method static void forget(string|array $features)
-     * @see \Laravel\Pennant\FeatureManager
+     * @see FeatureManager
      */
     class Feature {
         /**
@@ -24424,7 +24801,7 @@ namespace Laravel\Pennant {
          *
          * @param string|null $store
          * @return \Laravel\Pennant\Drivers\Decorator
-         * @throws \InvalidArgumentException
+         * @throws InvalidArgumentException
          * @static
          */
         public static function store($store = null)
@@ -24438,7 +24815,7 @@ namespace Laravel\Pennant {
          *
          * @param string|null $name
          * @return \Laravel\Pennant\Drivers\Decorator
-         * @throws \InvalidArgumentException
+         * @throws InvalidArgumentException
          * @static
          */
         public static function driver($name = null)
@@ -25064,11 +25441,279 @@ namespace Livewire {
             }
     }
 
+namespace Lorisleiva\Actions\Facades {
+    /**
+     * @see ActionManager
+     */
+    class Actions {
+        /**
+         * @param class-string<JobDecorator> $jobDecoratorClass
+         * @static
+         */
+        public static function useJobDecorator($jobDecoratorClass)
+        {
+            return \Lorisleiva\Actions\ActionManager::useJobDecorator($jobDecoratorClass);
+        }
+
+        /**
+         * @param class-string<JobDecorator&ShouldBeUnique> $uniqueJobDecoratorClass
+         * @static
+         */
+        public static function useUniqueJobDecorator($uniqueJobDecoratorClass)
+        {
+            return \Lorisleiva\Actions\ActionManager::useUniqueJobDecorator($uniqueJobDecoratorClass);
+        }
+
+        /**
+         * @static
+         */
+        public static function setBacktraceLimit($backtraceLimit)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->setBacktraceLimit($backtraceLimit);
+        }
+
+        /**
+         * @static
+         */
+        public static function setDesignPatterns($designPatterns)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->setDesignPatterns($designPatterns);
+        }
+
+        /**
+         * @static
+         */
+        public static function getDesignPatterns()
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->getDesignPatterns();
+        }
+
+        /**
+         * @static
+         */
+        public static function registerDesignPattern($designPattern)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->registerDesignPattern($designPattern);
+        }
+
+        /**
+         * @static
+         */
+        public static function getDesignPatternsMatching($usedTraits)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->getDesignPatternsMatching($usedTraits);
+        }
+
+        /**
+         * @static
+         */
+        public static function extend($app, $abstract)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->extend($app, $abstract);
+        }
+
+        /**
+         * @static
+         */
+        public static function isExtending($abstract)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->isExtending($abstract);
+        }
+
+        /**
+         * @static
+         */
+        public static function shouldExtend($abstract)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->shouldExtend($abstract);
+        }
+
+        /**
+         * @static
+         */
+        public static function identifyAndDecorate($instance)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->identifyAndDecorate($instance);
+        }
+
+        /**
+         * @static
+         */
+        public static function identifyFromBacktrace($usedTraits, $frame = null)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->identifyFromBacktrace($usedTraits, $frame);
+        }
+
+        /**
+         * @static
+         */
+        public static function registerRoutes($paths = 'app/Actions')
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->registerRoutes($paths);
+        }
+
+        /**
+         * @static
+         */
+        public static function registerCommands($paths = 'app/Actions')
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->registerCommands($paths);
+        }
+
+        /**
+         * @static
+         */
+        public static function registerRoutesForAction($className)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->registerRoutesForAction($className);
+        }
+
+        /**
+         * @static
+         */
+        public static function registerCommandsForAction($className)
+        {
+            /** @var \Lorisleiva\Actions\ActionManager $instance */
+            return $instance->registerCommandsForAction($className);
+        }
+
+            }
+    }
+
+namespace Lorisleiva\Lody {
+    /**
+     * @see LodyManager
+     */
+    class Lody {
+        /**
+         * @static
+         */
+        public static function classes($paths, $recursive = true)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->classes($paths, $recursive);
+        }
+
+        /**
+         * @static
+         */
+        public static function classesFromFinder($finder)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->classesFromFinder($finder);
+        }
+
+        /**
+         * @static
+         */
+        public static function files($paths, $recursive = true, $hidden = false)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->files($paths, $recursive, $hidden);
+        }
+
+        /**
+         * @static
+         */
+        public static function filesFromFinder($finder)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->filesFromFinder($finder);
+        }
+
+        /**
+         * @static
+         */
+        public static function resolvePathUsing($callback)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->resolvePathUsing($callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function resolvePath($path)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->resolvePath($path);
+        }
+
+        /**
+         * @static
+         */
+        public static function resolveClassnameUsing($callback)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->resolveClassnameUsing($callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function resolveClassname($file)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->resolveClassname($file);
+        }
+
+        /**
+         * @static
+         */
+        public static function setBasePath($basePath)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->setBasePath($basePath);
+        }
+
+        /**
+         * @static
+         */
+        public static function getBasePath($path = '')
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->getBasePath($path);
+        }
+
+        /**
+         * @static
+         */
+        public static function setAutoloadPath($autoloadPath)
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->setAutoloadPath($autoloadPath);
+        }
+
+        /**
+         * @static
+         */
+        public static function getAutoloadPath()
+        {
+            /** @var \Lorisleiva\Lody\LodyManager $instance */
+            return $instance->getAutoloadPath();
+        }
+
+            }
+    }
+
 namespace Nwidart\Modules\Facades {
     /**
      * @method static array getCached()
      */
-    class Module extends \Nwidart\Modules\FileRepository {
+    class Module {
         /**
          * Add other module location.
          *
@@ -25362,7 +26007,7 @@ namespace Nwidart\Modules\Facades {
         /**
          * Get module used for cli session.
          *
-         * @throws \Nwidart\Modules\Exceptions\ModuleNotFoundException
+         * @throws ModuleNotFoundException
          * @static
          */
         public static function getUsedNow()
@@ -25436,7 +26081,7 @@ namespace Nwidart\Modules\Facades {
         /**
          * Enabling a specific module.
          *
-         * @throws \Nwidart\Modules\Exceptions\ModuleNotFoundException
+         * @throws ModuleNotFoundException
          * @static
          */
         public static function enable($name)
@@ -25449,7 +26094,7 @@ namespace Nwidart\Modules\Facades {
         /**
          * Disabling a specific module.
          *
-         * @throws \Nwidart\Modules\Exceptions\ModuleNotFoundException
+         * @throws ModuleNotFoundException
          * @static
          */
         public static function disable($name)
@@ -33254,6 +33899,20 @@ namespace  {
         }
 
         /**
+         * Add an "order by" clause to order results by a given sequence of values.
+         *
+         * @param \Illuminate\Contracts\Database\Query\Expression|string $column
+         * @param \Illuminate\Contracts\Support\Arrayable|array $values
+         * @return \Illuminate\Database\Eloquent\Builder<static>
+         * @static
+         */
+        public static function inOrderOf($column, $values)
+        {
+            /** @var \Illuminate\Database\Query\Builder $instance */
+            return $instance->inOrderOf($column, $values);
+        }
+
+        /**
          * Add a raw "order by" clause to the query.
          *
          * @param string $sql
@@ -34419,11 +35078,13 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
-    class EloquentSerialize extends \AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade {}
     class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
+    class PanelSwitch extends \BezhanSalleh\PanelSwitch\Facades\PanelSwitch {}
     class FilamentShield extends \BezhanSalleh\FilamentShield\Facades\FilamentShield {}
     class Feature extends \Laravel\Pennant\Feature {}
     class Livewire extends \Livewire\Livewire {}
+    class Action extends \Lorisleiva\Actions\Facades\Actions {}
+    class Lody extends \Lorisleiva\Lody\Lody {}
     class Module extends \Nwidart\Modules\Facades\Module {}
 }
 

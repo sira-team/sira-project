@@ -308,7 +308,7 @@ describe('WaitlistService::expire()', function () {
         $v1 = CampVisitor::factory()->create([
             'camp_id' => $camp->id,
             'status' => VisitorStatus::Pending,
-            'registered_at' => today()->subDays(8),
+            'registered_at' => today()->subDays(9),
         ]);
 
         $v2 = CampVisitor::factory()->create([
@@ -320,7 +320,7 @@ describe('WaitlistService::expire()', function () {
         $count = $this->service->expire($camp);
 
         expect($count)->toBe(1)
-            ->and($v1->fresh()->status)->toBe(VisitorStatus::Waitlisted)
-            ->and($v2->fresh()->status)->toBe(VisitorStatus::Pending);
+            ->and($v1->refresh()->status)->toBe(VisitorStatus::Waitlisted)
+            ->and($v2->refresh()->status)->toBe(VisitorStatus::Pending);
     });
 });

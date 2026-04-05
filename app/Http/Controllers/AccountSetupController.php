@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +15,7 @@ use Illuminate\Validation\Rules\Password;
 
 final class AccountSetupController extends Controller
 {
-    public function show(Request $request, User $user)
+    public function show(Request $request, User $user): View
     {
         // Verify the signed URL is valid
         if (! $request->hasValidSignature()) {
@@ -23,7 +25,7 @@ final class AccountSetupController extends Controller
         return view('account.setup', ['user' => $user]);
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request, User $user): RedirectResponse
     {
         // Verify the signed URL is valid
         if (! $request->hasValidSignature()) {

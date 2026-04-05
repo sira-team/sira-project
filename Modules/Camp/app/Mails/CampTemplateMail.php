@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Camp\Mails;
 
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,7 +12,6 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Modules\Camp\Models\CampEmailTemplate;
 use Modules\Camp\Models\CampVisitor;
 
 /**
@@ -24,7 +24,7 @@ final class CampTemplateMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public function __construct(
-        public readonly CampEmailTemplate $template,
+        public readonly EmailTemplate $template,
         public readonly CampVisitor $visitor,
     ) {}
 
@@ -32,8 +32,11 @@ final class CampTemplateMail extends Mailable implements ShouldQueue
     {
         ['subject' => $subject] = $this->resolve();
 
+        $tenant = $this->visitor->camp->tenant;
+
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
+            replyTo: [new Address($tenant->email, $tenant->name)],
             subject: $subject,
         );
     }

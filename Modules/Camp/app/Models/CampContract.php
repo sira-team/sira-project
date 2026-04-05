@@ -42,6 +42,10 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereContractedBeds($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereIncludesCatering($value)
  *
+ * @property Carbon|null $cancellation_deadline_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereCancellationDeadlineAt($value)
+ *
  * @mixin \Eloquent
  */
 final class CampContract extends Model

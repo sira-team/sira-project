@@ -22,7 +22,7 @@ final class ExpireUnpaidRegistrationsCommand extends Command
 
     protected $description = 'Move confirmed, unpaid registrations older than 8 days to the waitlist end for over-subscribed camps';
 
-    public function __construct(private WaitlistService $waitlistService)
+    public function __construct(private readonly WaitlistService $waitlistService)
     {
         parent::__construct();
     }
