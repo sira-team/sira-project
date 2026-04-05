@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Providers\AppServiceProvider;
 use App\Providers\Filament\GlobalAdminPanelProvider;
-use App\Providers\Filament\TenantAdminPanelProvider;
+use App\Providers\Filament\TenantAppPanelProvider;
 use Modules\Academy\Providers\Filament\AcademyContentPanelProvider;
 use Modules\Academy\Providers\Filament\AcademyPanelProvider;
 use Modules\Camp\Providers\Filament\CampPanelProvider;
@@ -19,7 +19,7 @@ return [
     AcademyContentPanelProvider::class,
 
     // Panels with Tenant
-    TenantAdminPanelProvider::class,
+    TenantAppPanelProvider::class,
     CampPanelProvider::class,
     ExpoPanelProvider::class,
     AcademyPanelProvider::class,

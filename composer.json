@@ -12,12 +12,14 @@
         "bezhansalleh/filament-shield": "^4.1",
         "coolsam/modules": "^5.1",
         "craft-forge/filament-language-switcher": "^1.2",
+        "dutchcodingcompany/filament-socialite": "^3.2",
         "filament/filament": "^5",
         "knuckleswtf/scribe": "^5.3",
         "laravel/framework": "^12",
         "laravel/pennant": "^1.21",
         "laravel/tinker": "^v2",
-        "lorisleiva/laravel-actions": "^2.10"
+        "lorisleiva/laravel-actions": "^2.10",
+        "owenvoke/blade-fontawesome": "^3.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

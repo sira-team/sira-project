@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Actions\RegisterUserThroughInviteAction;
 use App\Facade\SiraApp;
 use App\Filament\Admin\Pages\EditTenant;
 use App\Models\Tenant;
+use App\Models\TenantInviteLink;
+use App\Models\User;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Models\SocialiteUser;
+use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -24,24 +30,27 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 
-final class TenantAdminPanelProvider extends PanelProvider
+final class TenantAppPanelProvider extends PanelProvider
 {
-    public const string ID = 'admin';
+    public const string ID = 'app';
 
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id(self::ID)
-            ->path('admin')
+            ->path('app')
             ->login()
+            ->registration(fn () => session()->has('join_token'))
             ->colors(['primary' => Color::Pink])
             ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->maxContentWidth(Width::Full)
@@ -96,6 +105,20 @@ final class TenantAdminPanelProvider extends PanelProvider
             ->globalSearch(false)
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
+                FilamentSocialitePlugin::make()
+                    ->providers([
+                        Provider::make('google')
+                            ->label('Google')
+                            ->icon('fab-google')
+                            ->color(Color::hex('#4285F4'))
+                            ->outlined(false)
+                            ->stateless(false),
+                    ])
+                    ->slug('app')
+                    ->registration(fn () => session()->has('join_token'))
+                    ->createUserUsing(fn (string $provider, SocialiteUserContract $oauthUser) => RegisterUserThroughInviteAction::run($provider, $oauthUser))
+                    ->userModelClass(User::class)
+                    ->socialiteUserModelClass(SocialiteUser::class),
             ]);
     }
 }

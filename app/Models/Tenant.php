@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -31,6 +32,7 @@ use Illuminate\Support\Str;
  * @property string|null $bank_recipient
  * @property string|null $bank_name
  * @property string|null $bic
+ * @property-read TenantInviteLink|null $inviteLink
  *
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant newModelQuery()
@@ -93,6 +95,11 @@ final class Tenant extends Model
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
+    }
+
+    public function inviteLink(): HasOne
+    {
+        return $this->hasOne(TenantInviteLink::class);
     }
 
     protected static function boot(): void
