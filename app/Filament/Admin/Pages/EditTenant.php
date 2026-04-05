@@ -7,7 +7,6 @@ namespace App\Filament\Admin\Pages;
 use App\Models\Tenant;
 use App\Models\TenantInviteLink;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\Tenancy\EditTenantProfile;
@@ -18,8 +17,6 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 /**
- * @extends EditTenantProfile<Tenant>
- *
  * @property Tenant $tenant
  */
 final class EditTenant extends EditTenantProfile

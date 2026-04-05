@@ -6,9 +6,10 @@ namespace App\Providers\Filament;
 
 use App\Actions\RegisterUserThroughInviteAction;
 use App\Facade\SiraApp;
+use App\Filament\Admin\Pages\Auth\Login;
+use App\Filament\Admin\Pages\Auth\Register;
 use App\Filament\Admin\Pages\EditTenant;
 use App\Models\Tenant;
-use App\Models\TenantInviteLink;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
@@ -30,7 +31,6 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -49,8 +49,8 @@ final class TenantAppPanelProvider extends PanelProvider
             ->default()
             ->id(self::ID)
             ->path('app')
-            ->login()
-            ->registration(fn () => session()->has('join_token'))
+            ->login(Login::class)
+            ->registration(Register::class)
             ->colors(['primary' => Color::Pink])
             ->font('Readex Pro', provider: GoogleFontProvider::class)
             ->maxContentWidth(Width::Full)

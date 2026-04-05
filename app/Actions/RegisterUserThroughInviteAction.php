@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Models\TenantInviteLink;
 use App\Models\User;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -15,17 +14,17 @@ final class RegisterUserThroughInviteAction
 
     public function handle(string $provider, SocialiteUserContract $oauthUser)
     {
-        $token = session()->pull('join_token');
-        $invite = TenantInviteLink::where('token', $token)->valid()->firstOrFail();
+        session()->pull('join_token');
+        $tenantId = session()->pull('join_tenant_id');
 
         $user = User::create([
             'name' => $oauthUser->getName(),
             'email' => $oauthUser->getEmail(),
             'email_verified_at' => now(),
-            'tenant_id' => $invite->tenant_id,
+            'tenant_id' => $tenantId,
         ]);
 
-        //event(new UserRegisteredEvent());
+        // event(new UserRegisteredEvent());
 
         return $user;
     }

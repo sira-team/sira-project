@@ -23,6 +23,7 @@ Route::get('/app/join/{token}', function (string $token) {
         ->firstOrFail();
 
     session()->put('join_token', $token);
+    session()->put('join_tenant_id', $invite->tenant_id);
 
-    return redirect()->route('filament.app.auth.login');
+    return redirect()->route('filament.app.auth.register');
 })->name('app.join');
