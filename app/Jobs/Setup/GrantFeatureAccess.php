@@ -41,7 +41,7 @@ final class GrantFeatureAccess
         Feature::for($user)->deactivate(FeatureFlag::AcademyManager->value);
         Feature::for($tenant)->activate(FeatureFlag::TenantApp->value);
         Feature::for($tenant)->deactivate(FeatureFlag::AcademyPanel->value);
-        Feature::for($tenant)->active(FeatureFlag::CampPanel->value);
+        Feature::for($tenant)->activate(FeatureFlag::CampPanel->value);
         Feature::for($tenant)->deactivate(FeatureFlag::ExpoPanel->value);
     }
 }

@@ -5,10 +5,10 @@
         @if ($attempt)
             <div @class([
                 'rounded-xl p-8 text-center shadow-sm border',
-                'bg-green-50 border-green-200' => $attempt->passed,
-                'bg-red-50 border-red-200' => ! $attempt->passed,
+                'bg-green-50 border-green-200' => $attempt->is_passed,
+                'bg-red-50 border-red-200' => ! $attempt->is_passed,
             ])>
-                @if ($attempt->passed)
+                @if ($attempt->is_passed)
                     <div class="text-5xl mb-3">🎉</div>
                     <h2 class="text-xl font-bold text-green-800">Congratulations, you passed!</h2>
                     <p class="mt-2 text-green-700 text-3xl font-bold">{{ $attempt->score_percent }}%</p>

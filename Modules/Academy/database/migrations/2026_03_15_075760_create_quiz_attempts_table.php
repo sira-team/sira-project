@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('started_at')->useCurrent();
             $table->dateTime('completed_at')->nullable();
             $table->unsignedTinyInteger('score_percent')->nullable();
-            $table->boolean('passed')->default(false);
+            $table->boolean('is_passed')->default(false);
             $table->timestamps();
         });
     }

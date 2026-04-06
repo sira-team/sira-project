@@ -18,7 +18,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @property Carbon $started_at
  * @property Carbon|null $completed_at
  * @property int|null $score_percent
- * @property bool $passed
+ * @property bool $is_passed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, QuizAttemptAnswer> $answers
@@ -33,7 +33,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCompletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt wherePassed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereIsPassed($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereQuizId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereScorePercent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereUpdatedAt($value)
@@ -44,7 +44,7 @@ final class QuizAttempt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['quiz_id', 'started_at', 'completed_at', 'score_percent', 'passed'];
+    protected $fillable = ['quiz_id', 'started_at', 'completed_at', 'score_percent', 'is_passed'];
 
     public function quiz(): BelongsTo
     {
@@ -63,6 +63,6 @@ final class QuizAttempt extends Model
 
     protected function casts(): array
     {
-        return ['started_at' => 'datetime', 'completed_at' => 'datetime', 'score_percent' => 'integer', 'passed' => 'boolean'];
+        return ['started_at' => 'datetime', 'completed_at' => 'datetime', 'score_percent' => 'integer', 'is_passed' => 'boolean'];
     }
 }

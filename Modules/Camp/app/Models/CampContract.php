@@ -15,7 +15,7 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @property int $camp_id
  * @property int $hostel_id
  * @property float $price_per_person_per_night
- * @property bool $includes_catering
+ * @property bool $has_catering
  * @property int $contracted_beds
  * @property Carbon|null $contract_date
  * @property string|null $notes
@@ -40,7 +40,7 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereUpdatedAt($value)
  * @method static \Modules\Camp\Database\Factories\CampContractFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereContractedBeds($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereIncludesCatering($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereHasCatering($value)
  *
  * @property Carbon|null $cancellation_deadline_at
  *
@@ -58,7 +58,7 @@ final class CampContract extends Model
         'camp_id',
         'hostel_id',
         'price_per_person_per_night',
-        'includes_catering',
+        'has_catering',
         'contracted_beds',
         'contract_date',
         'cancellation_deadline_at',
@@ -84,7 +84,7 @@ final class CampContract extends Model
     {
         return [
             'price_per_person_per_night' => 'decimal:2',
-            'includes_catering' => 'boolean',
+            'has_catering' => 'boolean',
             'contract_date' => 'date',
             'cancellation_deadline_at' => 'date',
         ];

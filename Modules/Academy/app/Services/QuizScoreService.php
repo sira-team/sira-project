@@ -49,7 +49,7 @@ final class QuizScoreService
             'started_at' => now(),
             'completed_at' => now(),
             'score_percent' => $scorePercent,
-            'passed' => $passed,
+            'is_passed' => $passed,
         ]);
 
         foreach ($questions as $question) {

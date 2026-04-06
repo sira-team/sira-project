@@ -34,7 +34,7 @@ final class QuizAttemptFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'completed_at' => now(),
             'score_percent' => $score,
-            'passed' => $passed,
+            'is_passed' => $passed,
         ]);
     }
 
