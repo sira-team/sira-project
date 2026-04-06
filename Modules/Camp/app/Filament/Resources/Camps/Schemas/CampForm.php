@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\Camps\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -108,9 +107,9 @@ final class CampForm
                 ]),
             Section::make(__('Registration & Planning'))
                 ->schema([
-                    DateTimePicker::make('registration_opens_at')
+                    DatePicker::make('registration_opens_at')
                         ->label(__('Registration opens at')),
-                    DateTimePicker::make('registration_ends_at')
+                    DatePicker::make('registration_ends_at')
                         ->label(__('Registration ends at')),
                     TextInput::make('max_visitors_all')
                         ->label(__('Visitor capacity'))
@@ -125,7 +124,7 @@ final class CampForm
                         ->label(__('Male visitor capacity'))
                         ->numeric()
                         ->minValue(1)
-                        ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_female'))
+                        // ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_female'))
                         ->required()
                         ->live()
                         ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
@@ -134,28 +133,28 @@ final class CampForm
                         ->label(__('Female visitor capacity'))
                         ->numeric()
                         ->minValue(1)
-                        ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_male'))
+                        // ->maxValue(fn (Camp $record, Get $get) => $record->contract->hostel->total_capacity - $get('max_visitors_male'))
                         ->required()
                         ->live()
                         ->visible(fn (Get $get): bool => $get('target_group') !== CampTargetGroup::Family)
                         ->hidden(fn (Get $get): bool => $get('gender_policy') === CampGenderPolicy::Male),
-                    TextEntry::make('info')
-                        ->label(__('Info'))
-                        ->columnSpanFull()
-                        ->live()
-                        ->reactive()
-                        ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
-                            trans('camps.form.capacity_all', ['total' => $record->contract->hostel->total_capacity]) :
-                            trans('camps.form.capacity_gendered', ['total' => $record->contract->hostel->total_capacity, 'male' => $get('max_visitors_male'), 'female' => $get('max_visitors_female')])
-                        ),
-                    TextEntry::make('capacity_left')
-                        ->label(__('Capacity left'))
-                        ->live()
-                        ->reactive()
-                        ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
-                            $record->contract->hostel->total_capacity - $get('max_visitors_all') :
-                            $record->contract->hostel->total_capacity - $get('max_visitors_male') - $get('max_visitors_female')
-                        ),
+                    // TextEntry::make('info')
+                    //    ->label(__('Info'))
+                    //    ->columnSpanFull()
+                    //    ->live()
+                    //    ->reactive()
+                    // ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
+                    //    trans('camps.form.capacity_all', ['total' => $record->contract->hostel->total_capacity]) :
+                    //    trans('camps.form.capacity_gendered', ['total' => $record->contract->hostel->total_capacity, 'male' => $get('max_visitors_male'), 'female' => $get('max_visitors_female')])
+                    // ),
+                    // TextEntry::make('capacity_left')
+                    //    ->label(__('Capacity left'))
+                    //    ->live()
+                    //    ->reactive()
+                    // ->state(fn (Camp $record, Get $get) => $get('target_group') === CampTargetGroup::Family ?
+                    //    $record->contract->hostel->total_capacity - $get('max_visitors_all') :
+                    //    $record->contract->hostel->total_capacity - $get('max_visitors_male') - $get('max_visitors_female')
+                    // ),
                 ])->columns(2),
         ]);
     }

@@ -20,4 +20,17 @@ final class EditCamp extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($data['registration_opens_at']) {
+            $data['registration_opens_at'] = $data['registration_opens_at']->startOfDay();
+        }
+
+        if ($data['registration_ends_at']) {
+            $data['registration_ends_at'] = $data['registration_ends_at']->endOfDay();
+        }
+
+        return parent::mutateFormDataBeforeSave($data);
+    }
 }
