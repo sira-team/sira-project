@@ -22,15 +22,12 @@ final class UsersTable
                     ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('email')
-                    ->label(__('Email'))
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('roles.name')
                     ->label(__('Roles'))
                     ->badge()
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label(__('Created At'))
                     ->dateTime()
                     ->sortable(),
