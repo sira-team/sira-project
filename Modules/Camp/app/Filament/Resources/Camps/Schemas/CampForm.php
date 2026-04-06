@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\Camps\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -108,9 +107,9 @@ final class CampForm
                 ]),
             Section::make(__('Registration & Planning'))
                 ->schema([
-                    DateTimePicker::make('registration_opens_at')
+                    DatePicker::make('registration_opens_at')
                         ->label(__('Registration opens at')),
-                    DateTimePicker::make('registration_ends_at')
+                    DatePicker::make('registration_ends_at')
                         ->label(__('Registration ends at')),
                     TextInput::make('max_visitors_all')
                         ->label(__('Visitor capacity'))
