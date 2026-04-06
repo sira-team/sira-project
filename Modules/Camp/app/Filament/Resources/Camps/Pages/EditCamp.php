@@ -24,11 +24,11 @@ final class EditCamp extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         if ($data['registration_opens_at']) {
-            $data['registration_opens_at'] = $data['registration_opens_at']->startOfDay();
+            $data['registration_opens_at'] = $data['registration_opens_at'].' 00:00:00';
         }
 
         if ($data['registration_ends_at']) {
-            $data['registration_ends_at'] = $data['registration_ends_at']->endOfDay();
+            $data['registration_ends_at'] = $data['registration_ends_at'].' 23:59:59';
         }
 
         return parent::mutateFormDataBeforeSave($data);

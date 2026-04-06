@@ -6,18 +6,14 @@ namespace App\Enums;
 
 enum GuardianRelationship: string
 {
-    case Father = 'father';
-    case Mother = 'mother';
-    case Uncle = 'uncle';
-    case Aunt = 'aunt';
+    case Parent = 'parent';
+    case Member = 'member';
 
     public function label(): string
     {
         return match ($this) {
-            self::Father => 'Father',
-            self::Mother => 'Mother',
-            self::Uncle => 'Uncle',
-            self::Aunt => 'Aunt',
+            self::Parent => 'Parent',
+            self::Member => 'Family Member',
         };
     }
 }
