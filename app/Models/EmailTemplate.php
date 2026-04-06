@@ -22,14 +22,12 @@ use Illuminate\Support\Str;
  * @property string $body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Tenant $tenant
  *
  * @method static EmailTemplateFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate query()
- *
- * @property-read Tenant $tenant
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereBody($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EmailTemplate whereId($value)

@@ -28,6 +28,7 @@ use Modules\Camp\Enums\CampExpenseCategory;
  * @property-read Camp|null $camp
  * @property-read User|null $user
  * @property-read Tenant|null $tenant
+ * @property bool|null $is_paid_by_camp
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense newQuery()
@@ -43,6 +44,9 @@ use Modules\Camp\Enums\CampExpenseCategory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereUserId($value)
  * @method static \Modules\Camp\Database\Factories\CampExpenseFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereIsPaidByCamp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense wherePaidByCamp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense whereReceipt($value)
  *
  * @mixin \Eloquent
  */
