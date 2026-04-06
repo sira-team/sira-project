@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('amount', 8, 2);
-            $table->string('receipt_image')->nullable();
+            $table->string('receipt')->nullable();
+            $table->boolean('is_paid_by_camp')->default(false);
             $table->timestamps();
         });
     }

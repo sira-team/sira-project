@@ -20,7 +20,7 @@ final class CampCostCalculatorWidget extends StatsOverviewWidget
 
         $camp = $this->record;
         $nights = $camp->nights;
-        $totalExpenses = (float) $camp->expenses()->sum('amount');
+        $totalExpenses = (float) $camp->campExpenses()->sum('amount');
         $accommodationCost = 0;
         $confirmedCount = $camp->visitors->count();
         $usersCount = $camp->users->count();

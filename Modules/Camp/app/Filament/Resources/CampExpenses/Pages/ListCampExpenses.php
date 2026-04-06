@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Camp\Filament\Resources\CampExpenses\Pages;
 
 use BackedEnum;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\Concerns\InteractsWithParentRecord;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Icons\Heroicon;
@@ -27,6 +28,8 @@ final class ListCampExpenses extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            CreateAction::make(),
+        ];
     }
 }

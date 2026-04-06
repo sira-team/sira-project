@@ -57,6 +57,8 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property int|null $max_visitors_male
  * @property int|null $max_visitors_female
  * @property int|null $max_visitors_all
+ * @property-read Collection<int, CampUser> $campUsers
+ * @property-read int|null $camp_users_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
@@ -82,10 +84,6 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTargetGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereUpdatedAt($value)
- *
- * @property-read Collection<int, CampUser> $campUsers
- * @property-read int|null $camp_users_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereMaxVisitorsAll($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereMaxVisitorsFemale($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp whereMaxVisitorsMale($value)
@@ -148,7 +146,7 @@ final class Camp extends Model
         return $this->hasMany(CampUser::class);
     }
 
-    public function expenses(): HasMany
+    public function campExpenses(): HasMany
     {
         return $this->hasMany(CampExpense::class);
     }

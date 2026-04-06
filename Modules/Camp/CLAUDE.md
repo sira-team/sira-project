@@ -147,7 +147,7 @@ Table: `camps`. Tenant-scoped, soft deletes.
 **Relationships:**
 - `Camp::contract()` — `hasOne(CampContract::class)`
 - `Camp::visitors()` — `belongsToMany(Visitor::class, 'camp_visitor')->withPivot(...)`
-- `Camp::expenses()` — `hasMany(CampExpense::class)`
+- `Camp::campExpenses()` — `hasMany(CampExpense::class)`
 - `Camp::supportStaff()` — `belongsToMany(User::class, 'camp_user')`
 
 **Two participant numbers — never consolidate:**
@@ -202,7 +202,8 @@ Table: `camp_expenses`. Tenant-scoped via `camp_id`.
 - `title`
 - `description` (nullable text)
 - `amount` (decimal, EUR)
-- `receipt_image` (nullable string — path on private storage disk)
+- `receipt` (nullable string — path on local storage disk; accepts JPEG, PNG, WebP, PDF; max 5MB)
+- `is_paid_by_camp` (boolean, default `false` — whether paid by camp fund or out-of-pocket by the user)
 - `timestamps`
 
 **CampExpenseCategory enum values:**

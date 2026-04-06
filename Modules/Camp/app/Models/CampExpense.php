@@ -22,11 +22,11 @@ use Modules\Camp\Enums\CampExpenseCategory;
  * @property string $title
  * @property string|null $description
  * @property float $amount
- * @property string|null $receipt_image
+ * @property string|null $receipt
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Camp|null $camp
- * @property-read User|null $submittedBy
+ * @property-read User|null $user
  * @property-read Tenant|null $tenant
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampExpense newModelQuery()
@@ -57,7 +57,8 @@ final class CampExpense extends Model
         'title',
         'description',
         'amount',
-        'receipt_image',
+        'receipt',
+        'is_paid_by_camp',
     ];
 
     public function camp(): BelongsTo
@@ -65,7 +66,7 @@ final class CampExpense extends Model
         return $this->belongsTo(Camp::class);
     }
 
-    public function submittedBy(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -89,6 +90,7 @@ final class CampExpense extends Model
         return [
             'category' => CampExpenseCategory::class,
             'amount' => 'decimal:2',
+            'is_paid_by_camp' => 'boolean',
         ];
     }
 }
