@@ -10,7 +10,11 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Filament\Resources\CampUsers\CampUserResource;
 use Modules\Camp\Filament\Resources\Concerns\HasCampSubNavigation;
+use Modules\Camp\Models\Camp;
 
+/**
+ * @property Camp $parentRecord
+ */
 final class ListCampUsers extends ListRecords
 {
     use HasCampSubNavigation;
@@ -23,6 +27,11 @@ final class ListCampUsers extends ListRecords
     public static function getNavigationLabel(): string
     {
         return __('Staff');
+    }
+
+    public function getTitle(): string
+    {
+        return $this->parentRecord->name.' › '.__('Staff');
     }
 
     protected function getHeaderActions(): array

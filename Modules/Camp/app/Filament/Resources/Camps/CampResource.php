@@ -27,6 +27,8 @@ final class CampResource extends Resource
 
     protected static ?string $navigationLabel = 'Camps';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema

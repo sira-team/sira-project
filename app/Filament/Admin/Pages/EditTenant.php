@@ -40,7 +40,7 @@ final class EditTenant extends EditTenantProfile
                 ->mask('aa99 9999 9999 9999 9999 99')
                 ->stripCharacters(' ')
                 ->rule('regex:/^[A-Z]{2}[0-9]{20}$/')
-                ->placeholder(__('DE12 3456 7890 1234 5678 90')),
+                ->placeholder('DE12 3456 7890 1234 5678 90'),
             TextInput::make('bic')
                 ->label(__('BIC'))
                 ->regex('/^[A-Z]{6}[0-9A-Z]{2}([0-9A-Z]{3})?$/'),
