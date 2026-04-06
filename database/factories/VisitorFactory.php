@@ -38,4 +38,15 @@ final class VisitorFactory extends Factory
             'date_of_birth' => fake()->dateTimeBetween('-17 years', '-6 years')->format('Y-m-d'),
         ]);
     }
+
+    public function withParent(?Visitor $parent = null): static
+    {
+        return $this->afterCreating(function (Visitor $child) use ($parent): void {
+            $parent ??= Visitor::factory()->create();
+
+            $child->guardians()->attach($parent, [
+                'relationship' => $child->gender === Gender::Male ? 'father' : 'mother',
+            ]);
+        });
+    }
 }
