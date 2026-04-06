@@ -6,6 +6,7 @@ namespace Modules\Camp\Models;
 
 use App\Enums\NotificationType;
 use App\Models\Visitor;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -23,11 +24,13 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property int|null $room_id
  * @property int|null $waitlist_position
  * @property Carbon $registered_at
+ * @property Carbon|null $checked_in_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Camp|null $camp
  * @property-read Visitor|null $visitor
  * @property-read HostelRoom|null $room
+ * @property-read bool $is_checked_in
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newQuery()
@@ -63,6 +66,7 @@ final class CampVisitor extends Pivot
         'room_id',
         'waitlist_position',
         'registered_at',
+        'checked_in_at',
     ];
 
     public function camp(): BelongsTo
@@ -90,11 +94,20 @@ final class CampVisitor extends Pivot
         return CampVisitorFactory::new();
     }
 
+    protected function isCheckedIn(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->checked_in_at !== null,
+            set: fn ($value) => ['checked_in_at' => $value ? now() : null],
+        );
+    }
+
     protected function casts(): array
     {
         return [
             'status' => VisitorStatus::class,
             'registered_at' => 'datetime',
+            'checked_in_at' => 'datetime',
         ];
     }
 }

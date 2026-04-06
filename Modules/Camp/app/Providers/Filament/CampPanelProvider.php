@@ -79,6 +79,7 @@ final class CampPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->resourceEditPageRedirect('view')
             ->globalSearch(false)
+            ->databaseNotifications()
             ->plugins([
                 FilamentLanguageSwitcherPlugin::make()->locales(['ar', 'de', 'en']),
             ]);
