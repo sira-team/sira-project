@@ -20,6 +20,7 @@ use Spatie\Permission\Models\Role as SpatieRole;
  * @property-read int|null $permissions_count
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
+ * @property-read Tenant|null $tenant
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role newQuery()
@@ -32,8 +33,6 @@ use Spatie\Permission\Models\Role as SpatieRole;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role withoutPermission($permissions)
- *
- * @property-read Tenant|null $tenant
  *
  * @mixin \Eloquent
  */

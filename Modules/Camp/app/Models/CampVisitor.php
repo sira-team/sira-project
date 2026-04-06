@@ -47,6 +47,7 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @method static \Modules\Camp\Database\Factories\CampVisitorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereSpecialWishes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWishes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCheckedInAt($value)
  *
  * @mixin \Eloquent
  */

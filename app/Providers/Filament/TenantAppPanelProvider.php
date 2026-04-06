@@ -62,6 +62,7 @@ final class TenantAppPanelProvider extends PanelProvider
             ->brandName(fn () => SiraApp::getTenant()?->name)
             ->navigationItems([
                 NavigationItem::make('tenant')
+                    ->isActiveWhen(fn () => request()->fullUrlIs(EditTenant::getUrl()))
                     ->label(__('Tenant'))
                     ->icon(Heroicon::OutlinedCog8Tooth)
                     ->url(fn () => EditTenant::getUrl()),

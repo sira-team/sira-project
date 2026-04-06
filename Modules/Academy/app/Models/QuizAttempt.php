@@ -37,6 +37,7 @@ use Modules\Academy\Database\Factories\QuizAttemptFactory;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereQuizId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereScorePercent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QuizAttempt wherePassed($value)
  *
  * @mixin \Eloquent
  */

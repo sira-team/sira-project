@@ -59,6 +59,8 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property int|null $max_visitors_all
  * @property-read Collection<int, CampUser> $campUsers
  * @property-read int|null $camp_users_count
+ * @property-read Collection<int, CampExpense> $campExpenses
+ * @property-read int|null $camp_expenses_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()

@@ -23,6 +23,7 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @property Carbon|null $updated_at
  * @property-read Hostel|null $hostel
  * @property-read Camp|null $camp
+ * @property Carbon|null $cancellation_deadline_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract newQuery()
@@ -41,10 +42,8 @@ use Modules\Camp\Database\Factories\CampContractFactory;
  * @method static \Modules\Camp\Database\Factories\CampContractFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereContractedBeds($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereHasCatering($value)
- *
- * @property Carbon|null $cancellation_deadline_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereCancellationDeadlineAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CampContract whereIncludesCatering($value)
  *
  * @mixin \Eloquent
  */

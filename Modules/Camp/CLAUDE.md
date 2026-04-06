@@ -110,7 +110,7 @@ Table: `camp_contracts`. Tenant-scoped via `camp_id`. One contract per camp.
 - `camp_id` (FK → camps)
 - `hostel_id` (FK → hostels)
 - `price_per_person_per_night` (decimal)
-- `includes_catering` (boolean — whether hostel catering is part of the contracted price)
+- `has_catering` (boolean — whether hostel catering is part of the contracted price)
 - `contracted_beds` (integer) — **the capacity minimum for participant registrations**
 - `contract_date` (nullable date)
 - `notes` (nullable text — cancellation terms, special conditions)
@@ -118,7 +118,7 @@ Table: `camp_contracts`. Tenant-scoped via `camp_id`. One contract per camp.
     
 > **Capacity lives here, not on `Camp`.** When checking whether a new registration fits, compare confirmed + pending `camp_visitor` records against `contracted_beds`. If no contract exists yet, capacity is unconstrained.
 
-> **Catering note:** many hostels offer catering and non-catering packages at different prices. `includes_catering` reflects which was contracted. If catering is not included, food costs are expected as a `CampExpense` with category `catering`.
+> **Catering note:** many hostels offer catering and non-catering packages at different prices. `has_catering` reflects which was contracted. If catering is not included, food costs are expected as a `CampExpense` with category `catering`.
 
 ---
 
