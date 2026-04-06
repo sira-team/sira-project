@@ -21,13 +21,13 @@ enum CampExpenseCategory: string implements HasColor, HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Accommodation => 'Accommodation',
-            self::Catering => 'Catering',
-            self::Materials => 'Materials',
-            self::Activities => 'Activities',
-            self::Transport => 'Transport',
-            self::Investment => 'Investment',
-            self::Other => 'Other',
+            self::Accommodation => __('Accommodation'),
+            self::Catering => __('Catering'),
+            self::Materials => __('Materials'),
+            self::Activities => __('Activities'),
+            self::Transport => __('Transport'),
+            self::Investment => __('Investment'),
+            self::Other => __('Other'),
         };
     }
 
