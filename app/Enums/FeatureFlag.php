@@ -7,7 +7,7 @@ namespace App\Enums;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Providers\Filament\GlobalAdminPanelProvider;
-use App\Providers\Filament\TenantAdminPanelProvider;
+use App\Providers\Filament\TenantAppPanelProvider;
 use InvalidArgumentException;
 use Modules\Academy\Providers\Filament\AcademyContentPanelProvider;
 use Modules\Academy\Providers\Filament\AcademyPanelProvider;
@@ -17,7 +17,7 @@ use Modules\Expo\Providers\Filament\ExpoPanelProvider;
 enum FeatureFlag: string
 {
     // Scoped to Tenant
-    case TenantAdmin = TenantAdminPanelProvider::ID;
+    case TenantApp = TenantAppPanelProvider::ID;
     case CampPanel = CampPanelProvider::ID;
     case ExpoPanel = ExpoPanelProvider::ID;
     case AcademyPanel = AcademyPanelProvider::ID;
@@ -32,7 +32,7 @@ enum FeatureFlag: string
     public static function tenantFeatures(): array
     {
         return [
-            self::TenantAdmin,
+            self::TenantApp,
             self::ExpoPanel,
             self::AcademyPanel,
             self::CampPanel,
@@ -58,7 +58,7 @@ enum FeatureFlag: string
             ExpoPanelProvider::ID => self::ExpoPanel,
             GlobalAdminPanelProvider::ID => self::GlobalAdmin,
             AcademyContentPanelProvider::ID => self::AcademyManager,
-            TenantAdminPanelProvider::ID => self::TenantAdmin,
+            TenantAppPanelProvider::ID => self::TenantApp,
             default => throw new InvalidArgumentException("No feature flag associated with panel ID: {$panel}"),
         };
     }
@@ -66,7 +66,7 @@ enum FeatureFlag: string
     public function for(): string
     {
         return match ($this) {
-            self::TenantAdmin, self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
+            self::TenantApp, self::CampPanel, self::AcademyPanel, self::ExpoPanel => Tenant::class,
             self::AcademyManager, self::GlobalAdmin => User::class,
         };
     }
@@ -82,7 +82,7 @@ enum FeatureFlag: string
             self::ExpoPanel => 'Expo Module',
             self::AcademyManager => 'Academy Content Management',
             self::GlobalAdmin => 'Global Admin',
-            self::TenantAdmin => 'Tenant Admin',
+            self::TenantApp => 'Tenant App',
         };
     }
 
@@ -92,7 +92,7 @@ enum FeatureFlag: string
     public function description(): string
     {
         return match ($this) {
-            self::TenantAdmin => 'Grants this tenant access to the Tenant Admin panel for managing members and roles.',
+            self::TenantApp => 'Grants this tenant access to the Tenant App panel for managing members and roles.',
             self::CampPanel => 'Grants this tenant access to the Camp organization panel including camps, hostels and volunteers.',
             self::AcademyPanel => 'Grants this tenant access to the Sira Academy panel including enrollments, tickets and quizzes.',
             self::ExpoPanel => 'Grants this tenant access to the Expo panel including station inventory and expo request management.',

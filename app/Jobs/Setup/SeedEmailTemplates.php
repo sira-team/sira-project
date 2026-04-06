@@ -56,7 +56,7 @@ final class SeedEmailTemplates
                 'body' => '<p>Dear {{ contact_name }},</p><p>thank you for your expo request. We have received your information and will be in touch shortly.</p><p>Kind regards,<br>{{ tenant_name }}</p>',
             ],
             NotificationType::UserInvited->value => [
-                'scope' => FeatureFlag::TenantAdmin->value,
+                'scope' => FeatureFlag::TenantApp->value,
                 'subject' => 'Invitation to {{ tenant_name }}',
                 'body' => '<p>Hello {{ user_name }},</p><p>you have been invited to join the portal of <strong>{{ tenant_name }}</strong>.</p><p>Please click the button below to set your password and activate your account. The link is valid for 7 days.</p><p><a href="{{ setup_url }}">Set Password</a></p><p>Kind regards,<br>{{ tenant_name }}</p>',
             ],

@@ -34,7 +34,7 @@ final class EmailTemplateResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('scope', FeatureFlag::TenantAdmin->value);
+        return parent::getEloquentQuery()->where('scope', FeatureFlag::TenantApp->value);
     }
 
     public static function form(Schema $schema): Schema

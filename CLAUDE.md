@@ -531,16 +531,17 @@ Use `HasPageShield` and `HasWidgetShield` traits on pages and widgets to enforce
 - **Purpose:** Create tenants, assign tenant owner, grant/revoke Pennant flags per Tenant, global user overview
 - **Location:** `app/Providers/Filament/SuperAdminPanelProvider.php`
 
-### 2. Tenant Admin Panel
+### 2. Tenant App Panel
 
-- **ID:** `admin`
-- **Path:** `/admin`
+- **ID:** `app`
+- **Path:** `/app`
 - **Guard:** `web`
 - **Tenant model:** `Tenant`, slug field: `slug`
 - **Access:** `tenant_admin` role
-- **Purpose:** Invite users to the tenant, assign roles, manage tenant members
-- **Location:** `app/Providers/Filament/AdminPanelProvider.php`
+- **Purpose:** Centralized login entry point. Invite users to the tenant, assign roles, manage tenant members
+- **Location:** `app/Providers/Filament/TenantAppPanelProvider.php`
 - **Registers:** `FilamentShieldPlugin::make()->scopeToTenant(true)`
+- **OAuth:** Google login configured here; all other panels share the same `web` guard session
 
 ### 3. Camp Panel
 
@@ -594,20 +595,22 @@ abort_unless(Feature::for($request->user())->active('academy-content'), 403);
 
 ## Multi-Tenancy
 
-Tenancy is implemented manually using Filament's built-in multi-tenancy support. No third-party tenancy package.
+Tenancy is implemented using Filament's built-in multi-tenancy support. No third-party tenancy package.
 
 ### Tenant Resolution
 
-Resolved from subdomain via middleware registered in `bootstrap/app.php`.
+Tenants are resolved from the URL path via Filament's native multi-tenancy:
 ```
-bonn.sira-app.de  →  Tenant where slug = 'bonn'
-koeln.sira-app.de →  Tenant where slug = 'koeln'
+/app/bonn/dashboard  →  Tenant where slug = 'bonn'
+/app/koeln/dashboard →  Tenant where slug = 'koeln'
 ```
 
-The resolved `Tenant` is bound to the container for the request lifecycle. Spatie tenant scope is set immediately after resolution:
+The `SyncShieldTenant` middleware in each tenant panel's `tenantMiddleware` sets the Spatie team ID scoped to the current request's tenant:
 ```php
 setPermissionsTeamId($tenant->id);
 ```
+
+This ensures each request resolves permissions to the correct tenant without cross-user bleed.
 
 ### BelongsToTenant Trait
 

@@ -65,10 +65,9 @@ Plain Blade view. No login required. Tenant branding shown at top.
 
 ### On Submission
 
-1. Resolve tenant from subdomain
-2. Create `ExpoRequest` record with `status = new` and `tenant_id`
-3. Send confirmation email to the contact
-4. Send internal notification email to the tenant's primary contact email (`tenants.email`)
+1. Create `ExpoRequest` record with `status = new` and `tenant_id`
+2. Send confirmation email to the contact
+3. Send internal notification email to the tenant's primary contact email (`tenants.email`)
 
 ### Confirmation Email to Contact
 
