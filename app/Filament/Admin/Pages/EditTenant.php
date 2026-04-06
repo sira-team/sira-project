@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Pages;
 
+use App\Enums\Country;
+use App\Models\Role;
 use App\Models\Tenant;
 use App\Models\TenantInviteLink;
 use App\ValueObjects\TenantSettings;
@@ -39,6 +41,16 @@ final class EditTenant extends EditTenantProfile
                     TextInput::make('name')->label(__('Name')),
                     TextInput::make('email')->email()->label(__('Email')),
                 ]),
+            Section::make(__('Location'))
+                ->columns(2)
+                ->schema([
+                    TextInput::make('city')
+                        ->label(__('City')),
+                    Select::make('country')
+                        ->default('DE')
+                        ->label(__('Country'))
+                        ->options(Country::class),
+                ]),
             Section::make(__('Bank Details'))
                 ->columns(2)
                 ->schema([
@@ -54,8 +66,9 @@ final class EditTenant extends EditTenantProfile
                         ->label(__('BIC'))
                         ->regex('/^[A-Z]{6}[0-9A-Z]{2}([0-9A-Z]{3})?$/'),
                 ]),
-            Section::make(__('Invite Link'))
+            Section::make(trans('tenant.invite_link.label'))
                 ->columns(2)
+                ->description(trans('tenant.invite_link.description'))
                 ->headerActions([
                     Action::make('enable_invite')
                         ->label(__('Enable Invite'))
@@ -95,7 +108,6 @@ final class EditTenant extends EditTenantProfile
                             $this->tenant->refresh();
                         }),
                 ])
-                ->description(__('Share this link so members can join via Google login. Valid 30 days.'))
                 ->schema([
                     TextEntry::make('invite_url')
                         ->label(__('Invite URL'))
@@ -109,77 +121,25 @@ final class EditTenant extends EditTenantProfile
 
                     TextEntry::make('invite_expires_at')
                         ->label(__('Expires'))
+                        ->date('d.m.Y')
                         ->state(fn () => $this->tenant->inviteLink?->expires_at?->toFormattedDateString() ?? '—')
                         ->dehydrated(false),
                 ]),
-            Section::make(__('Tenant Settings'))
-                ->description(__('Configure tenant-specific settings'))
+            Section::make(trans('tenant.settings.label'))
+                ->description(trans('tenant.settings.description'))
+                ->columns(2)
                 ->schema([
+                    TextEntry::make('settings.default_role_id.description')
+                        ->label(trans('tenant.settings.default_role_id.label'))
+                        ->state(trans('tenant.settings.default_role_id.description')),
                     Select::make('settings.default_role_id')
-                        ->label(__('Default Role'))
-                        ->options(function () {
-                            // Adjust this to your actual Role model
-                            return \App\Models\Role::pluck('name', 'id');
-                        })
-                        ->native(false)
+                        ->hiddenLabel()
                         ->searchable()
-                        ->placeholder(__('Select a default role'))
-                        ->helperText(__('Role assigned to new users when they join')),
-
-                    Select::make('settings.locale')
-                        ->label(__('Locale'))
-                        ->options([
-                            'en' => 'English',
-                            'es' => 'Español',
-                            'fr' => 'Français',
-                            'de' => 'Deutsch',
-                            'it' => 'Italiano',
-                            'nl' => 'Nederlands',
-                            'pt' => 'Português',
-                        ])
-                        ->native(false)
-                        ->default('en')
-                        ->helperText(__('Default language for this tenant')),
-
-                    Select::make('settings.timezone')
-                        ->label(__('Timezone'))
+                        ->placeholder(trans('tenant.settings.default_role_id.placeholder'))
                         ->options(function () {
-                            $timezones = [];
-                            foreach (timezone_identifiers_list() as $tz) {
-                                // Group by continent/city for better UX
-                                if (str_contains($tz, '/')) {
-                                    $parts = explode('/', $tz);
-                                    $group = $parts[0];
-                                    $timezones[$group][$tz] = str_replace('_', ' ', $parts[1] ?? $tz);
-                                } else {
-                                    $timezones['Other'][$tz] = $tz;
-                                }
-                            }
-
-                            return $timezones;
-                        })
-                        ->searchable()
-                        ->native(false)
-                        ->default('UTC')
-                        ->helperText(__('Time zone for dates and times')),
-
-                    TextInput::make('settings.instagram')
-                        ->label(__('Instagram Handle'))
-                        ->prefix('@')
-                        ->placeholder('username')
-                        ->maxLength(30)
-                        ->helperText(__('Leave empty if not used')),
-
-                    // Add more settings here in the future - just use settings. prefix
-                    // TextInput::make('settings.facebook')
-                    //     ->label(__('Facebook Page'))
-                    //     ->url(),
-                    //
-                    // TextInput::make('settings.theme')
-                    //     ->label(__('Theme'))
-                    //     ->select(['light' => 'Light', 'dark' => 'Dark']),
-                ])
-                ->columns(2),
+                            return Role::query()->whereTenantId($this->tenant->id)->pluck('name', 'id');
+                        }),
+                ]),
 
         ])->columns(1);
     }

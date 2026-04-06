@@ -16,7 +16,7 @@ final class AsTenantSettings implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): TenantSettings
     {
-        $data = json_decode($value, true) ?? [];
+        $data = $value ? json_decode($value, true) : [];
 
         return TenantSettings::fromArray($data);
     }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Events\UserRegisteredEvent;
+use App\Models\Role;
+use App\Models\Tenant;
 use App\Models\User;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -16,6 +19,7 @@ final class RegisterUserThroughInviteAction
     {
         session()->pull('join_token');
         $tenantId = session()->pull('join_tenant_id');
+        $tenant = Tenant::find($tenantId);
 
         $user = User::create([
             'name' => $oauthUser->getName(),
@@ -24,8 +28,17 @@ final class RegisterUserThroughInviteAction
             'tenant_id' => $tenantId,
         ]);
 
-        // event(new UserRegisteredEvent());
+        $this->assignDefaultRole($user, $tenant);
+
+        event(new UserRegisteredEvent($user, $tenant));
 
         return $user;
+    }
+
+    private function assignDefaultRole(User $user, Tenant $tenant): void
+    {
+        $defaultRoleId = $tenant->settings->default_role_id;
+        setPermissionsTeamId($tenant->id);
+        $user->assignRole(Role::find($defaultRoleId));
     }
 }
