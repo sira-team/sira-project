@@ -113,7 +113,7 @@ fresh: ## Wipe the database and reseed everything
 	$(ARTISAN) storage:link
 	$(ARTISAN) migrate:fresh
 	$(ARTISAN) shield:generate --all --option=permissions --panel=global-admin --no-interaction
-	$(ARTISAN) shield:generate --all --option=permissions --panel=admin --no-interaction
+	$(ARTISAN) shield:generate --all --option=permissions --panel=app --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=camp --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=expo --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=academy --no-interaction
