@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\AsTenantSettings;
 use App\Observers\TenantObserver;
+use App\ValueObjects\TenantSettings;
 use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,6 +35,7 @@ use Illuminate\Support\Str;
  * @property string|null $bank_name
  * @property string|null $bic
  * @property-read TenantInviteLink|null $inviteLink
+ * @property TenantSettings $settings
  *
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant newModelQuery()
@@ -51,6 +54,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBankRecipient($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereBic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tenant whereSettings($value)
  *
  * @mixin \Eloquent
  */
@@ -70,6 +74,11 @@ final class Tenant extends Model
         'bank_recipient',
         'bank_name',
         'bic',
+        'settings',
+    ];
+
+    protected $casts = [
+        'settings' => AsTenantSettings::class,
     ];
 
     public static function default(): static
@@ -100,6 +109,11 @@ final class Tenant extends Model
     public function inviteLink(): HasOne
     {
         return $this->hasOne(TenantInviteLink::class);
+    }
+
+    public function settings(): TenantSettings
+    {
+        return $this->settings;
     }
 
     protected static function boot(): void

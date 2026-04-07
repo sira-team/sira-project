@@ -16,7 +16,7 @@ describe('User model', function () {
         $tenant = Tenant::factory()->create();
         $user = createUserForTenant($tenant, 'camp_manager');
         setPermissionsTeamId($tenant->id);
-        expect($user->hasRole('camp_manager'))->toBeTrue();
+        expect($user->hasRole(trans('roles.camp_manager')))->toBeTrue();
     });
 
     it('role from one tenant does not bleed into another', function () {

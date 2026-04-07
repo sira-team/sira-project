@@ -34,7 +34,12 @@ final class RolePolicy
 
     public function delete(AuthUser $authUser, Role $role): bool
     {
-        return $authUser->can('Delete:Role');
+        return $authUser->can('Delete:Role') && $role->id !== $role->tenant->settings->default_role_id;
+    }
+
+    public function deleteAny(AuthUser $authUser): bool
+    {
+        return false;
     }
 
     public function restore(AuthUser $authUser, Role $role): bool
