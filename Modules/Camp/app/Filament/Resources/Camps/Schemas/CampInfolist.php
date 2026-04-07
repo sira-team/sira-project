@@ -75,11 +75,11 @@ final class CampInfolist
                 ->schema([
                     TextEntry::make('registration_opens_at')
                         ->label(__('Registration opens at'))
-                        ->dateTime('d.m.Y h:i')
+                        ->dateTime('d.m.Y H:i')
                         ->placeholder('—'),
                     TextEntry::make('registration_ends_at')
                         ->label(__('Registration ends at'))
-                        ->dateTime('d.m.Y h:i')
+                        ->dateTime('d.m.Y H:i')
                         ->placeholder('—'),
                     TextEntry::make('max_visitors_all')
                         ->label(__('Visitor capacity'))

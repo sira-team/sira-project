@@ -16,8 +16,7 @@ describe('pennant toggle command', function () {
     it('grants a user feature to a user', function () {
         $tenant = Tenant::factory()->create();
         $user = createUserForTenant($tenant);
-        $this->artisan('pennant:toggle', ['--user' => $user->id, '--feature' => 'academy-content', '--grant' => 'true'])
-            ->assertSuccessful();
+        $this->artisan('pennant:toggle', ['--user' => $user->id, '--feature' => 'academy-content', '--grant' => 'true'])->assertSuccessful();
         expect(Feature::for($user)->active('academy-content'))->toBeTrue();
     });
 

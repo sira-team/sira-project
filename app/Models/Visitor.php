@@ -33,6 +33,15 @@ use Modules\Camp\Models\Camp;
  * @property-read int|null $guardians_count
  * @property-read Collection<int, Visitor> $children
  * @property-read int|null $children_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read mixed $age
+ * @property-read Collection<int, Camp> $camps
+ * @property-read int|null $camps_count
+ * @property-read Visitor|null $guardian
+ * @property-read Collection<int, VisitorChild> $parentRelations
+ * @property-read int|null $parent_relations_count
+ * @property-read VisitorChild|null $pivot
  *
  * @method static VisitorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor newModelQuery()
@@ -44,9 +53,6 @@ use Modules\Camp\Models\Camp;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereUpdatedAt($value)
- *
- * @property-read VisitorChild|null $pivot
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereAllergies($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereDateOfBirth($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereEmergencyContactName($value)
@@ -54,9 +60,6 @@ use Modules\Camp\Models\Camp;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedicalNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedications($value)
- *
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read int|null $notifications_count
  *
  * @mixin \Eloquent
  */

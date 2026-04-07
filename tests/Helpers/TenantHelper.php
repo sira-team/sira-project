@@ -14,7 +14,7 @@ function createUserForTenant(Tenant $tenant, string $role = 'member'): User
 {
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
     $roleModel = App\Models\Role::where('tenant_id', $tenant->id)
-        ->where('name', $role)
+        ->where('name', trans('roles.'.$role))
         ->firstOrFail();
 
     DB::table('model_has_roles')->insert([

@@ -84,6 +84,10 @@ pint: ## Run Laravel Pint code formatter
 phpstan: ## Run PHPStan static analysis
 	$(PHP) vendor/bin/phpstan --memory-limit=1g
 
+.PHONY: model-properties
+model-properties: ## Generate Model properties
+	$(ARTISAN) ide-helper:models --no-interaction
+
 .PHONY: queue-work
 queue-work: ## Start the queue worker
 	$(ARTISAN) queue:work
@@ -113,7 +117,7 @@ fresh: ## Wipe the database and reseed everything
 	$(ARTISAN) storage:link
 	$(ARTISAN) migrate:fresh
 	$(ARTISAN) shield:generate --all --option=permissions --panel=global-admin --no-interaction
-	$(ARTISAN) shield:generate --all --option=permissions --panel=admin --no-interaction
+	$(ARTISAN) shield:generate --all --option=permissions --panel=app --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=camp --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=expo --no-interaction
 	$(ARTISAN) shield:generate --all --option=permissions --panel=academy --no-interaction
@@ -136,3 +140,9 @@ cache: ## Clear all caches and rebuild optimized cache
 	$(ARTISAN) filament:clear-cached-components
 	$(ARTISAN) config:cache
 	$(ARTISAN) filament:optimize
+
+.PHONY: post-work
+post-work: ## Clean up after coding
+	$(MAKE) pint
+	$(MAKE) phpstan
+	$(MAKE) test

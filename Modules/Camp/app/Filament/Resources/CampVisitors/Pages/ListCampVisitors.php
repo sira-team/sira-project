@@ -91,6 +91,11 @@ final class ListCampVisitors extends ListRecords
         $this->resetTable();
     }
 
+    public function getTitle(): string
+    {
+        return $this->parentRecord->name.' › '.__('Visitors');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
