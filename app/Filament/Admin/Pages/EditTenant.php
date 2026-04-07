@@ -80,7 +80,7 @@ final class EditTenant extends EditTenantProfile
                             TenantInviteLink::create([
                                 'tenant_id' => $this->tenant->id,
                                 'token' => Str::uuid(),
-                                'expires_at' => now()->addDays(30),
+                                'expires_at' => now()->addDays(30)->endOfDay(),
                             ]);
 
                             $this->tenant->refresh();
@@ -121,8 +121,9 @@ final class EditTenant extends EditTenantProfile
 
                     TextEntry::make('invite_expires_at')
                         ->label(__('Expires'))
-                        ->date('d.m.Y')
-                        ->state(fn () => $this->tenant->inviteLink?->expires_at?->toFormattedDateString() ?? '—')
+                        ->date('d.m.Y H:i:s')
+                        ->state(fn () => $this->tenant->inviteLink?->expires_at)
+                        ->visible(fn () => $this->tenant->inviteLink?->expires_at)
                         ->dehydrated(false),
                 ]),
             Section::make(trans('tenant.settings.label'))

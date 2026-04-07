@@ -22,7 +22,7 @@ describe('Tenant model', function () {
         setPermissionsTeamId($tenant->id);
         expect(SpatieRole::where('tenant_id', $tenant->id)->count())->toBe(5);
         foreach (['tenant_admin', 'academy_manager', 'camp_manager', 'expo_manager', 'member'] as $role) {
-            expect(SpatieRole::where('name', $role)->where('tenant_id', $tenant->id)->exists())->toBeTrue();
+            expect(SpatieRole::where('name', trans('roles.'.$role))->where('tenant_id', $tenant->id)->exists())->toBeTrue();
         }
     });
 

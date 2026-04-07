@@ -32,7 +32,7 @@ final class UserSeeder extends Seeder
                 ]
             );
 
-            $user->syncRoles([$definition['role']]);
+            $user->syncRoles([trans('roles.'.$definition['role'])]);
 
             foreach ($definition['flags'] as $flag) {
                 Feature::for($user)->activate($flag->value);

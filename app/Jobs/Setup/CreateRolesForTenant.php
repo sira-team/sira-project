@@ -12,24 +12,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 
-/**
- * Assigns Shield-generated permissions to tenant roles idempotently.
- *
- * To update what a role can access, edit the roleResourceMap below.
- * Resource names are the model base names used by Shield, i.e., the part
- * after ':' in permission names like 'ViewAny:Expo'.
- *
- * Called by TenantObserver on creation and can be dispatched any time
- * permissions change (e.g., after adding a new resource and re-running
- * shield:generate).
- */
-final class AssignRolePermissions
+final class CreateRolesForTenant
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public readonly Tenant $tenant) {}
+    public function __construct(public Tenant $tenant) {}
 
     /**
      * Maps each tenant role to the Shield resource names it should control.
@@ -48,7 +36,7 @@ final class AssignRolePermissions
             'tenant_admin' => '*',
 
             // Expo module — Modules/Expo
-            'expo_manager' => ['Expo', 'ExpoRequest', 'Station'],
+            'expo_manager' => ['Expo', 'ExpoRequest', 'Station', 'EmailTemplate'],
 
             // Camp module — Modules/Camp
             'camp_manager' => ['Camp', 'Hostel', 'EmailTemplate'],
@@ -61,24 +49,17 @@ final class AssignRolePermissions
         ];
     }
 
-    public function handle(PermissionRegistrar $registrar): void
+    public function handle(): void
     {
         $teamKey = config('permission.column_names.tenant_foreign_key');
-
         setPermissionsTeamId($this->tenant->id);
 
-        $roles = Role::query()
-            ->where('guard_name', 'web')
-            ->where($teamKey, $this->tenant->id)
-            ->get()
-            ->keyBy('name');
-
         foreach (self::roleResourceMap() as $roleName => $resources) {
-            $role = $roles->get($roleName);
-
-            if (! $role instanceof Role) {
-                continue;
-            }
+            $role = Role::query()->create([
+                'name' => trans('roles.'.$roleName, locale: app()->getLocale()),
+                'guard_name' => 'web',
+                $teamKey => $this->tenant->id,
+            ]);
 
             $permissions = match (true) {
                 $resources === '*' => Permission::where('guard_name', 'web')->pluck('id'),
@@ -94,7 +75,5 @@ final class AssignRolePermissions
 
             $role->syncPermissions($permissions);
         }
-
-        $registrar->forgetCachedPermissions();
     }
 }
