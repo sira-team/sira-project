@@ -6,6 +6,7 @@ namespace App\Filament\GlobalAdmin\Resources\Tenants\Pages;
 
 use App\Enums\FeatureFlag;
 use App\Filament\GlobalAdmin\Resources\Tenants\TenantResource;
+use App\Models\Tenant;
 use App\Models\TenantInviteLink;
 use App\ValueObjects\TenantSettings;
 use Filament\Actions;
@@ -15,6 +16,9 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature as PennantFeature;
 
+/**
+ * @property Tenant $record
+ */
 final class EditTenant extends EditRecord
 {
     protected static string $resource = TenantResource::class;
