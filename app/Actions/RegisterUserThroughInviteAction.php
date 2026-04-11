@@ -38,7 +38,18 @@ final class RegisterUserThroughInviteAction
     private function assignDefaultRole(User $user, Tenant $tenant): void
     {
         $defaultRoleId = $tenant->settings->default_role_id;
+
+        if ($defaultRoleId === null) {
+            return;
+        }
+
+        $role = Role::find($defaultRoleId);
+
+        if ($role === null) {
+            return;
+        }
+
         setPermissionsTeamId($tenant->id);
-        $user->assignRole(Role::find($defaultRoleId));
+        $user->assignRole($role);
     }
 }
