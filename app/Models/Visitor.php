@@ -144,7 +144,7 @@ final class Visitor extends Model
 
     public function age(): Attribute
     {
-        return Attribute::get(fn () => $this->date_of_birth->age);
+        return Attribute::get(fn () => $this->date_of_birth?->age);
     }
 
     public function camps(): BelongsToMany

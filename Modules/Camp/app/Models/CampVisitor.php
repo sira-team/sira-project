@@ -7,8 +7,10 @@ namespace Modules\Camp\Models;
 use App\Enums\NotificationType;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampVisitorFactory;
@@ -31,6 +33,8 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property-read Visitor|null $visitor
  * @property-read HostelRoom|null $room
  * @property-read bool $is_checked_in
+ * @property-read Collection<int, CampRegistrationAnswer> $answers
+ * @property-read int|null $answers_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newQuery()
@@ -83,6 +87,11 @@ final class CampVisitor extends Pivot
     public function room(): BelongsTo
     {
         return $this->belongsTo(HostelRoom::class, 'room_id');
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(CampRegistrationAnswer::class, 'camp_visitor_id');
     }
 
     public function notify(NotificationType $type): void

@@ -9,11 +9,9 @@ use App\Enums\NotificationType;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Grid;
-use Filament\Support\Colors\Color;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -24,8 +22,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Camp\Actions\TransitionCampVisitor;
 use Modules\Camp\Enums\VisitorStatus;
+use Modules\Camp\Filament\Resources\CampVisitors\Pages\ListCampVisitors;
 use Modules\Camp\Models\Camp;
+use Modules\Camp\Models\CampRegistrationAnswer;
 use Modules\Camp\Models\CampVisitor;
+use Modules\Camp\Models\FormTemplateField;
 use Modules\Camp\Models\HostelRoom;
 use Modules\Camp\Services\WaitlistService;
 
@@ -33,6 +34,38 @@ final class CampVisitorsTable
 {
     public static function configure(Table $table): Table
     {
+        /** @var ListCampVisitors $livewire */
+        $livewire = $table->getLivewire();
+        /** @var Camp $camp */
+        $camp = $livewire->getParentRecord();
+        $camp->loadMissing('formTemplate.fields');
+
+        $templateColumns = $camp->formTemplate?->fields
+            ->reject(fn (FormTemplateField $field) => $field->type->isStructural())
+            ->map(fn (FormTemplateField $field) => TextColumn::make("template_field_{$field->id}")
+                ->label($field->label)
+                ->toggleable()
+                ->placeholder('—')
+                ->state(function (CampVisitor $record) use ($field): ?string {
+                    /** @var CampRegistrationAnswer|null $answer */
+                    $answer = $record->answers->firstWhere('form_template_field_id', $field->id);
+
+                    if (! $answer) {
+                        return null;
+                    }
+
+                    $decoded = $answer->getDecodedValue();
+
+                    return match (true) {
+                        is_array($decoded) => implode(', ', array_filter((array) $decoded, 'strlen')) ?: null,
+                        is_bool($decoded) => $decoded ? __('Yes') : __('No'),
+                        default => ($decoded !== null && $decoded !== '') ? (string) $decoded : null,
+                    };
+                })
+            )
+            ->values()
+            ->all() ?? [];
+
         return $table
             ->filtersLayout(FiltersLayout::AboveContent)
             ->deferFilters(false)
@@ -47,16 +80,6 @@ final class CampVisitorsTable
                     )
                     ->sortable()
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
-                TextColumn::make('visitor.name')
-                    ->label(__('Visitor'))
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('visitor.gender')
-                    ->sortable()
-                    ->label(__('Gender'))
-                    ->badge(),
-                TextColumn::make('visitor.age')
-                    ->label(__('Age')),
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
@@ -79,6 +102,8 @@ final class CampVisitorsTable
                     ->label(__('Waitlist Pos'))
                     ->placeholder('—')
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Waitlisted->value),
+
+                ...$templateColumns,
             ])
             ->filters([
                 SelectFilter::make('gender')
@@ -102,6 +127,8 @@ final class CampVisitorsTable
                     ->falseLabel(__('Not Checked In')),
             ])
             ->recordActions([
+                ViewAction::make(),
+
                 Action::make('confirm')
                     ->label(__('Confirm'))
                     ->icon('heroicon-o-check')
@@ -184,23 +211,6 @@ final class CampVisitorsTable
                         VisitorStatus::Confirmed->value,
                     ])),
 
-                Action::make('viewHealth')
-                    ->label(__('Health Info'))
-                    ->icon(Heroicon::OutlinedInformationCircle)
-                    ->color(Color::Blue)
-                    ->modal()
-                    ->modalHeading(fn (CampVisitor $record) => __('Health Info').": {$record->visitor->name}")
-                    ->schema([
-                        Textarea::make('allergies')
-                            ->label(__('Allergies'))
-                            ->disabled()
-                            ->default(fn (CampVisitor $record) => $record->visitor->allergies),
-                        Textarea::make('medications')
-                            ->label(__('Medications'))
-                            ->disabled()
-                            ->default(fn (CampVisitor $record) => $record->visitor->medications),
-                    ])
-                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') !== 'all'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

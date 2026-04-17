@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Modules\Camp\Enums\CampTargetGroup;
@@ -94,6 +95,11 @@ final class ListCampVisitors extends ListRecords
     public function getTitle(): string
     {
         return $this->parentRecord->name.' › '.__('Visitors');
+    }
+
+    protected function getTableQuery(): Builder|Relation|null
+    {
+        return parent::getTableQuery()?->with('answers');
     }
 
     protected function getHeaderActions(): array
