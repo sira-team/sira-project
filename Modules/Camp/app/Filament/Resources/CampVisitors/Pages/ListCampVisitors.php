@@ -122,7 +122,7 @@ final class ListCampVisitors extends ListRecords
                     ->select('camp_visitor.*')
                 )
                 ->visible(fn (): bool => match ($this->parentRecord->target_group) {
-                    CampTargetGroup::Children, CampTargetGroup::Teenagers => false,
+                    CampTargetGroup::Children => false,
                     default => true,
                 }),
             ExportAction::make('exportWithGuardians')
@@ -142,7 +142,7 @@ final class ListCampVisitors extends ListRecords
                     ->select('camp_visitor.*')
                 )
                 ->visible(fn (): bool => match ($this->parentRecord->target_group) {
-                    CampTargetGroup::Children, CampTargetGroup::Teenagers => true,
+                    CampTargetGroup::Children => true,
                     default => false,
                 }),
         ];

@@ -47,7 +47,7 @@ final class CampRegistrationAnswer extends Model
      */
     public function getDisplayLabel(): string
     {
-        return $this->field_label ?? $this->field?->label ?? __('Deleted field');
+        return $this->field_label ?? $this->field->label ?? __('Deleted field');
     }
 
     /**

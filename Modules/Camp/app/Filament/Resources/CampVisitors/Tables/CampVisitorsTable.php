@@ -80,6 +80,14 @@ final class CampVisitorsTable
                     )
                     ->sortable()
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
+                TextColumn::make('visitor.name')
+                    ->label(__('Visitor'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('visitor.gender')
+                    ->sortable()
+                    ->label(__('Gender'))
+                    ->badge(),
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
@@ -89,11 +97,6 @@ final class CampVisitorsTable
                     ->dateTime('d.m.Y H:i')
                     ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') !== VisitorStatus::Confirmed->value)
                     ->sortable(),
-                TextColumn::make('wishes')
-                    ->label(__('Wishes'))
-                    ->columnSpan(2)
-                    ->placeholder('—')
-                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? 'all') === VisitorStatus::Confirmed->value),
                 ToggleColumn::make('is_checked_in')
                     ->label(__('Checked In'))
                     ->updateStateUsing(fn (CampVisitor $record, bool $state): bool => $record->update(['checked_in_at' => $state ? now() : null]) || $state)

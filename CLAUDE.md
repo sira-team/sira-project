@@ -646,7 +646,7 @@ External people who submit public forms. No Filament access. Will eventually hav
 - Model: `App\Models\Visitor`
 - Self-referencing: a visitor can be a parent (root, `parent_id = null`) or a child (`parent_id` FK → `visitors.id`)
 - Child visitors have no email — notifications always go to the root visitor's email
-- All participant health data (date of birth, gender, allergies, medications, emergency contact) lives directly on the `Visitor` model — there is no separate Participant model
+- All participant data (gender) lives directly on the `Visitor` model — there is no separate Participant model
 
 Never mix these two. Do not use `users` for visitors. Do not use `visitors` for Filament users.
 

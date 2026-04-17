@@ -8,6 +8,7 @@ use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 use Modules\Camp\Models\CampRegistrationAnswer;
 use Modules\Camp\Models\CampVisitor;
 
@@ -34,10 +35,6 @@ final class CampVisitorInfolist
                     TextEntry::make('room.name')
                         ->label(__('Room'))
                         ->placeholder('—'),
-                    TextEntry::make('wishes')
-                        ->label(__('Wishes'))
-                        ->placeholder('—')
-                        ->columnSpanFull(),
                 ]),
 
             Section::make(__('Form Answers'))

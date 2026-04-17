@@ -15,7 +15,7 @@
         @endif
     </div>
 
-@elseif ($field->type !== FormFieldType::Repeater)
+@else
     <div>
         @if ($field->type !== FormFieldType::Boolean)
             <label for="{{ $idKey }}" class="block text-sm font-medium text-gray-700">

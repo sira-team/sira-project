@@ -63,19 +63,16 @@ final class FamilyCampSeeder extends Seeder
             'email' => 'mohammed.samir@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => 'male',
-            'date_of_birth' => '1980-05-10',
         ]);
 
         $child1a = Visitor::factory()->child()->withParent($parent1)->create([
             'name' => 'Layla Samir',
             'gender' => 'female',
-            'date_of_birth' => '2012-08-15',
         ]);
 
         $child1b = Visitor::factory()->child()->withParent($parent1)->create([
             'name' => 'Karim Samir',
             'gender' => 'male',
-            'date_of_birth' => '2015-03-20',
         ]);
 
         foreach ([$parent1, $child1a, $child1b] as $visitor) {
@@ -93,13 +90,11 @@ final class FamilyCampSeeder extends Seeder
             'email' => 'fatima.elsayed@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => 'female',
-            'date_of_birth' => '1985-12-03',
         ]);
 
         $child2 = Visitor::factory()->child()->withParent($parent2)->create([
             'name' => 'Ahmed El-Sayed',
             'gender' => 'male',
-            'date_of_birth' => '2016-11-10',
         ]);
 
         foreach ([$parent2, $child2] as $visitor) {
@@ -117,25 +112,21 @@ final class FamilyCampSeeder extends Seeder
             'email' => 'hassan.rashid@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => 'male',
-            'date_of_birth' => '1978-07-22',
         ]);
 
         $child3a = Visitor::factory()->child()->withParent($parent3)->create([
             'name' => 'Noor Rashid',
             'gender' => 'female',
-            'date_of_birth' => '2010-02-14',
         ]);
 
         $child3b = Visitor::factory()->child()->withParent($parent3)->create([
             'name' => 'Ibrahim Rashid',
             'gender' => 'male',
-            'date_of_birth' => '2013-06-25',
         ]);
 
         $child3c = Visitor::factory()->child()->withParent($parent3)->create([
             'name' => 'Maryam Rashid',
             'gender' => 'female',
-            'date_of_birth' => '2018-01-08',
         ]);
 
         foreach ([$parent3, $child3a, $child3b, $child3c] as $visitor) {
@@ -153,19 +144,16 @@ final class FamilyCampSeeder extends Seeder
             'email' => 'nur.khan@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => 'female',
-            'date_of_birth' => '1988-09-17',
         ]);
 
         $child4a = Visitor::factory()->child()->withParent($parent4)->create([
             'name' => 'Amira Khan',
             'gender' => 'female',
-            'date_of_birth' => '2014-05-09',
         ]);
 
         $child4b = Visitor::factory()->child()->withParent($parent4)->create([
             'name' => 'Malik Khan',
             'gender' => 'male',
-            'date_of_birth' => '2017-10-12',
         ]);
 
         foreach ([$parent4, $child4a, $child4b] as $visitor) {
@@ -183,13 +171,11 @@ final class FamilyCampSeeder extends Seeder
             'email' => 'youssef.tahir@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => 'male',
-            'date_of_birth' => '1982-04-30',
         ]);
 
         $child5 = Visitor::factory()->child()->withParent($parent5)->create([
             'name' => 'Zainab Tahir',
             'gender' => 'female',
-            'date_of_birth' => '2011-12-28',
         ]);
 
         foreach ([$parent5, $child5] as $index => $visitor) {

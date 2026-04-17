@@ -19,7 +19,6 @@ enum FormFieldType: string implements HasLabel
     case Checkbox = 'checkbox';
     case Boolean = 'boolean';
     case Section = 'section';
-    case Repeater = 'repeater';
 
     public function getLabel(): string
     {
@@ -35,7 +34,6 @@ enum FormFieldType: string implements HasLabel
             self::Checkbox => __('Checkbox (multiple choice)'),
             self::Boolean => __('Yes / No'),
             self::Section => __('Section heading'),
-            self::Repeater => __('Repeater (multiple persons)'),
         };
     }
 
@@ -46,6 +44,6 @@ enum FormFieldType: string implements HasLabel
 
     public function isStructural(): bool
     {
-        return in_array($this, [self::Section, self::Repeater]);
+        return $this === self::Section;
     }
 }

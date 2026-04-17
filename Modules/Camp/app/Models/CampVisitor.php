@@ -22,7 +22,6 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property int $camp_id
  * @property int $visitor_id
  * @property VisitorStatus $status
- * @property string|null $wishes
  * @property int|null $room_id
  * @property int|null $waitlist_position
  * @property Carbon $registered_at
@@ -49,8 +48,6 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereVisitorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWaitlistPosition($value)
  * @method static \Modules\Camp\Database\Factories\CampVisitorFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereSpecialWishes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWishes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCheckedInAt($value)
  *
  * @mixin \Eloquent
@@ -67,7 +64,6 @@ final class CampVisitor extends Pivot
         'camp_id',
         'visitor_id',
         'status',
-        'wishes',
         'room_id',
         'waitlist_position',
         'registered_at',

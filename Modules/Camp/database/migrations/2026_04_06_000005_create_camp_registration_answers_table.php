@@ -14,6 +14,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('camp_visitor_id')->constrained('camp_visitor')->cascadeOnDelete();
             $table->foreignId('form_template_field_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('field_label')->nullable();
+            $table->string('field_type')->nullable();
             $table->text('value')->nullable();
             $table->timestamps();
         });

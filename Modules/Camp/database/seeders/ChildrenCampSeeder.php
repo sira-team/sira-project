@@ -19,7 +19,7 @@ use Modules\Camp\Models\CampExpense;
 use Modules\Camp\Models\CampVisitor;
 use Modules\Camp\Models\Hostel;
 
-final class TeenageCampSeeder extends Seeder
+final class ChildrenCampSeeder extends Seeder
 {
     public function run(): void
     {
@@ -27,23 +27,23 @@ final class TeenageCampSeeder extends Seeder
         $user = User::where('tenant_id', $tenant->id)->firstOrFail();
         $altenberg = Hostel::firstWhere('name', 'Jugendherberge Altenberg');
 
-        // Teenager camp — registration open
-        $teenageCamp = Camp::firstOrCreate(
+        // Children's camp — registration is open
+        $childrenCamp = Camp::firstOrCreate(
             ['name' => 'Jugendcamp 2026', 'tenant_id' => $tenant->id],
             [
                 'starts_at' => now()->addMonths(2)->next('Friday')->format('Y-m-d'),
                 'ends_at' => now()->addMonths(2)->next('Friday')->addDays(4)->format('Y-m-d'),
                 'price_per_participant' => 110.00,
-                'target_group' => CampTargetGroup::Teenagers,
+                'target_group' => CampTargetGroup::Children,
                 'gender_policy' => CampGenderPolicy::All,
                 'description' => 'Sommercamp für Jugendliche mit Fokus auf Aktivitäten und Austausch.',
                 'tenant_id' => $tenant->id,
             ]
         );
 
-        if ($altenberg && ! CampContract::where('camp_id', $teenageCamp->id)->exists()) {
+        if ($altenberg && ! CampContract::where('camp_id', $childrenCamp->id)->exists()) {
             CampContract::create([
-                'camp_id' => $teenageCamp->id,
+                'camp_id' => $childrenCamp->id,
                 'hostel_id' => $altenberg->id,
                 'price_per_person_per_night' => 36.00,
                 'has_catering' => true,
@@ -53,8 +53,8 @@ final class TeenageCampSeeder extends Seeder
             ]);
         }
 
-        $this->seedExpenses($teenageCamp, $user);
-        $this->seedVisitors($teenageCamp);
+        $this->seedExpenses($childrenCamp, $user);
+        $this->seedVisitors($childrenCamp);
     }
 
     private function seedExpenses(Camp $camp, User $user): void
@@ -111,7 +111,6 @@ final class TeenageCampSeeder extends Seeder
             'email' => 'zahra.benali@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => Gender::Female->value,
-            'date_of_birth' => '1980-05-12',
         ]);
 
         $parent2 = Visitor::factory()->create([
@@ -119,35 +118,32 @@ final class TeenageCampSeeder extends Seeder
             'email' => 'ahmed.khalil@example.com',
             'phone' => fake()->phoneNumber(),
             'gender' => Gender::Male->value,
-            'date_of_birth' => '1978-08-25',
         ]);
 
-        // Teenagers with parents
-        $teenagers = [
-            ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2008-01-01', 'parent' => $parent1],
-            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2009-05-15', 'parent' => $parent1],
-            ['name' => 'Omar Benali', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2010-08-01', 'parent' => $parent2],
-            ['name' => 'Safiya Öztürk', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '2011-03-15', 'parent' => $parent2],
-            ['name' => 'Hamza Khalil', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Pending, 'date_of_birth' => '2012-09-20', 'parent' => $parent2],
-            ['name' => 'Aisha Rahman', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Pending, 'date_of_birth' => '2010-11-05', 'parent' => $parent1],
-            ['name' => 'Yusuf Demir', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted, 'date_of_birth' => '2009-07-10', 'parent' => $parent1],
-            ['name' => 'Nour Al-Din', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted, 'date_of_birth' => '2011-02-20', 'parent' => $parent2],
+        // Children with parents
+        $children = [
+            ['name' => 'Ahmad Al-Hassan', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Maryam Yilmaz', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Omar Benali', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Safiya Öztürk', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Hamza Khalil', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Pending],
+            ['name' => 'Aisha Rahman', 'gender' => Gender::Female->value, 'status' => VisitorStatus::Pending],
+            ['name' => 'Yusuf Demir', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted],
+            ['name' => 'Nour Al-Din', 'gender' => Gender::Male->value, 'status' => VisitorStatus::Waitlisted],
         ];
 
         $waitlistPosition = 1;
 
-        // Create teenagers with parent relationships
-        foreach ($teenagers as $data) {
-            $parent = $data['parent'];
+        // Create children with parent relationships
+        foreach ($children as $data) {
             unset($data['parent']);
 
             $visitor = Visitor::factory()
                 ->child()
-                ->withParent($parent)
+                ->withParent()
                 ->create([
                     'name' => $data['name'],
                     'gender' => $data['gender'],
-                    'date_of_birth' => $data['date_of_birth'],
                 ]);
 
             $isWaitlisted = $data['status'] === VisitorStatus::Waitlisted;

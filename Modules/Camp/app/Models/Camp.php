@@ -62,6 +62,8 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property-read int|null $camp_users_count
  * @property-read Collection<int, CampExpense> $campExpenses
  * @property-read int|null $camp_expenses_count
+ * @property-read int|null $form_template_id
+ * @property-read FormTemplate|null $formTemplate
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
@@ -130,7 +132,7 @@ final class Camp extends Model
     public function visitors(): BelongsToMany
     {
         return $this->belongsToMany(Visitor::class, 'camp_visitor')
-            ->withPivot('id', 'status', 'wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->withPivot('id', 'status', 'room_id', 'waitlist_position', 'registered_at')
             ->using(CampVisitor::class)
             ->withTimestamps();
     }

@@ -15,7 +15,7 @@ final class CampDatabaseSeeder extends Seeder
     {
         $this->call([
             HostelSeeder::class,
-            TeenageCampSeeder::class,
+            ChildrenCampSeeder::class,
             FamilyCampSeeder::class,
             AdultCampSeeder::class,
         ]);

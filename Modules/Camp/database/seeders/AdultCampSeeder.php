@@ -60,13 +60,13 @@ final class AdultCampSeeder extends Seeder
         }
 
         $entries = [
-            ['name' => 'Dr. Ibrahim Nawaz', 'gender' => 'male', 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '1978-03-12'],
-            ['name' => 'Fatima Al-Qadi', 'gender' => 'female', 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '1982-07-25'],
-            ['name' => 'Hassan Mahmud', 'gender' => 'male', 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '1975-11-08'],
-            ['name' => 'Layla Amr', 'gender' => 'female', 'status' => VisitorStatus::Confirmed, 'date_of_birth' => '1985-01-15'],
-            ['name' => 'Tariq Salim', 'gender' => 'male', 'status' => VisitorStatus::Pending, 'date_of_birth' => '1980-06-20'],
-            ['name' => 'Amina Hassan', 'gender' => 'female', 'status' => VisitorStatus::Pending, 'date_of_birth' => '1983-09-10'],
-            ['name' => 'Samir Khalil', 'gender' => 'male', 'status' => VisitorStatus::Waitlisted, 'date_of_birth' => '1976-04-30'],
+            ['name' => 'Dr. Ibrahim Nawaz', 'gender' => 'male', 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Fatima Al-Qadi', 'gender' => 'female', 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Hassan Mahmud', 'gender' => 'male', 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Layla Amr', 'gender' => 'female', 'status' => VisitorStatus::Confirmed],
+            ['name' => 'Tariq Salim', 'gender' => 'male', 'status' => VisitorStatus::Pending],
+            ['name' => 'Amina Hassan', 'gender' => 'female', 'status' => VisitorStatus::Pending],
+            ['name' => 'Samir Khalil', 'gender' => 'male', 'status' => VisitorStatus::Waitlisted],
         ];
 
         $waitlistPosition = 1;
@@ -80,9 +80,6 @@ final class AdultCampSeeder extends Seeder
                     'name' => $data['name'],
                     'phone' => fake()->phoneNumber(),
                     'gender' => $data['gender'],
-                    'date_of_birth' => $data['date_of_birth'],
-                    'allergies' => fake()->randomElement([null, 'Peanuts', 'Gluten', 'Dairy']),
-                    'medications' => fake()->randomElement([null, 'Aspirin', 'Diabetes medication']),
                 ],
             );
 

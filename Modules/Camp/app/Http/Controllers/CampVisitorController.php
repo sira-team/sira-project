@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Enums\FormFieldType;
 use Modules\Camp\Enums\VisitorStatus;
 use Modules\Camp\Models\Camp;
@@ -31,14 +32,14 @@ final class CampVisitorController
         abort_unless($camp->tenant_id === $tenant->id, 404);
         abort_unless($camp->registration_is_open, 403, 'Registration is not open for this camp');
 
+        $customFields = collect();
+
         if ($camp->form_template_id !== null) {
             $camp->load('formTemplate.fields');
-            [$preFields, $postFields, $hasRepeater] = $this->splitFields($camp->formTemplate->fields);
-
-            return view('camp::register-template', compact('camp', 'tenant', 'preFields', 'postFields', 'hasRepeater'));
+            $customFields = $camp->formTemplate->fields;
         }
 
-        return view('camp::register', compact('camp', 'tenant'));
+        return view('camp::register', compact('camp', 'tenant', 'customFields'));
     }
 
     /**
@@ -49,136 +50,177 @@ final class CampVisitorController
         abort_unless($camp->tenant_id === $tenant->id, 404);
         abort_unless($camp->registration_is_open, 403);
 
+        $customFields = collect();
+
         if ($camp->form_template_id !== null) {
             $camp->load('formTemplate.fields');
-
-            return $this->storeWithTemplate($tenant, $camp, $registrationService);
+            $customFields = $camp->formTemplate->fields;
         }
 
-        return $this->storeHardcoded($tenant, $camp, $registrationService);
+        match ($camp->target_group) {
+            CampTargetGroup::Adults => $this->storeAdults($tenant, $camp, $registrationService, $customFields),
+            CampTargetGroup::Children => $this->storeChildren($tenant, $camp, $registrationService, $customFields),
+            CampTargetGroup::Family => $this->storeFamily($tenant, $camp, $registrationService, $customFields),
+        };
+
+        return redirect()->route('camp.register.show', [$tenant->slug, $camp])->with('success', __('Registration submitted successfully!'));
     }
 
     /**
+     * @param  Collection<int, FormTemplateField>  $customFields
+     *
      * @throws Throwable
      */
-    private function storeHardcoded(Tenant $tenant, Camp $camp, CampRegistrationService $registrationService): RedirectResponse
+    private function storeAdults(Tenant $tenant, Camp $camp, CampRegistrationService $registrationService, Collection $customFields): void
     {
-        $validated = $this->validate(request(), [
-            'participants' => 'required|array|min:1',
-            'participants.*.name' => 'required|string|max:255',
-            'participants.*.date_of_birth' => 'required|date',
-            'participants.*.gender' => 'required|in:'.implode(',', array_column($camp->gender_policy->getGenders(), 'value')),
-            'participants.*.allergies' => 'nullable|string',
-            'participants.*.medications' => 'nullable|string',
-            'participants.*.wishes' => 'nullable|string|max:255',
+        $rules = [
             'visitor.name' => 'required|string|max:255',
             'visitor.email' => 'required|email:rfc,dns',
             'visitor.phone' => 'nullable|string|max:20',
-            'visitor.gender' => 'nullable|in:male,female',
-            'visitor.date_of_birth' => 'nullable|date',
+            'visitor.gender' => 'required|in:male,female',
             'terms_accepted' => 'required|accepted',
-        ]);
+        ];
 
-        $guardian = Visitor::firstOrCreate(
+        foreach ($customFields as $field) {
+            if (! $field->type->isStructural()) {
+                $rules["custom_fields.{$field->id}"] = $this->fieldValidationRule($field);
+            }
+        }
+
+        $validated = $this->validate(request(), $rules);
+
+        $visitor = Visitor::firstOrCreate(
             ['email' => $validated['visitor']['email']],
             [
                 'name' => $validated['visitor']['name'],
                 'phone' => $validated['visitor']['phone'] ?? null,
-                'gender' => $validated['visitor']['gender'] ?? null,
-                'date_of_birth' => $validated['visitor']['date_of_birth'] ?? null,
-            ]
+                'gender' => Gender::tryFrom($validated['visitor']['gender']),
+            ],
         );
 
-        foreach ($validated['participants'] as $participantData) {
-            $child = Visitor::create([
-                'name' => $participantData['name'],
-                'date_of_birth' => $participantData['date_of_birth'],
-                'gender' => $participantData['gender'],
-                'allergies' => $participantData['allergies'] ?? null,
-                'medications' => $participantData['medications'] ?? null,
-            ]);
+        $registration = $registrationService->registerVisitor($camp, $visitor);
 
-            $child->guardians()->attach($guardian, ['relationship' => $guardian->gender === Gender::Male ? GuardianRelationship::Father : GuardianRelationship::Mother]);
-
-            $registration = $registrationService->registerVisitor($camp, $child, $participantData['wishes']);
-            $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
+        if ($customFields->count() > 0) {
+            $this->saveAnswers($registration, $customFields, $validated['custom_fields'] ?? []);
         }
 
-        return redirect()->route('camp.register.show', [$tenant->slug, $camp])->with('success', 'Registration submitted successfully!');
+        $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
     }
 
     /**
+     * @param  Collection<int, FormTemplateField>  $customFields
+     *
      * @throws Throwable
      */
-    private function storeWithTemplate(Tenant $tenant, Camp $camp, CampRegistrationService $registrationService): RedirectResponse
+    private function storeChildren(Tenant $tenant, Camp $camp, CampRegistrationService $registrationService, Collection $customFields): void
     {
-        [$preFields, $postFields, $hasRepeater] = $this->splitFields($camp->formTemplate->fields);
+        $rules = [
+            'visitor.name' => 'required|string|max:255',
+            'visitor.email' => 'required|email:rfc,dns',
+            'visitor.phone' => 'nullable|string|max:20',
+            'participants' => 'required|array|min:1',
+            'participants.*.name' => 'required|string|max:255',
+            'participants.*.gender' => 'required|in:male,female',
+            'participants.*.phone' => 'nullable|string|max:20',
+            'participants.*.email' => 'nullable|email:rfc,dns',
+            'terms_accepted' => 'required|accepted',
+        ];
 
-        $rules = [];
-
-        foreach ($preFields as $field) {
-            if ($field->type->isStructural()) {
-                continue;
-            }
-
-            $rules["custom_fields.{$field->id}"] = $this->fieldValidationRule($field);
-        }
-
-        if ($hasRepeater) {
-            $rules['participants'] = 'required|array|min:1';
-
-            foreach ($postFields as $field) {
-                if ($field->type->isStructural()) {
-                    continue;
-                }
-
+        foreach ($customFields as $field) {
+            if (! $field->type->isStructural()) {
                 $rules["participants.*.custom_fields.{$field->id}"] = $this->fieldValidationRule($field);
             }
         }
 
         $validated = $this->validate(request(), $rules);
 
-        $preAnswers = $validated['custom_fields'] ?? [];
+        $guardian = Visitor::firstOrCreate(
+            ['email' => $validated['visitor']['email']],
+            [
+                'name' => $validated['visitor']['name'],
+                'phone' => $validated['visitor']['phone'] ?? null,
+            ],
+        );
 
-        if ($hasRepeater) {
-            foreach ($validated['participants'] as $participantData) {
-                $participant = Visitor::create(['name' => 'Participant']);
+        foreach ($validated['participants'] as $participantData) {
+            $child = Visitor::create([
+                'name' => $participantData['name'],
+                'gender' => Gender::tryFrom($participantData['gender']),
+                'email' => $participantData['email'] ?? null,
+                'phone' => $participantData['phone'] ?? null,
+            ]);
 
-                $registration = $registrationService->registerVisitor($camp, $participant, null);
-                $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
+            $relationship = $guardian->gender === Gender::Male ? GuardianRelationship::Father : GuardianRelationship::Mother;
+            $child->guardians()->attach($guardian, ['relationship' => $relationship]);
 
-                $this->saveAnswers($registration, $preFields, $preAnswers);
-                $this->saveAnswers($registration, $postFields, $participantData['custom_fields'] ?? []);
+            $registration = $registrationService->registerVisitor($camp, $child);
+
+            if ($customFields->count() > 0) {
+                $this->saveAnswers($registration, $customFields, $participantData['custom_fields'] ?? []);
             }
-        } else {
-            $participant = Visitor::create(['name' => 'Participant']);
 
-            $registration = $registrationService->registerVisitor($camp, $participant, null);
             $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
-
-            $this->saveAnswers($registration, $preFields, $preAnswers);
         }
-
-        return redirect()->route('camp.register.show', [$tenant->slug, $camp])->with('success', 'Registration submitted successfully!');
     }
 
     /**
-     * @param  Collection<int, FormTemplateField>  $fields
-     * @return array{0: Collection<int, FormTemplateField>, 1: Collection<int, FormTemplateField>, 2: bool}
+     * @param  Collection<int, FormTemplateField>  $customFields
+     *
+     * @throws Throwable
      */
-    private function splitFields(Collection $fields): array
+    private function storeFamily(Tenant $tenant, Camp $camp, CampRegistrationService $registrationService, Collection $customFields): void
     {
-        $repeaterIndex = $fields->search(fn (FormTemplateField $f) => $f->type === FormFieldType::Repeater);
+        $rules = [
+            'visitor.name' => 'required|string|max:255',
+            'visitor.email' => 'required|email:rfc,dns',
+            'visitor.phone' => 'nullable|string|max:20',
+            'participants' => 'nullable|array',
+            'participants.*.name' => 'required_with:participants|string|max:255',
+            'terms_accepted' => 'required|accepted',
+        ];
 
-        if ($repeaterIndex === false) {
-            return [$fields, collect(), false];
+        foreach ($customFields as $field) {
+            if (! $field->type->isStructural()) {
+                $rules["custom_fields.{$field->id}"] = $this->fieldValidationRule($field);
+                $rules["participants.*.custom_fields.{$field->id}"] = $this->fieldValidationRule($field);
+            }
         }
 
-        return [
-            $fields->slice(0, $repeaterIndex),
-            $fields->slice($repeaterIndex + 1),
-            true,
-        ];
+        $validated = $this->validate(request(), $rules);
+
+        $guardian = Visitor::firstOrCreate(
+            ['email' => $validated['visitor']['email']],
+            [
+                'name' => $validated['visitor']['name'],
+                'phone' => $validated['visitor']['phone'] ?? null,
+            ],
+        );
+
+        $registration = $registrationService->registerVisitor($camp, $guardian);
+
+        if ($customFields->count() > 0) {
+            $this->saveAnswers($registration, $customFields, $validated['custom_fields'] ?? []);
+        }
+
+        $registration->notify($registration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
+
+        if (! empty($validated['participants'])) {
+            foreach ($validated['participants'] as $participantData) {
+                $member = Visitor::create([
+                    'name' => $participantData['name'],
+                ]);
+
+                $member->guardians()->attach($guardian, ['relationship' => GuardianRelationship::Father]);
+
+                $memberRegistration = $registrationService->registerVisitor($camp, $member);
+
+                if ($customFields->count() > 0) {
+                    $this->saveAnswers($memberRegistration, $customFields, $participantData['custom_fields'] ?? []);
+                }
+
+                $memberRegistration->notify($memberRegistration->status === VisitorStatus::Pending ? NotificationType::CampReceived : NotificationType::CampWaitlisted);
+            }
+        }
     }
 
     private function fieldValidationRule(FormTemplateField $field): string
@@ -209,7 +251,6 @@ final class CampVisitorController
 
             $raw = $rawAnswers[$field->id] ?? null;
 
-            // Array values (checkbox) are JSON-encoded; everything else stored as plain text
             $value = is_array($raw) ? json_encode($raw) : ($raw !== null ? (string) $raw : null);
 
             CampRegistrationAnswer::create([
