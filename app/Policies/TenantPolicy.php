@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Tenant;
-use App\Traits\CheckGlobalAdminFeature;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
 final class TenantPolicy
 {
-    use CheckGlobalAdminFeature, HandlesAuthorization;
+    use HandlesAuthorization;
 
     public function viewAny(AuthUser $authUser): bool
     {

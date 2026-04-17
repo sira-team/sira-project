@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -98,6 +99,7 @@ final class Camp extends Model
 
     protected $fillable = [
         'tenant_id',
+        'form_template_id',
         'name',
         'starts_at',
         'ends_at',
@@ -114,6 +116,11 @@ final class Camp extends Model
         'max_visitors_female',
         'max_visitors_all',
     ];
+
+    public function formTemplate(): BelongsTo
+    {
+        return $this->belongsTo(FormTemplate::class);
+    }
 
     public function contract(): HasOne
     {
