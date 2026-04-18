@@ -8,29 +8,44 @@
 </head>
 <body class="bg-gray-50">
     <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-lg mx-auto bg-white rounded-lg shadow p-6">
-            <h1 class="text-2xl font-bold mb-1">{{ $camp->name }}</h1>
-            <p class="text-gray-500 mb-6">{{ $camp->tenant->name }}</p>
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow ring-1 ring-gray-950/5 p-6 sm:p-8">
+
+            {{-- Header --}}
+            <div class="border-b border-gray-100 pb-6 mb-6">
+                <h1 class="text-3xl font-bold text-gray-950">{{ $camp->name }}</h1>
+                <p class="text-sm text-gray-500 mt-1">{{ $camp->tenant->name }}</p>
+            </div>
 
             @if (session('success'))
-                <div class="bg-green-50 border border-green-200 rounded p-4 mb-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
                     <p class="text-green-800 font-medium">{{ session('success') }}</p>
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="bg-red-50 border border-red-200 rounded p-4 mb-6">
-                    <p class="text-red-800 font-medium mb-1">{{ __('Please fix the following errors:') }}</p>
-                    <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <p class="text-red-800 font-medium mb-1">{{ __('Please fix the following errors:') }}</p>
+                        <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             @endif
 
             @if (!$camp->registration_is_open)
-                <div class="bg-red-50 border border-red-200 rounded p-4">
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
                     <p class="text-red-800 font-medium">{{ __('Registration is closed') }}</p>
                 </div>
             @else
@@ -39,7 +54,7 @@
 
                     {{-- HARDCODED: Guardian / Self section --}}
                     <section class="space-y-4">
-                        <h3 class="font-semibold text-gray-900">
+                        <h3 class="text-base font-semibold text-gray-950">
                             @if ($camp->target_group->value === 'adults')
                                 {{ __('Your Information') }}
                             @else
@@ -52,7 +67,7 @@
                                 {{ __('Full Name') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="visitor_name" name="visitor[name]" required
-                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    value="{{ old('visitor.name') }}">
                             @error('visitor.name')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -64,7 +79,7 @@
                                 {{ __('Email') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="email" id="visitor_email" name="visitor[email]" required
-                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    value="{{ old('visitor.email') }}">
                             @error('visitor.email')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -76,7 +91,7 @@
                                 {{ __('Phone') }}
                             </label>
                             <input type="tel" id="visitor_phone" name="visitor[phone]"
-                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    value="{{ old('visitor.phone') }}">
                             @error('visitor.phone')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -89,7 +104,7 @@
                                     {{ __('Gender') }} <span class="text-red-500">*</span>
                                 </label>
                                 <select id="visitor_gender" name="visitor[gender]" required
-                                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     <option value="">— {{ __('Select') }} —</option>
                                     <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
                                     <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
@@ -115,8 +130,8 @@
 
                     {{-- PARTICIPANT REPEATER (children and family modes) --}}
                     @if ($camp->target_group->value === 'children' || $camp->target_group->value === 'family')
-                        <div class="border-t pt-6">
-                            <h3 class="font-semibold text-gray-900 mb-4" id="participants-heading">
+                        <div class="border-t border-gray-100 pt-6">
+                            <h3 class="text-base font-semibold text-gray-950 mb-4" id="participants-heading">
                                 @if ($camp->target_group->value === 'children')
                                     {{ __('Child Information') }}
                                 @else
@@ -124,7 +139,7 @@
                                 @endif
                             </h3>
 
-                            <div id="participants-container" class="space-y-6">
+                            <div id="participants-container" class="space-y-4">
                                 @php
                                     $oldParticipants = old('participants', $camp->target_group->value === 'children' ? [[]] : []);
                                 @endphp
@@ -141,18 +156,21 @@
 
                             @if ($camp->target_group->value === 'family')
                                 <button type="button" id="add-participant-btn"
-                                        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                                    + {{ __('Add another family member') }}
+                                        class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    {{ __('Add another family member') }}
                                 </button>
                             @endif
                         </div>
                     @endif
 
                     {{-- TERMS --}}
-                    <div class="border-t pt-6">
-                        <label class="flex items-start">
+                    <div class="border-t border-gray-100 pt-6">
+                        <label class="flex items-start gap-3">
                             <input type="checkbox" name="terms_accepted" value="1" required
-                                   class="mt-1 mr-3 rounded border-gray-300">
+                                   class="mt-0.5 rounded border-gray-300">
                             <span class="text-sm text-gray-700">{{ __('I accept the terms and conditions') }}</span>
                         </label>
                         @error('terms_accepted')
@@ -161,7 +179,7 @@
                     </div>
 
                     <button type="submit"
-                            class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium">
+                            class="w-full px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">
                         {{ __('Register') }}
                     </button>
                 </form>

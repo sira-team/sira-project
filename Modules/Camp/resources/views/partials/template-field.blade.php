@@ -8,7 +8,7 @@
 @use(Modules\Camp\Enums\FormFieldType)
 
 @if ($field->type === FormFieldType::Section)
-    <div class="border-t pt-4">
+    <div class="border-t border-gray-100 pt-4">
         <h4 class="font-semibold text-gray-800">{{ $field->label }}</h4>
         @if ($field->help_text)
             <p class="text-sm text-gray-500 mt-1">{{ $field->help_text }}</p>
@@ -37,33 +37,33 @@
                        id="{{ $idKey }}" name="{{ $nameKey }}"
                        @if ($field->required) required @endif
                        value="{{ is_string($oldValue) ? $oldValue : '' }}"
-                       class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                       class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @break
 
             @case (FormFieldType::Number)
                 <input type="number" id="{{ $idKey }}" name="{{ $nameKey }}"
                        @if ($field->required) required @endif
                        value="{{ is_numeric($oldValue) ? $oldValue : '' }}"
-                       class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                       class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @break
 
             @case (FormFieldType::Textarea)
                 <textarea id="{{ $idKey }}" name="{{ $nameKey }}" rows="3"
                           @if ($field->required) required @endif
-                          class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">{{ is_string($oldValue) ? $oldValue : '' }}</textarea>
+                          class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ is_string($oldValue) ? $oldValue : '' }}</textarea>
                 @break
 
             @case (FormFieldType::Date)
                 <input type="date" id="{{ $idKey }}" name="{{ $nameKey }}"
                        @if ($field->required) required @endif
                        value="{{ is_string($oldValue) ? $oldValue : '' }}"
-                       class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                       class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @break
 
             @case (FormFieldType::Select)
                 <select id="{{ $idKey }}" name="{{ $nameKey }}"
                         @if ($field->required) required @endif
-                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="">— select —</option>
                     @foreach ($field->options ?? [] as $option)
                         <option value="{{ $option }}" @selected($oldValue === $option)>{{ $option }}</option>

@@ -7,7 +7,7 @@
       $isRemovable  bool
 --}}
 
-<div class="participant-block border rounded-lg p-4 bg-gray-50 relative space-y-4" data-index="{{ $index }}">
+<div class="participant-block border border-gray-200 rounded-xl p-4 bg-white relative space-y-4" data-index="{{ $index }}">
 
     {{-- Remove button (hidden for first in children mode, optional in family) --}}
     <button type="button" class="remove-participant-btn absolute top-2 right-2 text-gray-400 hover:text-red-600"
@@ -23,7 +23,7 @@
             {{ __('Full Name') }} <span class="text-red-500">*</span>
         </label>
         <input type="text" id="p_{{ $index }}_name" name="participants[{{ $index }}][name]" required
-               class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+               class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                value="{{ is_string($old['name'] ?? null) ? $old['name'] : '' }}">
         @error("participants.{$index}.name")
             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -37,7 +37,7 @@
                 {{ __('Gender') }} <span class="text-red-500">*</span>
             </label>
             <select id="p_{{ $index }}_gender" name="participants[{{ $index }}][gender]" required
-                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <option value="">— {{ __('Select') }} —</option>
                 <option value="male" @selected(($old['gender'] ?? null) === 'male')>{{ __('Male') }}</option>
                 <option value="female" @selected(($old['gender'] ?? null) === 'female')>{{ __('Female') }}</option>
@@ -53,7 +53,7 @@
                 {{ __('Phone') }}
             </label>
             <input type="tel" id="p_{{ $index }}_phone" name="participants[{{ $index }}][phone]"
-                   class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                    value="{{ is_string($old['phone'] ?? null) ? $old['phone'] : '' }}">
             @error("participants.{$index}.phone")
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -66,7 +66,7 @@
                 {{ __('Email') }}
             </label>
             <input type="email" id="p_{{ $index }}_email" name="participants[{{ $index }}][email]"
-                   class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                    value="{{ is_string($old['email'] ?? null) ? $old['email'] : '' }}">
             @error("participants.{$index}.email")
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
