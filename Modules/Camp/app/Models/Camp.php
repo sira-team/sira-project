@@ -17,9 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Modules\Camp\Casts\AsCampChecklist;
 use Modules\Camp\Database\Factories\CampFactory;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\ValueObjects\CampChecklist;
 
 /**
  * @property int $id
@@ -61,6 +63,7 @@ use Modules\Camp\Enums\CampTargetGroup;
  * @property-read int|null $camp_users_count
  * @property-read Collection<int, CampExpense> $campExpenses
  * @property-read int|null $camp_expenses_count
+ * @property CampChecklist $checklist
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newQuery()
@@ -113,6 +116,7 @@ final class Camp extends Model
         'max_visitors_male',
         'max_visitors_female',
         'max_visitors_all',
+        'checklist',
     ];
 
     public function contract(): HasOne
@@ -180,6 +184,7 @@ final class Camp extends Model
             'gender_policy' => CampGenderPolicy::class,
             'registration_opens_at' => 'datetime',
             'registration_ends_at' => 'datetime',
+            'checklist' => AsCampChecklist::class,
         ];
     }
 }
