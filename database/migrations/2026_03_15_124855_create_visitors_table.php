@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
+            $table->text('allergies')->nullable();
+            $table->text('medications')->nullable();
             $table->timestamps();
         });
     }

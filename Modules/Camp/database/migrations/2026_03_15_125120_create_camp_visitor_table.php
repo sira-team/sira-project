@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('camp_id')->constrained()->cascadeOnDelete();
             $table->foreignId('visitor_id')->constrained()->cascadeOnDelete();
             $table->string('status');
+            $table->text('wishes')->nullable();
             $table->foreignId('room_id')->nullable()->constrained('hostel_rooms')->nullOnDelete();
             $table->unsignedInteger('waitlist_position')->nullable();
             $table->timestamp('checked_in_at')->nullable();
