@@ -59,6 +59,7 @@ final class CampResource extends Resource
             ListCampExpenses::class,
             ListCampVisitors::class,
             ListCampUsers::class,
+            Pages\ChecklistCamp::class,
         ]);
     }
 
@@ -74,6 +75,7 @@ final class CampResource extends Resource
             'create' => Pages\CreateCamp::route('/create'),
             'edit' => Pages\EditCamp::route('/{record}/edit'),
             'view' => Pages\ViewCamp::route('/{record}'),
+            'checklist' => Pages\ChecklistCamp::route('/{record}/checklist'),
         ];
     }
 
