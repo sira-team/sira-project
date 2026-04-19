@@ -6,7 +6,6 @@ namespace Modules\Camp\Enums;
 
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Contracts\Support\Htmlable;
 use Modules\Camp\Models\Camp;
 
 enum CampChecklistItem: string implements HasDescription, HasLabel
