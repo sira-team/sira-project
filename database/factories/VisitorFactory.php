@@ -26,7 +26,6 @@ final class VisitorFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
-            'date_of_birth' => fake()->dateTimeBetween('-40 years', '-18 years')->format('Y-m-d'),
             'gender' => fake()->randomElement(Gender::cases()),
         ];
     }
@@ -35,7 +34,6 @@ final class VisitorFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email' => null,
-            'date_of_birth' => fake()->dateTimeBetween('-17 years', '-6 years')->format('Y-m-d'),
         ]);
     }
 

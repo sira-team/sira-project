@@ -61,11 +61,11 @@ final class WaitlistService
         }
     }
 
-    public function assignPosition(Camp $camp, Gender $gender): int
+    public function assignPosition(Camp $camp, ?Gender $gender): int
     {
         return ($camp->campVisitors()
             ->where('status', VisitorStatus::Waitlisted)
-            ->when($camp->target_group !== CampTargetGroup::Family, function (Builder $query) use ($gender) {
+            ->when($camp->target_group !== CampTargetGroup::Family && $gender !== null, function (Builder $query) use ($gender) {
                 return $query->whereHas('visitor', function (Builder $query) use ($gender) {
                     $query->where('gender', $gender);
                 });
@@ -90,6 +90,15 @@ final class WaitlistService
 
     public function capacityReached(Camp $camp, Visitor $visitor): bool
     {
+        if ($visitor->gender === null) {
+            if ($camp->target_group === CampTargetGroup::Family) {
+                return $this->getCapacityForGender($camp, Gender::Male) <= 0;
+            }
+
+            return $this->getCapacityForGender($camp, Gender::Male) <= 0
+                && $this->getCapacityForGender($camp, Gender::Female) <= 0;
+        }
+
         return $this->getCapacityForGender($camp, $visitor->gender) <= 0;
     }
 }

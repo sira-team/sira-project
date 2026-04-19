@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\Gender;
 use Database\Factories\VisitorFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,10 +22,7 @@ use Modules\Camp\Models\Camp;
  * @property string $name
  * @property string|null $email
  * @property string|null $phone
- * @property Carbon|null $date_of_birth
  * @property Gender|null $gender
- * @property string|null $allergies
- * @property string|null $medications
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Visitor> $guardians
@@ -35,7 +31,6 @@ use Modules\Camp\Models\Camp;
  * @property-read int|null $children_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read mixed $age
  * @property-read Collection<int, Camp> $camps
  * @property-read int|null $camps_count
  * @property-read Visitor|null $guardian
@@ -53,13 +48,7 @@ use Modules\Camp\Models\Camp;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereAllergies($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereDateOfBirth($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereEmergencyContactName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereEmergencyContactPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedicalNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Visitor whereMedications($value)
  *
  * @mixin \Eloquent
  */
@@ -74,10 +63,7 @@ final class Visitor extends Model
         'name',
         'email',
         'phone',
-        'date_of_birth',
         'gender',
-        'allergies',
-        'medications',
     ];
 
     public static function participatingStatuses(): array
@@ -142,11 +128,6 @@ final class Visitor extends Model
         return array_unique($emails);
     }
 
-    public function age(): Attribute
-    {
-        return Attribute::get(fn () => $this->date_of_birth->age);
-    }
-
     public function camps(): BelongsToMany
     {
         return $this->belongsToMany(Camp::class, 'camp_visitor');
@@ -155,7 +136,6 @@ final class Visitor extends Model
     protected function casts(): array
     {
         return [
-            'date_of_birth' => 'date',
             'gender' => Gender::class,
         ];
     }

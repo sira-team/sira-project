@@ -15,12 +15,11 @@ final class CampRegistrationService
         public WaitlistService $waitlistService
     ) {}
 
-    public function registerVisitor(Camp $camp, Visitor $visitor, ?string $wishes): CampVisitor
+    public function registerVisitor(Camp $camp, Visitor $visitor): CampVisitor
     {
         return CampVisitor::create([
             'camp_id' => $camp->id,
             'visitor_id' => $visitor->id,
-            'wishes' => $wishes,
             'status' => $status = $this->determineStatus($camp, $visitor),
             'waitlist_position' => $status === VisitorStatus::Pending ? null : $this->waitlistService->assignPosition($camp, $visitor->gender),
             'registered_at' => now(),
