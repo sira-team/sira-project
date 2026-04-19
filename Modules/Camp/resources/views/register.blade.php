@@ -98,22 +98,20 @@
                             @enderror
                         </div>
 
-                        @if ($camp->target_group->value === 'adults' || $camp->target_group->value === 'children')
-                            <div>
-                                <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
-                                    {{ __('Gender') }} <span class="text-red-500">*</span>
-                                </label>
-                                <select id="visitor_gender" name="visitor[gender]" required
-                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="">— {{ __('Select') }} —</option>
-                                    <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
-                                    <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
-                                </select>
-                                @error('visitor.gender')
-                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        @endif
+                        <div>
+                            <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
+                                {{ __('Gender') }} <span class="text-red-500">*</span>
+                            </label>
+                            <select id="visitor_gender" name="visitor[gender]" required
+                                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">— {{ __('Select') }} —</option>
+                                <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
+                                <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
+                            </select>
+                            @error('visitor.gender')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </section>
 
                     {{-- CUSTOM FIELDS for adults and family-self (applied once to the registrant) --}}

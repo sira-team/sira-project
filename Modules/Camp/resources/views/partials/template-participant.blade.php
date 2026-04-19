@@ -31,48 +31,46 @@
     </div>
 
     {{-- Gender (required for children, optional for family) --}}
-    @if ($isChildren)
-        <div>
-            <label for="p_{{ $index }}_gender" class="block text-sm font-medium text-gray-700">
-                {{ __('Gender') }} <span class="text-red-500">*</span>
-            </label>
-            <select id="p_{{ $index }}_gender" name="participants[{{ $index }}][gender]" required
-                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="">— {{ __('Select') }} —</option>
-                <option value="male" @selected(($old['gender'] ?? null) === 'male')>{{ __('Male') }}</option>
-                <option value="female" @selected(($old['gender'] ?? null) === 'female')>{{ __('Female') }}</option>
-            </select>
-            @error("participants.{$index}.gender")
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    <div>
+        <label for="p_{{ $index }}_gender" class="block text-sm font-medium text-gray-700">
+            {{ __('Gender') }} <span class="text-red-500">*</span>
+        </label>
+        <select id="p_{{ $index }}_gender" name="participants[{{ $index }}][gender]" required
+                class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">— {{ __('Select') }} —</option>
+            <option value="male" @selected(($old['gender'] ?? null) === 'male')>{{ __('Male') }}</option>
+            <option value="female" @selected(($old['gender'] ?? null) === 'female')>{{ __('Female') }}</option>
+        </select>
+        @error("participants.{$index}.gender")
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-        {{-- Phone (optional for children) --}}
-        <div>
-            <label for="p_{{ $index }}_phone" class="block text-sm font-medium text-gray-700">
-                {{ __('Phone') }}
-            </label>
-            <input type="tel" id="p_{{ $index }}_phone" name="participants[{{ $index }}][phone]"
-                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                   value="{{ is_string($old['phone'] ?? null) ? $old['phone'] : '' }}">
-            @error("participants.{$index}.phone")
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    {{-- Phone (optional for children) --}}
+    <div>
+        <label for="p_{{ $index }}_phone" class="block text-sm font-medium text-gray-700">
+            {{ __('Phone') }}
+        </label>
+        <input type="tel" id="p_{{ $index }}_phone" name="participants[{{ $index }}][phone]"
+               class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+               value="{{ is_string($old['phone'] ?? null) ? $old['phone'] : '' }}">
+        @error("participants.{$index}.phone")
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-        {{-- Email (optional for children) --}}
-        <div>
-            <label for="p_{{ $index }}_email" class="block text-sm font-medium text-gray-700">
-                {{ __('Email') }}
-            </label>
-            <input type="email" id="p_{{ $index }}_email" name="participants[{{ $index }}][email]"
-                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                   value="{{ is_string($old['email'] ?? null) ? $old['email'] : '' }}">
-            @error("participants.{$index}.email")
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-    @endif
+    {{-- Email (optional for children) --}}
+    <div>
+        <label for="p_{{ $index }}_email" class="block text-sm font-medium text-gray-700">
+            {{ __('Email') }}
+        </label>
+        <input type="email" id="p_{{ $index }}_email" name="participants[{{ $index }}][email]"
+               class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+               value="{{ is_string($old['email'] ?? null) ? $old['email'] : '' }}">
+        @error("participants.{$index}.email")
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
     {{-- Custom form fields (all fields, one per participant) --}}
     @foreach ($customFields as $field)

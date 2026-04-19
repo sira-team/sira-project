@@ -66,8 +66,14 @@ final class CampInfolist
                 ->schema([
                     TextEntry::make('target_group')->label(__('Target group'))->badge(),
                     TextEntry::make('gender_policy')->label(__('Gender policy'))->badge(),
-                    TextEntry::make('age_min')->label(__('Min Age'))->placeholder('—'),
-                    TextEntry::make('age_max')->label(__('Max Age'))->placeholder('—'),
+                    TextEntry::make('age_min')
+                        ->label(__('Min Age'))
+                        ->visible(fn (Get $get) => $get('target_group') === CampTargetGroup::Children)
+                        ->placeholder('—'),
+                    TextEntry::make('age_max')
+                        ->label(__('Max Age'))
+                        ->visible(fn (Get $get) => $get('target_group') === CampTargetGroup::Children)
+                        ->placeholder('—'),
                 ]),
 
             Section::make(__('Registration & Planning'))
