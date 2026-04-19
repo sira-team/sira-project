@@ -82,11 +82,8 @@ The actual person attending a camp. Belongs to a Visitor.
 | id | bigint | |
 | visitor_id | FK visitors | |
 | name | string | |
-| date_of_birth | date | |
 | gender | enum | male, female |
 | is_self | boolean | true when visitor registers themselves |
-| allergies | text | nullable |
-| medications | text | nullable |
 
 When `is_self = true` the participant IS the visitor.
 When `is_self = false` the participant is a dependent or someone else the visitor is registering.
@@ -159,7 +156,7 @@ Created per tenant by a Camp Manager or Tenant Admin.
 | ends_at               | date | |
 | capacity              | integer | total participant registrations allowed |
 | price                 | decimal | price per participant in EUR |
-| target_group          | enum | children, teenagers, adults, family |
+| target_group          | enum | children, adults, family |
 | age_min               | integer | nullable |
 | age_max               | integer | nullable |
 | gender_policy         | enum | mixed, separated, brothers_only, sisters_only |

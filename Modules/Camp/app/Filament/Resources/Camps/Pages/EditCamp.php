@@ -7,6 +7,7 @@ namespace Modules\Camp\Filament\Resources\Camps\Pages;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Carbon;
 use Modules\Camp\Filament\Resources\Camps\CampResource;
 
 final class EditCamp extends EditRecord
@@ -24,11 +25,17 @@ final class EditCamp extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         if ($data['registration_opens_at']) {
-            $data['registration_opens_at'] = $data['registration_opens_at']->startOfDay();
+            $data['registration_opens_at'] = Carbon::createFromFormat(
+                'Y-m-d',
+                $data['registration_opens_at']
+            )->startOfDay();
         }
 
         if ($data['registration_ends_at']) {
-            $data['registration_ends_at'] = $data['registration_ends_at']->endOfDay();
+            $data['registration_ends_at'] = Carbon::createFromFormat(
+                'Y-m-d',
+                $data['registration_ends_at']
+            )->endOfDay();
         }
 
         return parent::mutateFormDataBeforeSave($data);

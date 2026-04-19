@@ -9,7 +9,6 @@ use Filament\Support\Contracts\HasLabel;
 enum CampTargetGroup: string implements HasLabel
 {
     case Children = 'children';
-    case Teenagers = 'teenagers';
     case Adults = 'adults';
     case Family = 'family';
 
@@ -18,7 +17,6 @@ enum CampTargetGroup: string implements HasLabel
         return match ($this) {
             self::Children => __('Children'),
             self::Adults => __('Adults'),
-            self::Teenagers => __('Teenagers'),
             self::Family => __('Family'),
         };
     }

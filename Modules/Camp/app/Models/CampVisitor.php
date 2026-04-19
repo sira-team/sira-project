@@ -7,8 +7,10 @@ namespace Modules\Camp\Models;
 use App\Enums\NotificationType;
 use App\Models\Visitor;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Modules\Camp\Database\Factories\CampVisitorFactory;
@@ -20,7 +22,6 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property int $camp_id
  * @property int $visitor_id
  * @property VisitorStatus $status
- * @property string|null $wishes
  * @property int|null $room_id
  * @property int|null $waitlist_position
  * @property Carbon $registered_at
@@ -31,6 +32,8 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @property-read Visitor|null $visitor
  * @property-read HostelRoom|null $room
  * @property-read bool $is_checked_in
+ * @property-read Collection<int, CampRegistrationAnswer> $answers
+ * @property-read int|null $answers_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor newQuery()
@@ -45,8 +48,6 @@ use Modules\Camp\Notifications\CampStatusNotification;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereVisitorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWaitlistPosition($value)
  * @method static \Modules\Camp\Database\Factories\CampVisitorFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereSpecialWishes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereWishes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CampVisitor whereCheckedInAt($value)
  *
  * @mixin \Eloquent
@@ -63,7 +64,6 @@ final class CampVisitor extends Pivot
         'camp_id',
         'visitor_id',
         'status',
-        'wishes',
         'room_id',
         'waitlist_position',
         'registered_at',
@@ -83,6 +83,11 @@ final class CampVisitor extends Pivot
     public function room(): BelongsTo
     {
         return $this->belongsTo(HostelRoom::class, 'room_id');
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(CampRegistrationAnswer::class, 'camp_visitor_id');
     }
 
     public function notify(NotificationType $type): void
