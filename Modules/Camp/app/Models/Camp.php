@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -63,6 +64,8 @@ use Modules\Camp\ValueObjects\CampChecklist;
  * @property-read int|null $camp_users_count
  * @property-read Collection<int, CampExpense> $campExpenses
  * @property-read int|null $camp_expenses_count
+ * @property-read int|null $form_template_id
+ * @property-read FormTemplate|null $formTemplate
  * @property CampChecklist $checklist
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Camp newModelQuery()
@@ -101,6 +104,7 @@ final class Camp extends Model
 
     protected $fillable = [
         'tenant_id',
+        'form_template_id',
         'name',
         'starts_at',
         'ends_at',
@@ -119,6 +123,11 @@ final class Camp extends Model
         'checklist',
     ];
 
+    public function formTemplate(): BelongsTo
+    {
+        return $this->belongsTo(FormTemplate::class);
+    }
+
     public function contract(): HasOne
     {
         return $this->hasOne(CampContract::class);
@@ -127,7 +136,7 @@ final class Camp extends Model
     public function visitors(): BelongsToMany
     {
         return $this->belongsToMany(Visitor::class, 'camp_visitor')
-            ->withPivot('id', 'status', 'wishes', 'room_id', 'waitlist_position', 'registered_at')
+            ->withPivot('id', 'status', 'room_id', 'waitlist_position', 'registered_at')
             ->using(CampVisitor::class)
             ->withTimestamps();
     }

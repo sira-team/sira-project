@@ -75,6 +75,7 @@ final class TenantForm
                             ->label(trans('tenant.settings.default_role_id.label'))
                             ->state(trans('tenant.settings.default_role_id.description')),
                         Select::make('settings.default_role_id')
+                            ->label(__('Default Role'))
                             ->hiddenLabel()
                             ->searchable()
                             ->placeholder(trans('tenant.settings.default_role_id.placeholder'))

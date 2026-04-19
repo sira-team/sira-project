@@ -19,13 +19,8 @@ final class CampVisitorExporter extends Exporter
         return [
             ExportColumn::make('visitor.name')->label(__('Name')),
             ExportColumn::make('visitor.gender')->label(__('Gender')),
-            ExportColumn::make('visitor.date_of_birth')
-                ->state(fn (CampVisitor $record) => $record->visitor?->date_of_birth?->age)
-                ->label(__('Age')),
             ExportColumn::make('room.name')->label(__('Room')),
             ExportColumn::make('room.floor')->label(__('Floor')),
-            ExportColumn::make('visitor.allergies')->label(__('Allergies')),
-            ExportColumn::make('visitor.medications')->label(__('Medications')),
         ];
     }
 

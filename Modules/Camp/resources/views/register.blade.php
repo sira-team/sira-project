@@ -8,157 +8,315 @@
 </head>
 <body class="bg-gray-50">
     <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow p-6">
-            <h1 class="text-2xl font-bold mb-2">{{ $camp->name }}</h1>
-            <p class="text-gray-600 mb-6">{{ $camp->tenant->name }}</p>
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow ring-1 ring-gray-950/5 p-6 sm:p-8">
+
+            {{-- Header --}}
+            <div class="border-b border-gray-100 pb-6 mb-6">
+                <h1 class="text-3xl font-bold text-gray-950">{{ $camp->name }}</h1>
+                <p class="text-sm text-gray-500 mt-1">{{ $camp->tenant->name }}</p>
+            </div>
 
             @if (session('success'))
-                <div class="bg-green-50 border border-green-200 rounded p-4 mb-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
                     <p class="text-green-800 font-medium">{{ session('success') }}</p>
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <p class="text-red-800 font-medium mb-1">{{ __('Please fix the following errors:') }}</p>
+                        <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
             @if (!$camp->registration_is_open)
-                <div class="bg-red-50 border border-red-200 rounded p-4">
-                    <p class="text-red-800 font-medium">Registration is closed</p>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <p class="text-red-800 font-medium">{{ __('Registration is closed') }}</p>
                 </div>
             @else
-                <form action="{{ route('camp.register.store', [$tenant->slug, $camp]) }}" method="POST" class="space-y-6"
-                    x-data="{
-                        targetGroup: '{{ old('target_group', in_array($camp->target_group->value, ['family', 'children', 'teenagers']) ? 'child' : 'myself') }}',
-                        participants: {{ Js::from(old('participants', [['index' => 0]])) }},
-                        addParticipant() {
-                            this.participants.push({ index: this.participants.length });
-                        },
-                        removeParticipant(index) {
-                            if (this.participants.length > 1) {
-                                this.participants.splice(index, 1);
-                            }
-                        }
-                    }">
+                <form action="{{ route('camp.register.store', [$tenant->slug, $camp]) }}" method="POST" class="space-y-6">
                     @csrf
 
-                    <!-- Target Group Selection (for family camps) -->
-                    @if ($camp->target_group->value === 'family')
+                    {{-- HARDCODED: Guardian / Self section --}}
+                    <section class="space-y-4">
+                        <h3 class="text-base font-semibold text-gray-950">
+                            @if ($camp->target_group->value === 'adults')
+                                {{ __('Your Information') }}
+                            @else
+                                {{ __('Guardian Information') }}
+                            @endif
+                        </h3>
+
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">Registering for</label>
-                            <div class="space-y-2">
-                                <label class="flex items-center">
-                                    <input type="radio" name="target_group" value="myself" x-model="targetGroup" class="mr-3">
-                                    <span>Myself</span>
+                            <label for="visitor_name" class="block text-sm font-medium text-gray-700">
+                                {{ __('Full Name') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="visitor_name" name="visitor[name]" required
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   value="{{ old('visitor.name') }}">
+                            @error('visitor.name')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="visitor_email" class="block text-sm font-medium text-gray-700">
+                                {{ __('Email') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="visitor_email" name="visitor[email]" required
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   value="{{ old('visitor.email') }}">
+                            @error('visitor.email')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="visitor_phone" class="block text-sm font-medium text-gray-700">
+                                {{ __('Phone') }}
+                            </label>
+                            <input type="tel" id="visitor_phone" name="visitor[phone]"
+                                   class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   value="{{ old('visitor.phone') }}">
+                            @error('visitor.phone')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        @if ($camp->target_group->value === 'adults' || $camp->target_group->value === 'children')
+                            <div>
+                                <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
+                                    {{ __('Gender') }} <span class="text-red-500">*</span>
                                 </label>
-                                <label class="flex items-center">
-                                    <input type="radio" name="target_group" value="child" x-model="targetGroup" class="mr-3">
-                                    <span>My child(ren)</span>
-                                </label>
+                                <select id="visitor_gender" name="visitor[gender]" required
+                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">— {{ __('Select') }} —</option>
+                                    <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
+                                    <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
+                                </select>
+                                @error('visitor.gender')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
+                        @endif
+                    </section>
+
+                    {{-- CUSTOM FIELDS for adults and family-self (applied once to the registrant) --}}
+                    @if (in_array($camp->target_group->value, ['adults', 'family']) && $customFields->count() > 0)
+                        @foreach ($customFields as $field)
+                            @include('camp::partials.template-field', [
+                                'field'    => $field,
+                                'nameKey'  => "custom_fields[{$field->id}]",
+                                'idKey'    => "custom_field_{$field->id}",
+                                'oldValue' => old("custom_fields.{$field->id}"),
+                            ])
+                        @endforeach
+                    @endif
+
+                    {{-- PARTICIPANT REPEATER (children and family modes) --}}
+                    @if ($camp->target_group->value === 'children' || $camp->target_group->value === 'family')
+                        <div class="border-t border-gray-100 pt-6">
+                            <h3 class="text-base font-semibold text-gray-950 mb-4" id="participants-heading">
+                                @if ($camp->target_group->value === 'children')
+                                    {{ __('Child Information') }}
+                                @else
+                                    {{ __('Family Members') }}
+                                @endif
+                            </h3>
+
+                            <div id="participants-container" class="space-y-4">
+                                @php
+                                    $oldParticipants = old('participants', $camp->target_group->value === 'children' ? [[]] : []);
+                                @endphp
+                                @foreach ($oldParticipants as $pIndex => $oldParticipant)
+                                    @include('camp::partials.template-participant', [
+                                        'index'        => $pIndex,
+                                        'old'          => $oldParticipant,
+                                        'customFields' => $customFields,
+                                        'isChildren'   => $camp->target_group->value === 'children',
+                                        'isRemovable'  => $camp->target_group->value === 'children' || count($oldParticipants) > 0,
+                                    ])
+                                @endforeach
+                            </div>
+
+                            @if ($camp->target_group->value === 'family')
+                                <button type="button" id="add-participant-btn"
+                                        class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    {{ __('Add another family member') }}
+                                </button>
+                            @endif
                         </div>
                     @endif
 
-                    <!-- Visitor Information (Guardian for children, Self for adults) -->
-                    <div class="border-t pt-6">
-                        <h3 class="font-semibold mb-4" x-text="targetGroup === 'child' ? 'Your Information (Guardian)' : 'Your Information'">Your Information</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label for="visitor_name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                                <input type="text" id="visitor_name" name="visitor[name]" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('visitor.name') }}">
-                                @error('visitor.name')
-                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="visitor_email" class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" id="visitor_email" name="visitor[email]" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('visitor.email') }}">
-                                @error('visitor.email')
-                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="visitor_phone" class="block text-sm font-medium text-gray-700">Phone (optional)</label>
-                                <input type="tel" id="visitor_phone" name="visitor[phone]" class="mt-1 block w-full rounded border-gray-300 shadow-sm" value="{{ old('visitor.phone') }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Participant Information -->
-                    <div class="border-t pt-6">
-                        <h3 class="font-semibold mb-4">
-                            @if (in_array($camp->target_group->value, ['children', 'teenagers']))
-                                Child Information
-                            @elseif ($camp->target_group->value === 'adults')
-                                Your Information
-                            @else
-                                <span x-text="targetGroup === 'child' ? 'Child Information' : 'Your Information'">Participant Information</span>
-                            @endif
-                        </h3>
-                        <div id="participants" class="space-y-6">
-                            <template x-for="(participant, index) in participants" :key="index">
-                                <div class="participant-block border rounded p-4 bg-gray-50 relative">
-                                    <button type="button" @click="removeParticipant(index)" x-show="participants.length > 1" class="absolute top-2 right-2 text-gray-400 hover:text-red-600" title="Remove">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                    <input type="hidden" :name="`participants[${index}][index]`" :value="index">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">Name</label>
-                                            <input type="text" :name="`participants[${index}][name]`" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.name">
-                                            <template x-if="false"> {{-- For Laravel validation error mapping --}}
-                                                @error('participants.*.name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
-                                            </template>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                                            <input type="date" :name="`participants[${index}][date_of_birth]`" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.date_of_birth">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">Gender</label>
-                                            <select :name="`participants[${index}][gender]`" required class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.gender">
-                                                <option value="">Select</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">Allergies</label>
-                                            <input type="text" :name="`participants[${index}][allergies]`" class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.allergies">
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">Medications</label>
-                                            <input type="text" :name="`participants[${index}][medications]`" class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.medications">
-                                        </div>
-                                        <div class="col-span-2">
-                                            <label class="block text-sm font-medium text-gray-700">Wishes</label>
-                                            <input type="text" :name="`participants[${index}][wishes]`" class="mt-1 block w-full rounded border-gray-300 shadow-sm" x-model="participant.wishes">
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-
-                        <div class="mt-4" x-show="targetGroup === 'child'">
-                            <button type="button" @click="addParticipant()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                Add Another
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Terms -->
-                    <div class="border-t pt-6">
-                        <label class="flex items-start">
-                            <input type="checkbox" name="terms_accepted" value="1" required class="mt-1 mr-3">
-                            <span class="text-sm text-gray-700">I accept the terms and conditions</span>
+                    {{-- TERMS --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <label class="flex items-start gap-3">
+                            <input type="checkbox" name="terms_accepted" value="1" required
+                                   class="mt-0.5 rounded border-gray-300">
+                            <span class="text-sm text-gray-700">{{ __('I accept the terms and conditions') }}</span>
                         </label>
                         @error('terms_accepted')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium">
-                        Register
+                    <button type="submit"
+                            class="w-full px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">
+                        {{ __('Register') }}
                     </button>
                 </form>
+
+                @if ($camp->target_group->value === 'children' || $camp->target_group->value === 'family')
+                    {{-- Hidden participant block template for JS cloning --}}
+                    <div id="participant-template" style="display:none" aria-hidden="true">
+                        @include('camp::partials.template-participant', [
+                            'index'        => '__IDX__',
+                            'old'          => [],
+                            'customFields' => $customFields,
+                            'isChildren'   => $camp->target_group->value === 'children',
+                            'isRemovable'  => true,
+                        ])
+                    </div>
+
+                    <script>
+                    (function () {
+                        'use strict';
+
+                        const container  = document.getElementById('participants-container');
+                        const addBtn     = document.getElementById('add-participant-btn');
+                        const tpl        = document.getElementById('participant-template');
+                        let count        = container.querySelectorAll('.participant-block').length;
+
+                        @if ($camp->target_group->value === 'family')
+                            function cloneParticipant() {
+                                const raw  = tpl.innerHTML.trim();
+                                const html = raw.replace(/__IDX__/g, count);
+
+                                const wrapper = document.createElement('div');
+                                wrapper.innerHTML = html;
+                                const block = wrapper.firstElementChild;
+
+                                // Reset all field values in the clone
+                                block.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(function (el) {
+                                    if (el.type === 'checkbox' || el.type === 'radio') {
+                                        el.checked = false;
+                                    } else {
+                                        el.value = '';
+                                    }
+                                });
+
+                                container.appendChild(block);
+                                count++;
+                                updateRemoveVisibility();
+                            }
+
+                            function removeParticipant(btn) {
+                                const block = btn.closest('.participant-block');
+                                if (container.querySelectorAll('.participant-block').length > 0) {
+                                    block.remove();
+                                    updateRemoveVisibility();
+                                }
+                            }
+
+                            function updateRemoveVisibility() {
+                                const blocks = container.querySelectorAll('.participant-block');
+                                blocks.forEach(function (block) {
+                                    const btn = block.querySelector('.remove-participant-btn');
+                                    if (btn) {
+                                        btn.style.display = blocks.length > 0 ? '' : 'none';
+                                    }
+                                });
+                            }
+
+                            if (addBtn) {
+                                addBtn.addEventListener('click', cloneParticipant);
+                            }
+
+                            // Delegate remove-button clicks
+                            container.addEventListener('click', function (e) {
+                                const btn = e.target.closest('.remove-participant-btn');
+                                if (btn) {
+                                    removeParticipant(btn);
+                                }
+                            });
+
+                            updateRemoveVisibility();
+                        @else
+                            // Children mode: at least 1 participant required
+                            function removeParticipant(btn) {
+                                const block = btn.closest('.participant-block');
+                                if (container.querySelectorAll('.participant-block').length > 1) {
+                                    block.remove();
+                                    updateRemoveVisibility();
+                                }
+                            }
+
+                            function updateRemoveVisibility() {
+                                const blocks = container.querySelectorAll('.participant-block');
+                                const showRemove = blocks.length > 1;
+                                blocks.forEach(function (block) {
+                                    const btn = block.querySelector('.remove-participant-btn');
+                                    if (btn) {
+                                        btn.style.display = showRemove ? '' : 'none';
+                                    }
+                                });
+                            }
+
+                            if (addBtn) {
+                                addBtn.addEventListener('click', function () {
+                                    const raw  = tpl.innerHTML.trim();
+                                    const html = raw.replace(/__IDX__/g, count);
+
+                                    const wrapper = document.createElement('div');
+                                    wrapper.innerHTML = html;
+                                    const block = wrapper.firstElementChild;
+
+                                    // Reset all field values in the clone
+                                    block.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(function (el) {
+                                        if (el.type === 'checkbox' || el.type === 'radio') {
+                                            el.checked = false;
+                                        } else {
+                                            el.value = '';
+                                        }
+                                    });
+
+                                    container.appendChild(block);
+                                    count++;
+                                    updateRemoveVisibility();
+                                });
+                            }
+
+                            // Delegate remove-button clicks
+                            container.addEventListener('click', function (e) {
+                                const btn = e.target.closest('.remove-participant-btn');
+                                if (btn) {
+                                    removeParticipant(btn);
+                                }
+                            });
+
+                            updateRemoveVisibility();
+                        @endif
+                    }());
+                    </script>
+                @endif
             @endif
         </div>
     </div>

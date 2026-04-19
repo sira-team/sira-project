@@ -39,7 +39,7 @@ final class CreateRolesForTenant
             'expo_manager' => ['Expo', 'ExpoRequest', 'Station', 'EmailTemplate'],
 
             // Camp module — Modules/Camp
-            'camp_manager' => ['Camp', 'Hostel', 'EmailTemplate'],
+            'camp_manager' => ['Camp', 'Hostel', 'EmailTemplate', 'FormTemplate'],
 
             // Academy module — Modules/Academy
             'academy_manager' => ['Enrollment'],
