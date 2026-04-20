@@ -11,7 +11,11 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Filament\Resources\Camps\CampResource;
 use Modules\Camp\Filament\Resources\Camps\Schemas\CampContentEditorForm;
+use Modules\Camp\Models\Camp;
 
+/**
+ * @property Camp $record
+ */
 final class EditCampContent extends EditRecord
 {
     protected static string $resource = CampResource::class;
@@ -22,7 +26,7 @@ final class EditCampContent extends EditRecord
 
     public static function getNavigationLabel(): string
     {
-        return __('Content');
+        return __('Page');
     }
 
     public function getTitle(): string
@@ -38,7 +42,13 @@ final class EditCampContent extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('view')
+                ->label(__('View'))
+                ->openUrlInNewTab()
+                ->icon(Heroicon::OutlinedGlobeAlt)
+                ->url(fn () => route('camp.show', ['camp' => $this->record, 'tenant' => $this->record->tenant])),
             Action::make('back')
+                ->color('gray')
                 ->label(__('Back'))
                 ->url(EditCamp::getUrl(['record' => $this->record])),
         ];

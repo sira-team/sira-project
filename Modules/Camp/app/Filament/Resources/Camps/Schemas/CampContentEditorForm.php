@@ -44,10 +44,6 @@ final class CampContentEditorForm
             ->label(__('Hero Banner'))
             ->icon('heroicon-o-sparkles')
             ->schema([
-                TextInput::make('headline')
-                    ->label(__('Headline'))
-                    ->required()
-                    ->maxLength(120),
                 TextInput::make('tagline')
                     ->label(__('Tagline'))
                     ->maxLength(200),

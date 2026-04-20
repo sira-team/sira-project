@@ -26,7 +26,7 @@
                 <div class="max-w-5xl mx-auto px-6 py-24">
                     <p class="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">{{ $camp->tenant->name }}</p>
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-                        {{ $data['headline'] ?? $camp->name }}
+                        {{ $camp->name }}
                     </h1>
                     @if (!empty($data['tagline']))
                         <p class="mt-6 text-xl text-gray-200 max-w-xl">{{ $data['tagline'] }}</p>
@@ -99,9 +99,10 @@
                         @foreach ($data['items'] ?? [] as $item)
                             <li class="bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 flex gap-4">
                                 <span class="shrink-0 w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-green-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
-                                    </svg>
+                                    <x-dynamic-component
+                                        :component="$item['icon']"
+                                        class="w-5 h-5 text-green-600"
+                                    />
                                 </span>
                                 <div>
                                     @if (!empty($item['title']))
@@ -214,7 +215,7 @@
                     <p class="font-semibold text-gray-950 text-lg">{{ $camp->name }}</p>
                     @if ($camp->price_per_participant > 0)
                         <p class="text-sm text-gray-500 mt-0.5">
-                            {{ __('Contribution') }}: {{ number_format((float) $camp->price_per_participant, 2, ',', '.') }} €
+                            {{ __('Price') }}: {{ number_format((float) $camp->price_per_participant, 2, ',', '.') }} €
                         </p>
                     @endif
                 </div>
