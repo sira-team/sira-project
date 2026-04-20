@@ -49,7 +49,7 @@
     {{-- Phone (optional for children) --}}
     <div>
         <label for="p_{{ $index }}_phone" class="block text-sm font-medium text-gray-700">
-            {{ __('Phone') }}
+            {{ __('Phone') }} (optional)
         </label>
         <input type="tel" id="p_{{ $index }}_phone" name="participants[{{ $index }}][phone]"
                class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -62,7 +62,7 @@
     {{-- Email (optional for children) --}}
     <div>
         <label for="p_{{ $index }}_email" class="block text-sm font-medium text-gray-700">
-            {{ __('Email') }}
+            {{ __('Email') }} (optional)
         </label>
         <input type="email" id="p_{{ $index }}_email" name="participants[{{ $index }}][email]"
                class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

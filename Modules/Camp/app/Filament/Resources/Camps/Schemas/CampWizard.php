@@ -19,7 +19,6 @@ use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
 use Modules\Camp\Models\FormTemplate;
 use Modules\Camp\Models\Hostel;
-use Modules\Camp\Models\HostelRoom;
 
 final class CampWizard
 {
@@ -53,6 +52,7 @@ final class CampWizard
                         ->relationship('contract')
                         ->schema([
                             Select::make('hostel_id')
+                                ->live()
                                 ->label(__('Hostel'))
                                 ->options(Hostel::query()->pluck('name', 'id'))
                                 ->required()
@@ -64,14 +64,15 @@ final class CampWizard
                                 ->required()
                                 ->label(__('Price per Person per Night (EUR)')),
                             TextInput::make('contracted_beds')
-                                ->label(__('Contracted Participants'))
+                                ->reactive()
+                                ->label(__('Contracted Beds'))
                                 ->hintIcon(Heroicon::OutlinedInformationCircle)
                                 ->hintColor(Color::Gray)
                                 ->hintIconTooltip(trans('camps.form.contracted_beds_hint'))
                                 ->numeric()
                                 ->required()
                                 ->minValue(1)
-                                ->maxValue(fn (Get $get): int => HostelRoom::where('hostel_id', $get('hostel_id') ?: 1)->sum('capacity')),
+                                ->maxValue(fn (Get $get): ?int => ($hostel = Hostel::find($get('hostel_id'))) ? $hostel->total_capacity : null),
                             DatePicker::make('contract_date')
                                 ->label(__('Contract Date')),
                             DatePicker::make('cancellation_deadline_at')

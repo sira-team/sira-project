@@ -47,6 +47,7 @@
     "Content": "Inhalt",
     "Contract": "Vertrag",
     "Contract Date": "Vertragsdatum",
+    "Contracted Beds": "Gebuchte Betten",
     "Contracted Participants": "Gebuchte Teilnehmer",
     "Correct": "Richtig",
     "Correct Answer": "Richtige Antwort",
@@ -243,5 +244,10 @@
     "Waitlisted": "Auf Warteliste",
     "Website": "Website",
     "Your Information": "Ihre Informationen",
-    "Your Information (Guardian)": "Ihre Informationen (Erziehungsberechtigter)"
+    "Your Information (Guardian)": "Ihre Informationen (Erziehungsberechtigter)",
+    "Parent Information": "Elternteil Informationen",
+    "Salutation": "Anrede",
+    "Mr.": "Herr",
+    "Mrs.": "Frau",
+    "Add another child": "Kind hinzufügen"
 }

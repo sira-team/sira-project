@@ -55,13 +55,25 @@
                     {{-- HARDCODED: Guardian / Self section --}}
                     <section class="space-y-4">
                         <h3 class="text-base font-semibold text-gray-950">
-                            @if ($camp->target_group->value === 'adults')
-                                {{ __('Your Information') }}
-                            @else
-                                {{ __('Guardian Information') }}
-                            @endif
+                            {{ __('Your Information') }}
                         </h3>
 
+                        <div>
+                            <div>
+                                <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
+                                    {{ __('Salutation') }} <span class="text-red-500">*</span>
+                                </label>
+                                <select id="visitor_gender" name="visitor[gender]" required
+                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">— {{ __('Select') }} —</option>
+                                    <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Mr.') }}</option>
+                                    <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Mrs.') }}</option>
+                                </select>
+                                @error('visitor.gender')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                         <div>
                             <label for="visitor_name" class="block text-sm font-medium text-gray-700">
                                 {{ __('Full Name') }} <span class="text-red-500">*</span>
@@ -88,27 +100,12 @@
 
                         <div>
                             <label for="visitor_phone" class="block text-sm font-medium text-gray-700">
-                                {{ __('Phone') }}
+                                {{ __('Phone') }} (optional)
                             </label>
                             <input type="tel" id="visitor_phone" name="visitor[phone]"
                                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    value="{{ old('visitor.phone') }}">
                             @error('visitor.phone')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
-                                {{ __('Gender') }} <span class="text-red-500">*</span>
-                            </label>
-                            <select id="visitor_gender" name="visitor[gender]" required
-                                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">— {{ __('Select') }} —</option>
-                                <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
-                                <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
-                            </select>
-                            @error('visitor.gender')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -131,7 +128,7 @@
                         <div class="border-t border-gray-100 pt-6">
                             <h3 class="text-base font-semibold text-gray-950 mb-4" id="participants-heading">
                                 @if ($camp->target_group->value === 'children')
-                                    {{ __('Child Information') }}
+                                    {{ __('Children') }}
                                 @else
                                     {{ __('Family Members') }}
                                 @endif
@@ -152,15 +149,17 @@
                                 @endforeach
                             </div>
 
-                            @if ($camp->target_group->value === 'family')
-                                <button type="button" id="add-participant-btn"
-                                        class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
-                                    </svg>
+                            <button type="button" id="add-participant-btn"
+                                    class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                </svg>
+                                @if ($camp->target_group->value === 'children')
+                                    {{ __('Add another child') }}
+                                @else
                                     {{ __('Add another family member') }}
-                                </button>
-                            @endif
+                                @endif
+                            </button>
                         </div>
                     @endif
 

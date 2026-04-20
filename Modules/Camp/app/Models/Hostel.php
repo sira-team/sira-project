@@ -68,7 +68,7 @@ final class Hostel extends Model
     public function totalCapacity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->rooms()->sum('capacity'),
+            get: fn (): int => (int) $this->rooms()->sum('capacity'),
         );
     }
 
