@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camp Registration - {{ $camp->tenant->name }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-50">
-    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+@extends('camp::layouts.app')
+
+@section('title', __('Register') . ' – ' . $camp->name . ' – ' . $camp->tenant->name)
+@section('tenant-name', $camp->tenant->name)
+
+@section('content')
+    <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto bg-white rounded-xl shadow ring-1 ring-gray-950/5 p-6 sm:p-8">
 
             {{-- Header --}}
@@ -317,5 +314,4 @@
             @endif
         </div>
     </div>
-</body>
-</html>
+@endsection

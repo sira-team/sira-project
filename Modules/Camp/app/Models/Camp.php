@@ -117,6 +117,7 @@ final class Camp extends Model
         'max_visitors_male',
         'max_visitors_female',
         'max_visitors_all',
+        'content',
     ];
 
     public function formTemplate(): BelongsTo
@@ -214,6 +215,7 @@ final class Camp extends Model
             'gender_policy' => CampGenderPolicy::class,
             'registration_opens_at' => 'datetime',
             'registration_ends_at' => 'datetime',
+            'content' => 'array',
         ];
     }
 }

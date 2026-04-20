@@ -56,6 +56,7 @@ final class CampResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewCamp::class,
             Pages\EditCamp::class,
+            Pages\EditCampContent::class,
             ListCampExpenses::class,
             ListCampVisitors::class,
             ListCampUsers::class,
@@ -74,6 +75,7 @@ final class CampResource extends Resource
             'create' => Pages\CreateCamp::route('/create'),
             'edit' => Pages\EditCamp::route('/{record}/edit'),
             'view' => Pages\ViewCamp::route('/{record}'),
+            'content' => Pages\EditCampContent::route('/{record}/content'),
         ];
     }
 
