@@ -174,6 +174,31 @@ final class Camp extends Model
         );
     }
 
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        self::creating(function (self $camp) {
+            if ($camp->registration_opens_at) {
+                $camp->registration_opens_at->startOfDay();
+            }
+
+            if ($camp->registration_ends_at) {
+                $camp->registration_ends_at->endOfDay();
+            }
+        });
+
+        self::updating(function (self $camp) {
+            if ($camp->registration_opens_at) {
+                $camp->registration_opens_at->startOfDay();
+            }
+
+            if ($camp->registration_ends_at) {
+                $camp->registration_ends_at->endOfDay();
+            }
+        });
+    }
+
     protected static function newFactory(): CampFactory
     {
         return CampFactory::new();
