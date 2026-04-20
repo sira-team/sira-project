@@ -109,7 +109,7 @@
     "Grand Total": "Gesamtsumme",
     "Health Info": "Gesundheitsinfo",
     "Help Text": "Hilfetext",
-    "Hostel": "Unterkunft",
+    "Hostel": "Jugendherberge",
     "Hostel Contract": "Unterkunftsvertrag",
     "Hostels": "Jugendherberge",
     "I accept the terms and conditions": "Ich akzeptiere die Allgemeinen Geschäftsbedingungen",
@@ -249,5 +249,11 @@
     "Salutation": "Anrede",
     "Mr.": "Herr",
     "Mrs.": "Frau",
-    "Add another child": "Kind hinzufügen"
+    "Add another child": "Kind hinzufügen",
+    "Planning": "Planung",
+    "Registration & Form": "Registrierung & Formular",
+    "Postcode": "Postleitzahl",
+    "Street and number": "Straße und Hausnummer",
+    "Name of the camp": "Name des Camps",
+    "Add room": "Zimmer hinzufügen"
 }

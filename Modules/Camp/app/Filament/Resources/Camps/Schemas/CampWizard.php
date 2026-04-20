@@ -17,6 +17,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Modules\Camp\Enums\CampGenderPolicy;
 use Modules\Camp\Enums\CampTargetGroup;
+use Modules\Camp\Filament\Resources\Hostels\Schemas\HostelForm;
 use Modules\Camp\Models\FormTemplate;
 use Modules\Camp\Models\Hostel;
 
@@ -28,13 +29,10 @@ final class CampWizard
             Wizard::make()->schema([
                 Step::make(__('Overview'))->schema([
                     TextInput::make('name')
-                        ->label(__('Name'))
+                        ->label(__('Name of the camp'))
                         ->required()
                         ->columnSpanFull()
                         ->maxLength(255),
-                    Textarea::make('description')
-                        ->columnSpanFull()
-                        ->label(__('Description')),
                     DatePicker::make('starts_at')
                         ->label(__('Starts at'))
                         ->minDate(today())
@@ -56,7 +54,9 @@ final class CampWizard
                                 ->label(__('Hostel'))
                                 ->options(Hostel::query()->pluck('name', 'id'))
                                 ->required()
-                                ->columnSpanFull()
+                                ->columnSpan(2)
+                                ->createOptionForm(fn (Schema $form): Schema => HostelForm::configure($form))
+                                ->createOptionUsing(fn (array $data): int => Hostel::create($data)->id)
                                 ->searchable(),
                             TextInput::make('price_per_person_per_night')
                                 ->label(__('Price per Person per Night (EUR)'))
@@ -71,8 +71,7 @@ final class CampWizard
                                 ->hintIconTooltip(trans('camps.form.contracted_beds_hint'))
                                 ->numeric()
                                 ->required()
-                                ->minValue(1)
-                                ->maxValue(fn (Get $get): ?int => ($hostel = Hostel::find($get('hostel_id'))) ? $hostel->total_capacity : null),
+                                ->minValue(1),
                             DatePicker::make('contract_date')
                                 ->label(__('Contract Date')),
                             DatePicker::make('cancellation_deadline_at')
@@ -142,7 +141,7 @@ final class CampWizard
                         ->required()
                         ->label(__('Price per Participant (EUR)')),
                 ])->columns(2),
-                Step::make(__('Registration Form'))->schema([
+                Step::make(__('Registration & Form'))->schema([
                     DatePicker::make('registration_opens_at')
                         ->suffix('00:00:00')
                         ->minDate(today())
