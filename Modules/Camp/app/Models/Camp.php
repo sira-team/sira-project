@@ -117,6 +117,7 @@ final class Camp extends Model
         'max_visitors_male',
         'max_visitors_female',
         'max_visitors_all',
+        'content',
     ];
 
     public function formTemplate(): BelongsTo
@@ -174,6 +175,31 @@ final class Camp extends Model
         );
     }
 
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        self::creating(function (self $camp) {
+            if ($camp->registration_opens_at) {
+                $camp->registration_opens_at->startOfDay();
+            }
+
+            if ($camp->registration_ends_at) {
+                $camp->registration_ends_at->endOfDay();
+            }
+        });
+
+        self::updating(function (self $camp) {
+            if ($camp->registration_opens_at) {
+                $camp->registration_opens_at->startOfDay();
+            }
+
+            if ($camp->registration_ends_at) {
+                $camp->registration_ends_at->endOfDay();
+            }
+        });
+    }
+
     protected static function newFactory(): CampFactory
     {
         return CampFactory::new();
@@ -189,6 +215,7 @@ final class Camp extends Model
             'gender_policy' => CampGenderPolicy::class,
             'registration_opens_at' => 'datetime',
             'registration_ends_at' => 'datetime',
+            'content' => 'array',
         ];
     }
 }

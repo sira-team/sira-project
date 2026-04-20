@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('camp_visitor', function (Blueprint $table) {
-            $table->dropColumn('wishes');
+        Schema::table('camps', function (Blueprint $table) {
+            $table->longText('content')->nullable()->after('description');
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('camp_visitor', function (Blueprint $table) {
-            $table->text('wishes')->nullable();
+        Schema::table('camps', function (Blueprint $table) {
+            $table->dropColumn('content');
         });
     }
 };

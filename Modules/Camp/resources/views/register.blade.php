@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camp Registration - {{ $camp->tenant->name }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-50">
-    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+@extends('camp::layouts.app')
+
+@section('title', __('Register') . ' – ' . $camp->name . ' – ' . $camp->tenant->name)
+@section('tenant-name', $camp->tenant->name)
+
+@section('content')
+    <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto bg-white rounded-xl shadow ring-1 ring-gray-950/5 p-6 sm:p-8">
 
             {{-- Header --}}
@@ -55,13 +52,25 @@
                     {{-- HARDCODED: Guardian / Self section --}}
                     <section class="space-y-4">
                         <h3 class="text-base font-semibold text-gray-950">
-                            @if ($camp->target_group->value === 'adults')
-                                {{ __('Your Information') }}
-                            @else
-                                {{ __('Guardian Information') }}
-                            @endif
+                            {{ __('Your Information') }}
                         </h3>
 
+                        <div>
+                            <div>
+                                <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
+                                    {{ __('Salutation') }} <span class="text-red-500">*</span>
+                                </label>
+                                <select id="visitor_gender" name="visitor[gender]" required
+                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">— {{ __('Select') }} —</option>
+                                    <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Mr.') }}</option>
+                                    <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Mrs.') }}</option>
+                                </select>
+                                @error('visitor.gender')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                         <div>
                             <label for="visitor_name" class="block text-sm font-medium text-gray-700">
                                 {{ __('Full Name') }} <span class="text-red-500">*</span>
@@ -88,7 +97,7 @@
 
                         <div>
                             <label for="visitor_phone" class="block text-sm font-medium text-gray-700">
-                                {{ __('Phone') }}
+                                {{ __('Phone') }} (optional)
                             </label>
                             <input type="tel" id="visitor_phone" name="visitor[phone]"
                                    class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -97,23 +106,6 @@
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
-                        @if ($camp->target_group->value === 'adults' || $camp->target_group->value === 'children')
-                            <div>
-                                <label for="visitor_gender" class="block text-sm font-medium text-gray-700">
-                                    {{ __('Gender') }} <span class="text-red-500">*</span>
-                                </label>
-                                <select id="visitor_gender" name="visitor[gender]" required
-                                        class="mt-1 block w-full rounded-lg border-gray-300 py-2 px-3 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="">— {{ __('Select') }} —</option>
-                                    <option value="male" @selected(old('visitor.gender') === 'male')>{{ __('Male') }}</option>
-                                    <option value="female" @selected(old('visitor.gender') === 'female')>{{ __('Female') }}</option>
-                                </select>
-                                @error('visitor.gender')
-                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        @endif
                     </section>
 
                     {{-- CUSTOM FIELDS for adults and family-self (applied once to the registrant) --}}
@@ -133,7 +125,7 @@
                         <div class="border-t border-gray-100 pt-6">
                             <h3 class="text-base font-semibold text-gray-950 mb-4" id="participants-heading">
                                 @if ($camp->target_group->value === 'children')
-                                    {{ __('Child Information') }}
+                                    {{ __('Children') }}
                                 @else
                                     {{ __('Family Members') }}
                                 @endif
@@ -154,15 +146,17 @@
                                 @endforeach
                             </div>
 
-                            @if ($camp->target_group->value === 'family')
-                                <button type="button" id="add-participant-btn"
-                                        class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
-                                    </svg>
+                            <button type="button" id="add-participant-btn"
+                                    class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                </svg>
+                                @if ($camp->target_group->value === 'children')
+                                    {{ __('Add another child') }}
+                                @else
                                     {{ __('Add another family member') }}
-                                </button>
-                            @endif
+                                @endif
+                            </button>
                         </div>
                     @endif
 
@@ -320,5 +314,4 @@
             @endif
         </div>
     </div>
-</body>
-</html>
+@endsection

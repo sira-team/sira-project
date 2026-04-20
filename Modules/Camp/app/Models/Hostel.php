@@ -59,6 +59,7 @@ final class Hostel extends Model
         'name',
         'address',
         'city',
+        'postcode',
         'phone',
         'email',
         'website',
@@ -68,7 +69,14 @@ final class Hostel extends Model
     public function totalCapacity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->rooms()->sum('capacity'),
+            get: function (): int {
+                $capacity = (int) $this->rooms()->sum('capacity');
+                if ($capacity === 0) {
+                    return 999;
+                }
+
+                return $capacity;
+            },
         );
     }
 
